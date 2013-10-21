@@ -79,6 +79,7 @@
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShipEntity.cpp" />
+    <ClCompile Include="ShootLaserComponent.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShipEntity.h" />
+    <ClInclude Include="ShootLaserComponent.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
