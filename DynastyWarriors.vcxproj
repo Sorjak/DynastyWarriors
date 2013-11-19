@@ -72,19 +72,18 @@
     <ClCompile Include="BounceSystem.cpp" />
     <ClCompile Include="DimensionComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="LaserEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
+    <ClCompile Include="PlayerInputSystem.cpp" />
+    <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShipEntity.cpp" />
-    <ClCompile Include="ShootLaserComponent.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="VelocityComponent.cpp" />
-    <ClCompile Include="WASDInputComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
@@ -93,18 +92,17 @@
     <ClInclude Include="BounceSystem.h" />
     <ClInclude Include="DimensionComponent.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="LaserEntity.h" />
     <ClInclude Include="MoveSystem.h" />
+    <ClInclude Include="PlayerInputSystem.h" />
+    <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShipEntity.h" />
-    <ClInclude Include="ShootLaserComponent.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="VelocityComponent.h" />
-    <ClInclude Include="WASDInputComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\redlaser.png" />

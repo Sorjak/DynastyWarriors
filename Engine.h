@@ -9,6 +9,7 @@
 
 #include "BaseSystem.h"
 #include "InputSystem.h"
+#include "PlayerInputSystem.h"
 #include "RenderSystem.h"
 #include "MoveSystem.h"
 #include "BounceSystem.h"
@@ -32,6 +33,7 @@ public:
 	//void handleInputs();
 	void setRunning(bool);
 	void endGame();
+	void addEntity(BaseEntity*);
 
 
 private:
@@ -39,7 +41,6 @@ private:
 	void initSystems();
 	void initEntities();
 	void addEntitiesToSystems();
-	void addEntity(BaseEntity*);
 
 	int running;
 	map<string, BaseSystem*> systemList;

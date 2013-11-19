@@ -36,7 +36,7 @@ void Engine::initGame() {
 }
 
 void Engine::initSystems() {
-	BaseSystem *input = new InputSystem();
+	BaseSystem *input = new PlayerInputSystem();
 	input->init(this);
 	systemList["input"] = input;
 
@@ -55,7 +55,6 @@ void Engine::initSystems() {
 
 void Engine::initEntities() {
 	addEntity(new ShipEntity());
-	addEntity(new LaserEntity());
 }
 
 void Engine::addEntitiesToSystems() {
