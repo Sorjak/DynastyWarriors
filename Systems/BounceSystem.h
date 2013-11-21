@@ -1,8 +1,8 @@
 #pragma once
 #include "basesystem.h"
 
-#include "DimensionComponent.h"
-#include "VelocityComponent.h"
+#include "../Components/DimensionComponent.h"
+#include "../Components/VelocityComponent.h"
 
 class BounceSystem :
 	public BaseSystem

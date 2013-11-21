@@ -1,10 +1,11 @@
 #pragma once
 #include "baseentity.h"
 
-#include "TextureComponent.h"
-#include "DimensionComponent.h"
-#include "VelocityComponent.h"
-#include "ProjectileComponent.h"
+#include "../Components/TextureComponent.h"
+#include "../Components/DimensionComponent.h"
+#include "../Components/VelocityComponent.h"
+#include "../Components/ProjectileComponent.h"
+#include "../Components/ExpirationComponent.h"
 
 class LaserEntity :
 	public BaseEntity

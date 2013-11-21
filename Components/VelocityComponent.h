@@ -1,7 +1,7 @@
 #pragma once
 #include "basecomponent.h"
 
-#include "Vector2D.h"
+#include "../Vector2D.h"
 
 class VelocityComponent :
 	public BaseComponent

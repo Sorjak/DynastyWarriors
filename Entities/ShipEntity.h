@@ -1,9 +1,9 @@
 #pragma once
 
 #include "baseentity.h"
-#include "TextureComponent.h"
-#include "DimensionComponent.h"
-#include "VelocityComponent.h"
+#include "../Components/TextureComponent.h"
+#include "../Components/DimensionComponent.h"
+#include "../Components/VelocityComponent.h"
 
 class ShipEntity : public BaseEntity
 {

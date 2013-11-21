@@ -1,6 +1,6 @@
 #pragma once
 #include "basecomponent.h"
-#include "BaseEntity.h"
+#include "../Entities/BaseEntity.h"
 
 class ProjectileComponent :
 	public BaseComponent

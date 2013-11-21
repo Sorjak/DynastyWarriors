@@ -2,10 +2,9 @@
 #include <iostream>
 #include <vector>
 
-#include "BaseEntity.h"
+#include "../Entities/BaseEntity.h"
 
 using namespace std;
-
 
 class Engine;
 

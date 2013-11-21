@@ -51,6 +51,10 @@ void Engine::initSystems() {
 	BaseSystem *bounce =  new BounceSystem(800, 600);
 	bounce->init(this);
 	systemList["bounce"] = bounce;
+
+	ExpiresSystem *expires = new ExpiresSystem();
+	expires->init(this);
+	systemList["expires"] = expires;
 }
 
 void Engine::initEntities() {
@@ -72,4 +76,9 @@ void Engine::addEntitiesToSystems() {
 
 void Engine::addEntity(BaseEntity* e) {
 	entityList[e] = 0; // 0 means not yet added to proper systems
+}
+
+void Engine::removeEntity(BaseEntity* e) {
+	map<BaseEntity*, int>::iterator todel = entityList.find(e);
+	entityList.erase(todel);  
 }

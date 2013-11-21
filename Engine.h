@@ -7,16 +7,17 @@
 
 #include "Utils.h"
 
-#include "BaseSystem.h"
-#include "InputSystem.h"
-#include "PlayerInputSystem.h"
-#include "RenderSystem.h"
-#include "MoveSystem.h"
-#include "BounceSystem.h"
+#include "Systems/BaseSystem.h"
+#include "Systems/InputSystem.h"
+#include "Systems/PlayerInputSystem.h"
+#include "Systems/RenderSystem.h"
+#include "Systems/MoveSystem.h"
+#include "Systems/BounceSystem.h"
+#include "Systems/ExpiresSystem.h";
 
-#include "BaseEntity.h"
-#include "ShipEntity.h"
-#include "LaserEntity.h"
+#include "Entities/BaseEntity.h"
+#include "Entities/ShipEntity.h"
+#include "Entities/LaserEntity.h"
 
 
 
@@ -34,7 +35,7 @@ public:
 	void setRunning(bool);
 	void endGame();
 	void addEntity(BaseEntity*);
-
+	void removeEntity(BaseEntity*);
 
 private:
 	void initGame();

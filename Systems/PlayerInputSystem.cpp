@@ -33,7 +33,7 @@ void PlayerInputSystem::update() {
 					vel->mVelocity->x()++;
 				}
 				if (e.key.keysym.sym == SDLK_SPACE) {
-					int x = dim->getRect()->x + (dim->getRect()->w / 2);
+					int x = dim->getRect()->x + dim->getRect()->w;
 					int y = dim->getRect()->y;
 					mEngine->addEntity(new LaserEntity(x, y));
 				}

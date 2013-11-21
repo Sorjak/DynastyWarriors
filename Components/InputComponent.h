@@ -1,7 +1,7 @@
 #pragma once
 #include "basecomponent.h"
 
-#include "BaseEntity.h"
+#include "../Entities/BaseEntity.h"
 
 class InputComponent :
 	public BaseComponent

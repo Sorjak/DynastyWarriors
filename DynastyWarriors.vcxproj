@@ -66,43 +66,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseComponent.cpp" />
-    <ClCompile Include="BaseEntity.cpp" />
-    <ClCompile Include="BaseSystem.cpp" />
-    <ClCompile Include="BounceSystem.cpp" />
-    <ClCompile Include="DimensionComponent.cpp" />
+    <ClCompile Include="Components\BaseComponent.cpp" />
+    <ClCompile Include="Components\DimensionComponent.cpp" />
+    <ClCompile Include="Components\ExpirationComponent.cpp" />
+    <ClCompile Include="Components\InputComponent.cpp" />
+    <ClCompile Include="Components\ProjectileComponent.cpp" />
+    <ClCompile Include="Components\TextureComponent.cpp" />
+    <ClCompile Include="Components\VelocityComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="InputSystem.cpp" />
-    <ClCompile Include="LaserEntity.cpp" />
+    <ClCompile Include="Entities\BaseEntity.cpp" />
+    <ClCompile Include="Entities\LaserEntity.cpp" />
+    <ClCompile Include="Entities\ShipEntity.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MoveSystem.cpp" />
-    <ClCompile Include="PlayerInputSystem.cpp" />
-    <ClCompile Include="ProjectileComponent.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="ShipEntity.cpp" />
-    <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="Systems\BaseSystem.cpp" />
+    <ClCompile Include="Systems\BounceSystem.cpp" />
+    <ClCompile Include="Systems\ExpiresSystem.cpp" />
+    <ClCompile Include="Systems\InputSystem.cpp" />
+    <ClCompile Include="Systems\MoveSystem.cpp" />
+    <ClCompile Include="Systems\PlayerInputSystem.cpp" />
+    <ClCompile Include="Systems\RenderSystem.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
-    <ClCompile Include="VelocityComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseComponent.h" />
-    <ClInclude Include="BaseEntity.h" />
-    <ClInclude Include="BaseSystem.h" />
-    <ClInclude Include="BounceSystem.h" />
-    <ClInclude Include="DimensionComponent.h" />
+    <ClInclude Include="Components\BaseComponent.h" />
+    <ClInclude Include="Components\DimensionComponent.h" />
+    <ClInclude Include="Components\ExpirationComponent.h" />
+    <ClInclude Include="Components\InputComponent.h" />
+    <ClInclude Include="Components\ProjectileComponent.h" />
+    <ClInclude Include="Components\TextureComponent.h" />
+    <ClInclude Include="Components\VelocityComponent.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="LaserEntity.h" />
-    <ClInclude Include="MoveSystem.h" />
-    <ClInclude Include="PlayerInputSystem.h" />
-    <ClInclude Include="ProjectileComponent.h" />
-    <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="ShipEntity.h" />
-    <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="Entities\BaseEntity.h" />
+    <ClInclude Include="Entities\LaserEntity.h" />
+    <ClInclude Include="Entities\ShipEntity.h" />
+    <ClInclude Include="Systems\BaseSystem.h" />
+    <ClInclude Include="Systems\BounceSystem.h" />
+    <ClInclude Include="Systems\ExpiresSystem.h" />
+    <ClInclude Include="Systems\InputSystem.h" />
+    <ClInclude Include="Systems\MoveSystem.h" />
+    <ClInclude Include="Systems\PlayerInputSystem.h" />
+    <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\redlaser.png" />

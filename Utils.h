@@ -7,7 +7,7 @@
 
 #include <SDL2\SDL.h>
 
-#include "BaseComponent.h"
+#include "Components/BaseComponent.h"
 
 using namespace std;
 
