@@ -14,6 +14,7 @@ public:
 	virtual ~BaseSystem();
 	virtual void init(Engine*);
 	void registerEntity(BaseEntity* entity);
+	void removeEntity(BaseEntity* entity);
 	virtual void update();
 
 	std::vector<BaseEntity*> entityList;

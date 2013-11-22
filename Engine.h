@@ -45,6 +45,7 @@ private:
 
 	int running;
 	map<string, BaseSystem*> systemList;
-	map<BaseEntity*, int> entityList;
+	vector<BaseEntity*> entityList;
+	vector<BaseEntity*> toadd;
 };
 

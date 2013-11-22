@@ -40,10 +40,6 @@ void Engine::initSystems() {
 	input->init(this);
 	systemList["input"] = input;
 
-	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
-	render->init(this);
-	systemList["render"] = render;
-
 	BaseSystem *move =  new MoveSystem();
 	move->init(this);
 	systemList["move"] = move;
@@ -55,6 +51,10 @@ void Engine::initSystems() {
 	ExpiresSystem *expires = new ExpiresSystem();
 	expires->init(this);
 	systemList["expires"] = expires;
+
+	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
+	render->init(this);
+	systemList["render"] = render;
 }
 
 void Engine::initEntities() {
@@ -62,23 +62,29 @@ void Engine::initEntities() {
 }
 
 void Engine::addEntitiesToSystems() {
-	for(map<BaseEntity*, int>::iterator it = entityList.begin(); it != entityList.end(); ++it) {
-		if (it->second == 0) {
-			vector<string> entitySystems = it->first->systemFlags;
-			for (size_t j = 0; j < entitySystems.size(); j++) {
-				systemList[entitySystems[j]]->registerEntity(it->first);
-			}
-			it->second = 1; //change to 1 so we don't update it again
+	for(size_t i = 0; i < toadd.size(); i++) {
+		vector<string> entitySystems = toadd[i]->systemFlags;
+		for (size_t j = 0; j < entitySystems.size(); j++) {
+			systemList[entitySystems[j]]->registerEntity(toadd[i]);
 		}
+		
+		entityList.push_back(toadd[i]);
 	}
-	entityList.clear();
+	toadd.clear();
 }
 
 void Engine::addEntity(BaseEntity* e) {
-	entityList[e] = 0; // 0 means not yet added to proper systems
+	toadd.push_back(e); // 0 means not yet added to proper systems
 }
 
 void Engine::removeEntity(BaseEntity* e) {
-	map<BaseEntity*, int>::iterator todel = entityList.find(e);
-	entityList.erase(todel);  
+	int pos = 0;
+	for (size_t i = 0; i < entityList.size(); i++) {
+		if (entityList[i] == e) {
+			pos = i;
+		}
+	}
+
+    vector<BaseEntity*>::iterator it = entityList.begin()+pos;
+    entityList.erase(it);
 }
