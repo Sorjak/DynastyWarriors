@@ -13,7 +13,7 @@
 #include "Systems/RenderSystem.h"
 #include "Systems/MoveSystem.h"
 #include "Systems/BounceSystem.h"
-#include "Systems/ExpiresSystem.h";
+#include "Systems/ExpiresSystem.h"
 
 #include "Entities/BaseEntity.h"
 #include "Entities/ShipEntity.h"

@@ -48,7 +48,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -85,6 +85,8 @@
     <ClCompile Include="Systems\MoveSystem.cpp" />
     <ClCompile Include="Systems\PlayerInputSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
+    <ClCompile Include="FPSTextEntity.cpp" />
+    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
@@ -107,12 +109,17 @@
     <ClInclude Include="Systems\MoveSystem.h" />
     <ClInclude Include="Systems\PlayerInputSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
+    <ClInclude Include="FPSTextEntity.h" />
+    <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\redlaser.png" />
     <Image Include="media\ship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="media\SourceSansPro-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

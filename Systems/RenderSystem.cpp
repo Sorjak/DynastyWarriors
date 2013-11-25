@@ -15,6 +15,13 @@ RenderSystem::RenderSystem(int width, int height, const char* title)
 	const int SCREEN_HEIGHT = height;
 	mWindow = SDL_CreateWindow(title, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if( TTF_Init() == -1 ) {
+		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+	mFont = TTF_OpenFont("media/SourceSansPro-Regular.ttf", 24 );
+	fpsTimer = SDL_GetTicks();
+	framesElapsed = 0;
+	currentFPS = 0;
 }
 
 
@@ -25,13 +32,51 @@ RenderSystem::~RenderSystem()
 }
 
 void RenderSystem::update() {
+	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
 	for (size_t i = 0; i < entityList.size(); i++) {
-		TextureComponent *tex = (TextureComponent*) entityList[i]->componentMap["texture"];
-		DimensionComponent *dim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
-		SDL_RenderCopy(mRenderer, tex->getTexture(mRenderer), NULL, dim->getRect());
+		
+		SDL_Texture* renderTex;
+		SDL_Rect* renderRect;
+		if ( entityList[i]->componentMap.find("texture") != entityList[i]->componentMap.end()  ) {
+			TextureComponent *tex = (TextureComponent*) entityList[i]->componentMap["texture"];
+			DimensionComponent *dim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
+			renderTex = tex->getTexture(mRenderer);
+			renderRect = dim->getRect();
+		}
+		
+		SDL_RenderCopy(mRenderer, renderTex, NULL, renderRect);
 	}
+	displayFPSTexture();
 	SDL_RenderPresent(mRenderer);
+	frameEndTime = SDL_GetTicks();
+}
+
+void RenderSystem::displayFPSTexture() {
+	SDL_Color color; color.r = 255; color.b = 255; color.g = 255;
+	string fpsString = "FPS: ";
+
+	//Calculate FPS
+	if (frameStartTime - fpsTimer >= 1000) {
+		currentFPS = framesElapsed;
+		framesElapsed = 0;
+		fpsTimer = SDL_GetTicks();
+	} else {
+		framesElapsed++;
+	}
+	fpsString += to_string(currentFPS);
+
+	SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, fpsString.c_str(), color );
+	SDL_Texture* renderTex = SDL_CreateTextureFromSurface( mRenderer, textSurface );
+	SDL_Rect *rect = new SDL_Rect();
+	rect->x = 5;
+	rect->y = 5;
+	rect->w = 36;
+	rect->h = 24;
+
+	SDL_RenderCopy(mRenderer, renderTex, NULL, rect);
+	SDL_FreeSurface( textSurface );
+	SDL_free(renderTex);
 }
 
 

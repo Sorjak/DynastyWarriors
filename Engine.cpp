@@ -78,13 +78,20 @@ void Engine::addEntity(BaseEntity* e) {
 }
 
 void Engine::removeEntity(BaseEntity* e) {
-	int pos = 0;
+	int pos = -1;
 	for (size_t i = 0; i < entityList.size(); i++) {
-		if (entityList[i] == e) {
+		if (entityList[i] == e)
 			pos = i;
-		}
 	}
 
-    vector<BaseEntity*>::iterator it = entityList.begin()+pos;
-    entityList.erase(it);
+	if (pos >= 0) {
+		vector<BaseEntity*>::iterator it = entityList.begin()+pos;
+		entityList.erase(it);
+
+		for(map<string,BaseSystem*>::iterator itx = systemList.begin(); itx != systemList.end(); ++itx) {
+			itx->second->removeEntity(e);
+		}
+		delete e;
+	}
+
 }
