@@ -46,6 +46,12 @@ void RenderSystem::update() {
 		}
 		
 		SDL_RenderCopy(mRenderer, renderTex, NULL, renderRect);
+
+		SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
+		SDL_Rect* idRect = new SDL_Rect();
+		idRect->x = renderRect->x; idRect->y = renderRect->y; idRect->w = renderRect->w; idRect->h = renderRect->h;
+		displayText(idColor, idRect, to_string(entityList[i]->mID));
+
 	}
 	displayFPSTexture();
 	SDL_RenderPresent(mRenderer);
@@ -66,17 +72,22 @@ void RenderSystem::displayFPSTexture() {
 	}
 	fpsString += to_string(currentFPS);
 
-	SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, fpsString.c_str(), color );
-	SDL_Texture* renderTex = SDL_CreateTextureFromSurface( mRenderer, textSurface );
 	SDL_Rect *rect = new SDL_Rect();
 	rect->x = 5;
 	rect->y = 5;
 	rect->w = 36;
 	rect->h = 24;
 
-	SDL_RenderCopy(mRenderer, renderTex, NULL, rect);
+	displayText(color, rect, fpsString);
+}
+
+void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {
+	SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, text.c_str(), color );
+	SDL_Texture* renderTex = SDL_CreateTextureFromSurface( mRenderer, textSurface );
+
+	SDL_RenderCopy( mRenderer, renderTex, NULL, rect );
 	SDL_FreeSurface( textSurface );
-	SDL_free(renderTex);
+	SDL_free( renderTex );
 }
 
 

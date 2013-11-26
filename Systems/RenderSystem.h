@@ -27,6 +27,7 @@ public:
 
 private:
 	void displayFPSTexture();
+	void displayText(SDL_Color, SDL_Rect*, string);
 
 };
 

@@ -66,6 +66,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\BaseComponent.cpp" />
     <ClCompile Include="Components\DimensionComponent.cpp" />
     <ClCompile Include="Components\ExpirationComponent.cpp" />
@@ -85,12 +87,13 @@
     <ClCompile Include="Systems\MoveSystem.cpp" />
     <ClCompile Include="Systems\PlayerInputSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
-    <ClCompile Include="FPSTextEntity.cpp" />
-    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
+    <ClCompile Include="Entities\WallEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Systems\CollisionSystem.h" />
+    <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\DimensionComponent.h" />
     <ClInclude Include="Components\ExpirationComponent.h" />
@@ -109,10 +112,9 @@
     <ClInclude Include="Systems\MoveSystem.h" />
     <ClInclude Include="Systems\PlayerInputSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
-    <ClInclude Include="FPSTextEntity.h" />
-    <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="Entities\WallEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\redlaser.png" />

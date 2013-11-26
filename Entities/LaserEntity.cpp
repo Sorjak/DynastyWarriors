@@ -1,7 +1,9 @@
 #include "LaserEntity.h"
 
 
-LaserEntity::LaserEntity(int x, int y){
+LaserEntity::LaserEntity(long id, int x, int y){
+	mID = id;
+
 	systemFlags.push_back("render");
 	systemFlags.push_back("move");
 	systemFlags.push_back("expires");
@@ -13,7 +15,9 @@ LaserEntity::LaserEntity(int x, int y){
 	componentMap["expiration"] = new ExpirationComponent(5000);
 }
 
-LaserEntity::LaserEntity(int x, int y, BaseEntity* parent){
+LaserEntity::LaserEntity(long id, int x, int y, BaseEntity* parent){
+	mID = id;
+
 	systemFlags.push_back("render");
 	systemFlags.push_back("move");
 	systemFlags.push_back("expires");

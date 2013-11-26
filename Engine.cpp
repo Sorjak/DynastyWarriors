@@ -52,13 +52,25 @@ void Engine::initSystems() {
 	expires->init(this);
 	systemList["expires"] = expires;
 
+	CollisionSystem *collision = new CollisionSystem();
+	collision->init(this);
+	systemList["collides"] = collision;
+
 	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
 	render->init(this);
 	systemList["render"] = render;
 }
 
 void Engine::initEntities() {
-	addEntity(new ShipEntity());
+	addEntity(new ShipEntity(getNextId()));
+
+	int wallwidth = 33;
+	int wallheight = 32;
+
+	//for (size_t i = 0; i < (800 / wallwidth); i++) {
+	//	addEntity(new WallEntity(getNextId(), i*wallwidth, 600 - wallheight));
+	//}
+	addEntity(new WallEntity(getNextId(), wallwidth, 600 - wallheight));
 }
 
 void Engine::addEntitiesToSystems() {
@@ -67,14 +79,13 @@ void Engine::addEntitiesToSystems() {
 		for (size_t j = 0; j < entitySystems.size(); j++) {
 			systemList[entitySystems[j]]->registerEntity(toadd[i]);
 		}
-		
-		entityList.push_back(toadd[i]);
 	}
 	toadd.clear();
 }
 
 void Engine::addEntity(BaseEntity* e) {
 	toadd.push_back(e); // 0 means not yet added to proper systems
+	entityList.push_back(e);
 }
 
 void Engine::removeEntity(BaseEntity* e) {
@@ -94,4 +105,12 @@ void Engine::removeEntity(BaseEntity* e) {
 		delete e;
 	}
 
+}
+
+long Engine::getNextId() {
+	if (entityList.size() < 0) {
+		return 0;
+	} 
+
+	return entityList.size();
 }

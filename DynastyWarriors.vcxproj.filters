@@ -96,11 +96,14 @@
     <ClCompile Include="Systems\RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="FPSTextEntity.cpp">
-      <Filter>Source Files\Entities</Filter>
+    <ClCompile Include="Components\AnimationComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+    <ClCompile Include="Entities\WallEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CollisionSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,11 +167,14 @@
     <ClInclude Include="Systems\RenderSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="FPSTextEntity.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="Components\AnimationComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Entities\WallEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CollisionSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

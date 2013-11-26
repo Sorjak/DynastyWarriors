@@ -1,13 +1,13 @@
 #pragma once
-
 #include "baseentity.h"
+
 #include "../Components/TextureComponent.h"
 #include "../Components/DimensionComponent.h"
-#include "../Components/VelocityComponent.h"
 
-class ShipEntity : public BaseEntity
+class WallEntity :
+	public BaseEntity
 {
 public:
-	ShipEntity(long);
+	WallEntity(long, int, int);
 };
 

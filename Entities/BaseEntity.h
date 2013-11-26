@@ -15,6 +15,7 @@ class BaseEntity
 public:
 	virtual ~BaseEntity();
 
+	long mID;
 	std::vector<string> systemFlags;
 	std::map<string, BaseComponent*> componentMap;
 };

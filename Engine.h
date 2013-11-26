@@ -14,10 +14,12 @@
 #include "Systems/MoveSystem.h"
 #include "Systems/BounceSystem.h"
 #include "Systems/ExpiresSystem.h"
+#include "Systems/CollisionSystem.h"
 
 #include "Entities/BaseEntity.h"
 #include "Entities/ShipEntity.h"
 #include "Entities/LaserEntity.h"
+#include "Entities/WallEntity.h"
 
 
 
@@ -36,6 +38,7 @@ public:
 	void endGame();
 	void addEntity(BaseEntity*);
 	void removeEntity(BaseEntity*);
+	long getNextId();
 
 private:
 	void initGame();

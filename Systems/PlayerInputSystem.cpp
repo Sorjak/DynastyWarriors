@@ -35,7 +35,7 @@ void PlayerInputSystem::update() {
 				if (e.key.keysym.sym == SDLK_SPACE) {
 					int x = dim->getRect()->x + dim->getRect()->w;
 					int y = dim->getRect()->y;
-					mEngine->addEntity(new LaserEntity(x, y));
+					mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y));
 				}
 			}
 			//If user clicks the mouse
