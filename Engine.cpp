@@ -62,15 +62,17 @@ void Engine::initSystems() {
 }
 
 void Engine::initEntities() {
-	addEntity(new ShipEntity(getNextId()));
-
-	int wallwidth = 33;
+	
+	
+	int wallwidth = 32;
 	int wallheight = 32;
 
-	//for (size_t i = 0; i < (800 / wallwidth); i++) {
-	//	addEntity(new WallEntity(getNextId(), i*wallwidth, 600 - wallheight));
-	//}
-	addEntity(new WallEntity(getNextId(), wallwidth, 600 - wallheight));
+	for (size_t i = 0; i < (800 / wallwidth); i++) {
+		addEntity(new WallEntity(getNextId(), i*wallwidth, 600 - wallheight));
+	}
+
+	addEntity(new ShipEntity(getNextId()));
+	addEntity(new WallEntity(getNextId(), 400 - wallwidth, 300 - wallheight));
 }
 
 void Engine::addEntitiesToSystems() {

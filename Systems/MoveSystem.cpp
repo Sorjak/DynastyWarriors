@@ -17,6 +17,7 @@ void MoveSystem::update() {
 		position->x() = position->x() + velocity->x();
 		position->y() = position->y() + velocity->y();
 
+		dim->setLastRect(rect);
 		rect->x = position->x();
 		rect->y = position->y();
 	}

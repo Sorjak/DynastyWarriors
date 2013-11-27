@@ -7,13 +7,27 @@ DimensionComponent::DimensionComponent(int x, int y, int w, int h) {
 	mRect->y = y;
 	mRect->w = w;
 	mRect->h = h;
+
+	mLastRect = new SDL_Rect();
 }
 
 
 DimensionComponent::~DimensionComponent() {
 	delete mRect;
+	delete mLastRect;
 }
 
 SDL_Rect* DimensionComponent::getRect() {
 	return mRect;
+}
+
+SDL_Rect* DimensionComponent::getLastRect() {
+	return mLastRect;
+}
+
+void DimensionComponent::setLastRect(SDL_Rect* rect) {
+	mLastRect->x = rect->x;
+	mLastRect->y = rect->y;
+	mLastRect->w = rect->w;
+	mLastRect->h = rect->h;
 }

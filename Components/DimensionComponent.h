@@ -8,7 +8,10 @@ public:
 	~DimensionComponent();
 
 	SDL_Rect* getRect();
+	SDL_Rect* getLastRect();
+	void setLastRect(SDL_Rect*);
 
 	SDL_Rect* mRect;
+	SDL_Rect* mLastRect;
 };
 
