@@ -1,16 +1,17 @@
 #pragma once
-#include "InputSystem.h"
-
+#include "BaseSystem.h"
 
 #include "../Engine.h"
 
 class PlayerInputSystem :
-	public InputSystem
+	public BaseSystem
 {
 public:
 	PlayerInputSystem();
 	~PlayerInputSystem();
 
 	void update();
+
+	void process(SDL_Event e);
 };
 

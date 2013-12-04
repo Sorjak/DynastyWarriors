@@ -15,11 +15,13 @@
 #include "Systems/BounceSystem.h"
 #include "Systems/ExpiresSystem.h"
 #include "Systems/CollisionSystem.h"
+#include "Systems/GravitySystem.h"
 
 #include "Entities/BaseEntity.h"
 #include "Entities/ShipEntity.h"
 #include "Entities/LaserEntity.h"
 #include "Entities/WallEntity.h"
+#include "Entities/FighterEntity.h"
 
 
 
@@ -39,6 +41,7 @@ public:
 	void addEntity(BaseEntity*);
 	void removeEntity(BaseEntity*);
 	long getNextId();
+	float getdt();
 
 private:
 	void initGame();
@@ -47,6 +50,7 @@ private:
 	void addEntitiesToSystems();
 
 	int running;
+	int lastID;
 	map<string, BaseSystem*> systemList;
 	vector<BaseEntity*> entityList;
 	vector<BaseEntity*> toadd;

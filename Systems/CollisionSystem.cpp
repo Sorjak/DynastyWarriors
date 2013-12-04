@@ -34,31 +34,49 @@ void CollisionSystem::update() {
 				}
 			}
 		}
+
 	}
 
 	for(map<BaseEntity*, vector<pair<BaseEntity*, int>>>::iterator it = colliding.begin(); it != colliding.end(); ++it) {
 		if ( it->first->componentMap.find("velocity") != it->first->componentMap.end()  ) {
 			VelocityComponent *vel = (VelocityComponent*) it->first->componentMap["velocity"];
+			DimensionComponent *dim = (DimensionComponent*) it->first->componentMap["dimension"];
+			SDL_Rect *rect = dim->getRect();
 			Vector2D *velocity = vel->getVelocity();
-			bool vertical = false; bool horizontal = false;
 
 			string output = "";
 			output += to_string(it->first->mID) + " is to the ";
 			for (size_t i = 0; i < it->second.size(); i++) {
 				vector<pair<BaseEntity*, int>>temp = it->second;
-				vertical = (temp[i].second == TOP || temp[i].second == BOTTOM);
-				horizontal = (temp[i].second == LEFT || temp[i].second == RIGHT);
+				DimensionComponent *subdim = (DimensionComponent*) temp[i].first->componentMap["dimension"];
+				SDL_Rect * subrect = subdim->getRect();
 
+				if (temp[i].second == TOP ) { 
+					rect->y = subrect->y - rect->h - 1; 
+					velocity->y() = 0;
+					if (it->first->componentMap.find("player_motion") != it->first->componentMap.end() ) {
+						PlayerMotionComponent *motion = (PlayerMotionComponent*) it->first->componentMap["player_motion"];
+						motion->isOnGround = true;
+					}
+				}
+				if (temp[i].second == BOTTOM) { 
+					rect->y = subrect->y + subrect->h + 1; 
+					velocity->y() = 0; 
+				}
+				if (temp[i].second == LEFT ) { 
+					rect->x = subrect->x - rect->w - 1; 
+					velocity->x() = 0;
+				}
+				if (temp[i].second == RIGHT) { 
+					rect->x = subrect->x + subrect->w + 1; 
+					velocity->x() = 0;
+				}
 
 				output += getPrettyDirection(temp[i].second) + " of ";
 				output += to_string(temp[i].first->mID) + " | ";
+
 			}
 
-			if (vertical) {
-				velocity->y() = velocity->y() * -1;
-			} else if (horizontal) {
-				velocity->x() = velocity->x() * -1;
-			}
 			cout << output << endl;
 		}
 	}

@@ -1,9 +1,6 @@
 #include "MoveSystem.h"
 
-
 MoveSystem::MoveSystem() {}
-
-
 MoveSystem::~MoveSystem() {}
 
 void MoveSystem::update() {
@@ -14,8 +11,19 @@ void MoveSystem::update() {
 		Vector2D *velocity = vel->getVelocity();
 		Vector2D *position = new Vector2D((float)rect->x, (float)rect->y);
 
-		position->x() = position->x() + velocity->x();
-		position->y() = position->y() + velocity->y();
+		if (velocity->x() > MAX_H_SPEED) velocity->x() = MAX_H_SPEED;
+		if (velocity->x() < -MAX_H_SPEED) velocity->x() = -MAX_H_SPEED;
+		if (velocity->y() > MAX_V_SPEED) velocity->y() = MAX_V_SPEED;
+
+		float timeStep = mEngine->getdt();
+
+		position->x() += velocity->x() * timeStep;
+		position->y() += velocity->y() * timeStep;
+
+		cout << velocity->x() * timeStep << " : " << velocity->y() << endl;
+
+		//position->x() += velocity->x();
+		//position->y() += velocity->y();
 
 		dim->setLastRect(rect);
 		rect->x = position->x();

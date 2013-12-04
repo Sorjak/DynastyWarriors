@@ -2,12 +2,14 @@
 #include "baseentity.h"
 
 #include "../Components/TextureComponent.h"
+#include "../Components/VelocityComponent.h"
 #include "../Components/DimensionComponent.h"
+#include "../Components/PlayerMotionComponent.h"
 
-class WallEntity :
+class FighterEntity :
 	public BaseEntity
 {
 public:
-	WallEntity(long, SDL_Rect*);
+	FighterEntity(long);
 };
 

@@ -3,6 +3,7 @@
 
 #include "../Components/DimensionComponent.h"
 #include "../Components/VelocityComponent.h"
+#include "../Components/PlayerMotionComponent.h"
 
 class CollisionSystem :
 	public BaseSystem

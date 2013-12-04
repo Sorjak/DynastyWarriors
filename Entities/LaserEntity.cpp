@@ -10,7 +10,7 @@ LaserEntity::LaserEntity(long id, int x, int y){
 
 	componentMap["texture"] = new TextureComponent("media/redlaser.png");
 	componentMap["dimension"] = new DimensionComponent(x, y, 64, 32);
-	componentMap["velocity"] = new VelocityComponent(1, 0);
+	componentMap["velocity"] = new VelocityComponent(300, 0);
 	componentMap["projectile"] = new ProjectileComponent();
 	componentMap["expiration"] = new ExpirationComponent(5000);
 }
@@ -24,7 +24,7 @@ LaserEntity::LaserEntity(long id, int x, int y, BaseEntity* parent){
 
 	componentMap["texture"] = new TextureComponent("media/redlaser.png");
 	componentMap["dimension"] = new DimensionComponent(x, y, 64, 32);
-	componentMap["velocity"] = new VelocityComponent(1, 0);
+	componentMap["velocity"] = new VelocityComponent(300, 0);
 	componentMap["projectile"] = new ProjectileComponent();
 	componentMap["expiration"] = new ExpirationComponent(5000);
 	

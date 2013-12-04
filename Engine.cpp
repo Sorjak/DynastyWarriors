@@ -33,12 +33,25 @@ void Engine::endGame() {
 
 void Engine::initGame() {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	lastID = 0;
 }
 
 void Engine::initSystems() {
-	BaseSystem *input = new PlayerInputSystem();
+	BaseSystem *input = new InputSystem();
 	input->init(this);
 	systemList["input"] = input;
+
+	BaseSystem *player_input = new PlayerInputSystem();
+	player_input->init(this);
+	systemList["player_input"] = player_input;
+
+	//Here we add the different input types;
+	InputSystem* myinput = (InputSystem*)systemList["input"];
+	myinput->inputList.push_back(player_input);
+
+	GravitySystem *gravity = new GravitySystem(7.f);
+	gravity->init(this);
+	systemList["gravity"] = gravity;
 
 	BaseSystem *move =  new MoveSystem();
 	move->init(this);
@@ -62,17 +75,14 @@ void Engine::initSystems() {
 }
 
 void Engine::initEntities() {
-	
-	
 	int wallwidth = 32;
 	int wallheight = 32;
 
-	for (size_t i = 0; i < (800 / wallwidth); i++) {
-		addEntity(new WallEntity(getNextId(), i*wallwidth, 600 - wallheight));
-	}
-
-	addEntity(new ShipEntity(getNextId()));
-	addEntity(new WallEntity(getNextId(), 400 - wallwidth, 300 - wallheight));
+	addEntity(new FighterEntity(getNextId()));
+	SDL_Rect topwall{ 400, 300, 32, 32 };
+	addEntity(new WallEntity(getNextId(), &topwall));
+	SDL_Rect bottomwall{ 0, 600 - 32, 800, 32 };
+	addEntity(new WallEntity(getNextId(), &bottomwall));
 }
 
 void Engine::addEntitiesToSystems() {
@@ -110,9 +120,9 @@ void Engine::removeEntity(BaseEntity* e) {
 }
 
 long Engine::getNextId() {
-	if (entityList.size() < 0) {
-		return 0;
-	} 
+	return lastID++;
+}
 
-	return entityList.size();
+float Engine::getdt() {
+	return 1.f / 60.f;
 }

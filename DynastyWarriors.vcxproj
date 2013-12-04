@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -43,11 +43,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\include;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\include;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\include;C:\Users\Ulisses\Dropbox\projects\vs2012\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\Ulisses\Dropbox\projects\vs2012\DynastyWarriors\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -66,6 +66,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entities\FighterEntity.cpp" />
+    <ClCompile Include="Components\PlayerMotionComponent.cpp" />
+    <ClCompile Include="Systems\PlayerInputSystem.cpp" />
+    <ClCompile Include="Systems\GravitySystem.cpp" />
     <ClCompile Include="Systems\CollisionSystem.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\BaseComponent.cpp" />
@@ -85,13 +89,16 @@
     <ClCompile Include="Systems\ExpiresSystem.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\MoveSystem.cpp" />
-    <ClCompile Include="Systems\PlayerInputSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Entities\WallEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entities\FighterEntity.h" />
+    <ClInclude Include="Components\PlayerMotionComponent.h" />
+    <ClInclude Include="Systems\PlayerInputSystem.h" />
+    <ClInclude Include="Systems\GravitySystem.h" />
     <ClInclude Include="Systems\CollisionSystem.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
@@ -110,13 +117,13 @@
     <ClInclude Include="Systems\ExpiresSystem.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\MoveSystem.h" />
-    <ClInclude Include="Systems\PlayerInputSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Entities\WallEntity.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="media\fighter.png" />
     <Image Include="media\redlaser.png" />
     <Image Include="media\ship.png" />
   </ItemGroup>

@@ -1,11 +1,11 @@
 #include "RenderSystem.h"
 
 
-void outlineRect(SDL_Renderer* renderer, SDL_Rect rect) {
+void outlineRect(SDL_Renderer* renderer, SDL_Rect* rect) {
 	SDL_Color mColor;
 	SDL_GetRenderDrawColor(renderer, &mColor.r, &mColor.g, &mColor.b, &mColor.a);
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(renderer, &rect);
+	SDL_RenderDrawRect(renderer, rect);
 	SDL_SetRenderDrawColor(renderer, mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
@@ -46,6 +46,7 @@ void RenderSystem::update() {
 		}
 		
 		SDL_RenderCopy(mRenderer, renderTex, NULL, renderRect);
+		outlineRect(mRenderer, renderRect);
 
 		SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
 		SDL_Rect* idRect = new SDL_Rect();
