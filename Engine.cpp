@@ -88,14 +88,24 @@ void Engine::initEntities() {
 
 	addEntity(new FighterEntity(getNextId()));
 
-	SDL_Rect topwall = {400, 300, 32, 32};
+	SDL_Rect topwall = {400 - 32, 300, 64, 32};
 	addEntity(new WallEntity(getNextId(), &topwall));
-
-	SDL_Rect  bottomwall = {0, 600 - 32, 800, 32};
-	addEntity(new WallEntity(getNextId(), &bottomwall));
 
 	SDL_Rect  middlewall = {400 + 32, 600 - 128, 32, 96};
 	addEntity(new WallEntity(getNextId(), &middlewall));
+
+	SDL_Rect  bottomwall = {0, 600 - 32, 800, 32};
+	addEntity(new WallEntity(getNextId(), &bottomwall));
+	
+	// Turn this on if you want some serious lag
+	//SDL_Rect  bottomwall = {0, 600 - 32, 32, 32};
+
+	//for (int i = 0; i < 800 / 32; i++) {
+	//	bottomwall.x = i * 32;
+	//	addEntity(new WallEntity(getNextId(), &bottomwall));
+	//}
+
+
 }
 
 void Engine::addEntitiesToSystems() {
@@ -137,5 +147,6 @@ long Engine::getNextId() {
 }
 
 float Engine::getdt() {
-	return 1.f / 60.f;
+	RenderSystem* rs = (RenderSystem*)systemList["render"];
+	return 1.f / rs->getCurrentFPS();
 }

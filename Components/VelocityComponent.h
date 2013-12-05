@@ -11,6 +11,7 @@ public:
 	~VelocityComponent();
 
 	Vector2D* mVelocity;
+	int mFacing;
 
 	Vector2D* getVelocity();
 };

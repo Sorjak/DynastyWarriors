@@ -4,6 +4,7 @@
 #include "../Engine.h"
 #include "../Vector2D.h"
 #include "../Components/PlayerMotionComponent.h"
+#include "../Components/VelocityComponent.h"
 
 class PlayerInputSystem :
 	public BaseSystem
@@ -16,6 +17,8 @@ public:
 
 	void process(SDL_Event e);
 
-	void jump(Vector2D*, PlayerMotionComponent*);
+	void move(VelocityComponent*, PlayerMotionComponent*);
+	void jump(VelocityComponent*, PlayerMotionComponent*);
+
 };
 
