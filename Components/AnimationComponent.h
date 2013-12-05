@@ -1,5 +1,5 @@
 #pragma once
-#include "../components/basecomponent.h"
+#include "basecomponent.h"
 class AnimationComponent :
 	public BaseComponent
 {

@@ -14,8 +14,10 @@
 #include "Systems/MoveSystem.h"
 #include "Systems/BounceSystem.h"
 #include "Systems/ExpiresSystem.h"
-#include "Systems/CollisionSystem.h"
+#include "Systems/CollisionDetectionSystem.h"
+#include "Systems/PlayerCollisionResolutionSystem.h"
 #include "Systems/GravitySystem.h"
+#include "Systems/FrictionSystem.h"
 
 #include "Entities/BaseEntity.h"
 #include "Entities/ShipEntity.h"

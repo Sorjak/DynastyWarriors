@@ -17,46 +17,33 @@ void PlayerInputSystem::process(SDL_Event e) {
 		Vector2D* velocity = vel->getVelocity();
 
 		//If a key was pressed
-		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+		if (e.type == SDL_KEYDOWN)
 		{
 			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_w: velocity->y() -= y_velocity; motion->isOnGround = false; break;
-			case SDLK_s: break;
-			case SDLK_a: velocity->x() -= x_velocity; break;
-			case SDLK_d: velocity->x() += x_velocity; break;
+				case SDLK_w: 
+					jump(velocity, motion); 
+					break;
+				case SDLK_d:
+					velocity->x() = motion->xVelocity;
+					break;
+				case SDLK_a:
+					velocity->x() = -motion->xVelocity;
+					break;
 			}
 		}
-		//If a key was released
-		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_w: break;
-			case SDLK_s: break;
-			case SDLK_a: velocity->x() += x_velocity; break;
-			case SDLK_d: velocity->x() -= x_velocity; break;
-			}
-		}
-
+		SDL_PumpEvents();
 		const Uint8 *kbstate = SDL_GetKeyboardState(NULL);
 
 		if (kbstate[SDL_SCANCODE_D]) {
-			velocity->x() += x_velocity;
+			velocity->x() = x_velocity;
 		}
 
 		if (kbstate[SDL_SCANCODE_A]){
-			velocity->x() -= x_velocity;
+			velocity->x() = -x_velocity;
 		}
 		
-		if (!kbstate[SDL_SCANCODE_D] && !kbstate[SDL_SCANCODE_A]) {
-			if (velocity->x() > 0)
-				velocity->x() -= x_velocity;
-			if (velocity->x() < 0)
-				velocity->x() += x_velocity;
-		}
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {
 			if (e.key.keysym.sym == SDLK_SPACE) {
@@ -65,6 +52,14 @@ void PlayerInputSystem::process(SDL_Event e) {
 				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y));
 			}
 		}
+	}
+}
+
+void PlayerInputSystem::jump(Vector2D* velocity, PlayerMotionComponent* motion) {
+	if (motion->jumpsLeft > 0) {
+		velocity->y() -= motion->yVelocity; 
+		motion->isOnGround = false; 
+		motion->jumpsLeft--;
 	}
 }
 

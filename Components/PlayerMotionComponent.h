@@ -10,6 +10,7 @@ public:
 
 	bool isOnGround;
 	int jumpsLeft;
+	int maxJumps;
 	int xVelocity;
 	int yVelocity;
 };

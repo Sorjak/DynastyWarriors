@@ -38,7 +38,7 @@ void RenderSystem::update() {
 		
 		SDL_Texture* renderTex;
 		SDL_Rect* renderRect;
-		if ( entityList[i]->componentMap.find("texture") != entityList[i]->componentMap.end()  ) {
+		if ( entityList[i]->hasComponent("texture")  ) {
 			TextureComponent *tex = (TextureComponent*) entityList[i]->componentMap["texture"];
 			DimensionComponent *dim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
 			renderTex = tex->getTexture(mRenderer);
@@ -73,13 +73,9 @@ void RenderSystem::displayFPSTexture() {
 	}
 	fpsString += to_string(currentFPS);
 
-	SDL_Rect *rect = new SDL_Rect();
-	rect->x = 5;
-	rect->y = 5;
-	rect->w = 36;
-	rect->h = 24;
+	SDL_Rect rect = {5, 5, 36, 24};
 
-	displayText(color, rect, fpsString);
+	displayText(color, &rect, fpsString);
 }
 
 void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {

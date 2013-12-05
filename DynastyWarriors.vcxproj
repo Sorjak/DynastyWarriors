@@ -66,11 +66,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\FrictionComponent.cpp" />
+    <ClCompile Include="Systems\FrictionSystem.cpp" />
+    <ClCompile Include="Systems\PlayerCollisionResolutionSystem.cpp" />
+    <ClCompile Include="Components\CollisionComponent.cpp" />
     <ClCompile Include="Entities\FighterEntity.cpp" />
     <ClCompile Include="Components\PlayerMotionComponent.cpp" />
     <ClCompile Include="Systems\PlayerInputSystem.cpp" />
     <ClCompile Include="Systems\GravitySystem.cpp" />
-    <ClCompile Include="Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Systems\CollisionDetectionSystem.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\BaseComponent.cpp" />
     <ClCompile Include="Components\DimensionComponent.cpp" />
@@ -95,11 +99,15 @@
     <ClCompile Include="Entities\WallEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\FrictionComponent.h" />
+    <ClInclude Include="Systems\FrictionSystem.h" />
+    <ClInclude Include="Systems\PlayerCollisionResolutionSystem.h" />
+    <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Entities\FighterEntity.h" />
     <ClInclude Include="Components\PlayerMotionComponent.h" />
     <ClInclude Include="Systems\PlayerInputSystem.h" />
     <ClInclude Include="Systems\GravitySystem.h" />
-    <ClInclude Include="Systems\CollisionSystem.h" />
+    <ClInclude Include="Systems\CollisionDetectionSystem.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\DimensionComponent.h" />

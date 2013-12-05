@@ -3,6 +3,8 @@
 
 #include "../Components/TextureComponent.h"
 #include "../Components/DimensionComponent.h"
+#include "../Components/CollisionComponent.h"
+#include "../Components/FrictionComponent.h"
 
 class WallEntity :
 	public BaseEntity

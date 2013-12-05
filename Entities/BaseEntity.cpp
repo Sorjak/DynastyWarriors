@@ -7,3 +7,13 @@ BaseEntity::~BaseEntity()
 		delete it->second;
 	}
 }
+
+bool BaseEntity::hasComponent(string search) {
+	return ( componentMap.find(search) != componentMap.end() );
+}
+
+BaseComponent* BaseEntity::getComponent(string get) {
+	if ( hasComponent(get) ) {
+		return componentMap[get];
+	}
+}

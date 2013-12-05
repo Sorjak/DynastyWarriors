@@ -65,9 +65,17 @@ void Engine::initSystems() {
 	expires->init(this);
 	systemList["expires"] = expires;
 
-	CollisionSystem *collision = new CollisionSystem();
-	collision->init(this);
-	systemList["collides"] = collision;
+	CollisionDetectionSystem *collisionD = new CollisionDetectionSystem();
+	collisionD->init(this);
+	systemList["collides"] = collisionD;
+
+	PlayerCollisionResolutionSystem *collisionR = new PlayerCollisionResolutionSystem();
+	collisionR->init(this);
+	systemList["player_resolves"] = collisionR;
+
+	BaseSystem *friction = new FrictionSystem();
+	friction->init(this);
+	systemList["friction"] = friction;
 
 	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
 	render->init(this);
@@ -79,10 +87,15 @@ void Engine::initEntities() {
 	int wallheight = 32;
 
 	addEntity(new FighterEntity(getNextId()));
-	SDL_Rect topwall{ 400, 300, 32, 32 };
+
+	SDL_Rect topwall = {400, 300, 32, 32};
 	addEntity(new WallEntity(getNextId(), &topwall));
-	SDL_Rect bottomwall{ 0, 600 - 32, 800, 32 };
+
+	SDL_Rect  bottomwall = {0, 600 - 32, 800, 32};
 	addEntity(new WallEntity(getNextId(), &bottomwall));
+
+	SDL_Rect  middlewall = {400 + 32, 600 - 128, 32, 96};
+	addEntity(new WallEntity(getNextId(), &middlewall));
 }
 
 void Engine::addEntitiesToSystems() {

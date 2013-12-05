@@ -1,21 +1,17 @@
 #pragma once
 #include "basesystem.h"
 
+#include "../Components/FrictionComponent.h"
 #include "../Components/VelocityComponent.h"
-#include "../Components/PlayerMotionComponent.h"
 #include "../Components/CollisionComponent.h"
 
-#include "../Engine.h"
-
-class GravitySystem :
+class FrictionSystem :
 	public BaseSystem
 {
 public:
-	GravitySystem(float);
-	~GravitySystem();
+	FrictionSystem();
+	~FrictionSystem();
 
 	void update();
-
-	Vector2D* mStrength;
 };
 
