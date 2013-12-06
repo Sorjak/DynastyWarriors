@@ -9,7 +9,7 @@ void MoveSystem::update() {
 		VelocityComponent *vel = (VelocityComponent*) entityList[i]->componentMap["velocity"];
 		SDL_Rect *rect = dim->getRect();
 		Vector2D *velocity = vel->getVelocity();
-		Vector2D *position = new Vector2D((float)rect->x, (float)rect->y);
+		Vector2D *position = dim->getPosition();
 
 		if (velocity->x() > MAX_H_SPEED) 
 			velocity->x() = MAX_H_SPEED;
@@ -23,7 +23,7 @@ void MoveSystem::update() {
 		double temp_x_vel = velocity->x()*timeStep>=0 ? floor(velocity->x()*timeStep+0.5) : ceil(velocity->x()*timeStep-0.5);
 		double temp_y_vel = velocity->y()*timeStep>=0 ? floor(velocity->y()*timeStep+0.5) : ceil(velocity->y()*timeStep-0.5);
 
-		cout << temp_x_vel << " : " << temp_y_vel << endl;
+		//cout << temp_x_vel << " : " << temp_y_vel << endl;
 
 		position->x() += temp_x_vel;
 		position->y() += temp_y_vel;

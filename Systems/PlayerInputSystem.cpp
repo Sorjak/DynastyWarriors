@@ -1,6 +1,37 @@
 #include "PlayerInputSystem.h"
 
-PlayerInputSystem::PlayerInputSystem(){}
+PlayerInputSystem::PlayerInputSystem(){
+
+	// Initialize the joystick soundsystem if it hasn't been already
+	if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0)
+	{
+		SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+	}
+
+	if (SDL_NumJoysticks() > 0)
+	{
+		for (int i = 0; i < SDL_NumJoysticks(); i++)
+		{
+			SDL_Joystick* joystick = SDL_JoystickOpen(i);
+
+
+			if (joystick && SDL_JoystickGetAttached(joystick))
+			{
+				mJoysticks.push_back(joystick);
+			}
+			else
+			{
+				printf("Joystick error: %s\n", SDL_GetError());
+			}
+		}
+		SDL_JoystickEventState(SDL_ENABLE);
+		printf("Joysticks initalized. Number of joysticks: %d\n", mJoysticks.size());
+	}
+	else
+	{
+		printf("No joysticks found\n");
+	}
+}
 PlayerInputSystem::~PlayerInputSystem(){}
 
 void PlayerInputSystem::update() {}
@@ -15,38 +46,6 @@ void PlayerInputSystem::process(SDL_Event e) {
 		int x_velocity = motion->xVelocity;
 		int y_velocity = motion->yVelocity;
 		Vector2D* velocity = vel->getVelocity();
-
-		//If a key was pressed
-		if (e.type == SDL_KEYDOWN)
-		{
-			//Adjust the velocity
-			switch (e.key.keysym.sym)
-			{
-				case SDLK_w: 
-					jump(vel, motion); 
-					break;
-				case SDLK_d:
-					vel->mFacing = 1;
-					move(vel, motion);
-					break;
-				case SDLK_a:
-					vel->mFacing = -1;
-					move(vel, motion);
-					break;
-			}
-		}
-		//SDL_PumpEvents();
-		const Uint8 *kbstate = SDL_GetKeyboardState(NULL);
-
-		if (kbstate[SDL_SCANCODE_D]) {
-			vel->mFacing = 1;
-			move(vel, motion);
-		}
-
-		if (kbstate[SDL_SCANCODE_A]){
-			vel->mFacing = -1;
-			move(vel, motion);
-		}
 		
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {
@@ -61,21 +60,47 @@ void PlayerInputSystem::process(SDL_Event e) {
 				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y, vel->mFacing));
 			}
 		}
+
+
+		int joystickDeadZone = 5000;
+		//
+		// JOYSTICK AXIS MOTION
+		//
+		if (e.type == SDL_JOYBUTTONDOWN)
+		{
+			printf("Button was pressed: %d\n", e.jbutton.button);
+			if (e.jbutton.button == 10) {
+				jump(vel, motion);
+			}
+
+		}
+		SDL_PumpEvents();
+		int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
+		if (joystickValue > joystickDeadZone) {
+			vel->mFacing = 1;
+			move(vel, abs(joystickValue / 162));
+		}
+		else if (joystickValue < -joystickDeadZone) {
+			vel->mFacing = -1;
+			move(vel, abs(joystickValue / 162));
+		}
+		else {}
+
 	}
 }
 
-void PlayerInputSystem::move(VelocityComponent *vel, PlayerMotionComponent* motion) {
+void PlayerInputSystem::move(VelocityComponent *vel, float amount) {
 	Vector2D* velocity = vel->getVelocity();
 	int facing = vel->mFacing;
 
-	velocity->x() += motion->xVelocity * facing;
+	velocity->x() += amount * facing;
 }
 
 
 void PlayerInputSystem::jump(VelocityComponent *vel, PlayerMotionComponent* motion) {
 	Vector2D* velocity = vel->getVelocity();
 	if (motion->jumpsLeft > 0) {
-		velocity->y() -= motion->yVelocity; 
+		velocity->y() = -motion->xVelocity; 
 		motion->isOnGround = false; 
 		motion->jumpsLeft--;
 	}

@@ -2,6 +2,8 @@
 
 
 DimensionComponent::DimensionComponent(int x, int y, int w, int h) {
+	mPosition = new Vector2D(x, y);
+
 	mRect = new SDL_Rect();
 	mRect->x = x;
 	mRect->y = y;
@@ -17,7 +19,13 @@ DimensionComponent::~DimensionComponent() {
 	delete mLastRect;
 }
 
+Vector2D* DimensionComponent::getPosition() {
+	return mPosition;
+}
+
 SDL_Rect* DimensionComponent::getRect() {
+	mRect->x = mPosition->x();
+	mRect->y = mPosition->y();
 	return mRect;
 }
 

@@ -21,10 +21,12 @@ void InputSystem::update() {
 		//If user clicks the mouse
 		if (mEvent.type == SDL_MOUSEBUTTONDOWN) {}
 
-		for (size_t i = 0; i < inputList.size(); i++) {
-			PlayerInputSystem* pi = (PlayerInputSystem*) inputList[i];
-			pi->process(mEvent);
-		}
+
 		
+	}
+
+	for (size_t i = 0; i < inputList.size(); i++) {
+		PlayerInputSystem* pi = (PlayerInputSystem*)inputList[i];
+		pi->process(mEvent);
 	}
 }

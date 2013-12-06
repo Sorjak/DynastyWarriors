@@ -25,24 +25,25 @@ void PlayerCollisionResolutionSystem::update() {
 			for( vector <pair <BaseEntity*,int> >::iterator collidee = cc->mCollidingWith->begin(); collidee != cc->mCollidingWith->end(); collidee++ ) {
 				DimensionComponent *collideedim = (DimensionComponent*) collidee->first->componentMap["dimension"];
 				SDL_Rect * collideerect = collideedim->getRect();
+				Vector2D* position = dim->getPosition();
 
 				if (collidee->second == TOP ) { 
-					rect->y = collideerect->y - rect->h + 1; 
+					position->y() = collideerect->y - rect->h + 1; 
 					velocity->y() = 0;
 					PlayerMotionComponent *motion = (PlayerMotionComponent*) entityList[i]->componentMap["player_motion"];
 					motion->isOnGround = true;
 					motion->jumpsLeft = 2;
 				}
 				if (collidee->second == BOTTOM) { 
-					rect->y = collideerect->y + collideerect->h; 
+					position->y() = collideerect->y + collideerect->h;
 					velocity->y() = 0; 
 				}
 				if (collidee->second == LEFT ) { 
-					rect->x = collideerect->x - rect->w;
+					position->x() = collideerect->x - rect->w;
 					velocity->x() = 0;
 				}
 				if (collidee->second == RIGHT) { 
-					rect->x = collideerect->x + collideerect->w; 
+					position->x() = collideerect->x + collideerect->w;
 					velocity->x() = 0;
 				}
 
@@ -51,7 +52,7 @@ void PlayerCollisionResolutionSystem::update() {
 
 			}
 
-			cout << output << endl;
+			//cout << output << endl;
 		}
 	}
 		

@@ -17,25 +17,21 @@ void BounceSystem::update() {
 		VelocityComponent *vel = (VelocityComponent*) entityList[i]->componentMap["velocity"];
 		SDL_Rect *rect = dim->getRect();
 		Vector2D *velocity = vel->getVelocity();
-		Vector2D *position = new Vector2D((float)rect->x, (float)rect->y);
+		Vector2D *position = dim->getPosition();
 
-		if (position->x() + rect->w > mWidth) {
-			velocity->x() = (velocity->x() * -1) * 1.f;
-			position->x() = (mWidth - rect->w - 1) * 1.f;
-		}
-		if (position->x() < 0) {
-			velocity->x() = (velocity->x() * -1) * 1.f;
+		if (position->x() >= mWidth) {
 			position->x() = 1.f;
 		}
-
-		if (position->y() + rect->h > mHeight) {
-			velocity->y() = (velocity->y() * -1) * 1.f;
-			position->y() = (mHeight - rect->h - 1) * 1.f;
+		if (position->x() + rect->w < 0) {
+			position->x() = mWidth - rect->w - 1;
 		}
 
-		if (position->y() < 0) {
-			velocity->y() = (velocity->y() * -1) * 1.f;
+		if (position->y()  >= mHeight) {
 			position->y() = 1.f;
+		}
+
+		if (position->y() + rect->h < 0) {
+			position->y() = mHeight - 1.f;
 		}
 	}
 }
