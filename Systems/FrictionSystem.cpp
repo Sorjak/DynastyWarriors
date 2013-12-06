@@ -16,10 +16,10 @@ void FrictionSystem::update() {
 				if (collidee->hasComponent("friction") ) {
 					FrictionComponent* fc = (FrictionComponent*) collidee->getComponent("friction");
 					Vector2D* velocity = vc->getVelocity();
-					if ( velocity->x() >= 1 ) {
-						velocity->x() -= fc->mStrength;
-					} else if ( velocity->x() <= -1 ) {
-						velocity->x() += fc->mStrength;
+					if ( abs(velocity->x()) >= 1 ) {
+						velocity->x() += fc->mStrength * -vc->mFacing;
+					} else if ( abs(velocity->x()) < 1 && abs(velocity->x()) > 0) {
+						velocity->x() += (fc->mStrength / 2) * -vc->mFacing;
 					}
 				}
 			}

@@ -21,7 +21,7 @@ RenderSystem::RenderSystem(int width, int height, const char* title)
 	mFont = TTF_OpenFont("media/SourceSansPro-Regular.ttf", 24 );
 	fpsTimer = SDL_GetTicks();
 	framesElapsed = 0;
-	currentFPS = 0;
+	currentFPS = 60;
 }
 
 
@@ -54,6 +54,14 @@ void RenderSystem::update() {
 		displayText(idColor, idRect, to_string(entityList[i]->mID));
 
 	}
+	//Calculate FPS
+	if (frameStartTime - fpsTimer >= 1000) {
+		currentFPS = framesElapsed;
+		framesElapsed = 0;
+		fpsTimer = SDL_GetTicks();
+	} else {
+		framesElapsed++;
+	}
 	displayFPSTexture();
 	SDL_RenderPresent(mRenderer);
 	frameEndTime = SDL_GetTicks();
@@ -63,15 +71,7 @@ void RenderSystem::displayFPSTexture() {
 	SDL_Color color; color.r = 255; color.b = 255; color.g = 255;
 	string fpsString = "FPS: ";
 
-	//Calculate FPS
-	if (frameStartTime - fpsTimer >= 1000) {
-		currentFPS = framesElapsed;
-		framesElapsed = 0;
-		fpsTimer = SDL_GetTicks();
-	} else {
-		framesElapsed++;
-	}
-	fpsString += to_string(currentFPS);
+	fpsString += to_string(getCurrentFPS());
 
 	SDL_Rect rect = {5, 5, 36, 24};
 
@@ -85,6 +85,10 @@ void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {
 	SDL_RenderCopy( mRenderer, renderTex, NULL, rect );
 	SDL_FreeSurface( textSurface );
 	SDL_free( renderTex );
+}
+
+int RenderSystem::getCurrentFPS() {
+	return currentFPS;
 }
 
 

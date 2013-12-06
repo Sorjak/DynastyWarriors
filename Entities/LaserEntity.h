@@ -11,7 +11,7 @@ class LaserEntity :
 	public BaseEntity
 {
 public:
-	LaserEntity(long, int, int);
-	LaserEntity(long, int, int, BaseEntity*);
+	LaserEntity(long, int, int, int);
+	LaserEntity(long, int, int, int, BaseEntity*);
 };
 

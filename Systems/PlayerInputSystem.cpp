@@ -23,39 +23,57 @@ void PlayerInputSystem::process(SDL_Event e) {
 			switch (e.key.keysym.sym)
 			{
 				case SDLK_w: 
-					jump(velocity, motion); 
+					jump(vel, motion); 
 					break;
 				case SDLK_d:
-					velocity->x() = motion->xVelocity;
+					vel->mFacing = 1;
+					move(vel, motion);
 					break;
 				case SDLK_a:
-					velocity->x() = -motion->xVelocity;
+					vel->mFacing = -1;
+					move(vel, motion);
 					break;
 			}
 		}
-		SDL_PumpEvents();
+		//SDL_PumpEvents();
 		const Uint8 *kbstate = SDL_GetKeyboardState(NULL);
 
 		if (kbstate[SDL_SCANCODE_D]) {
-			velocity->x() = x_velocity;
+			vel->mFacing = 1;
+			move(vel, motion);
 		}
 
 		if (kbstate[SDL_SCANCODE_A]){
-			velocity->x() = -x_velocity;
+			vel->mFacing = -1;
+			move(vel, motion);
 		}
 		
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {
 			if (e.key.keysym.sym == SDLK_SPACE) {
-				int x = dim->getRect()->x + dim->getRect()->w;
+				int x = 0;
+				if (vel->mFacing == 1) {
+					x = dim->getRect()->x + dim->getRect()->w;
+				} else if (vel->mFacing == -1) {
+					x = dim->getRect()->x - 64;
+				}
 				int y = dim->getRect()->y;
-				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y));
+				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y, vel->mFacing));
 			}
 		}
 	}
 }
 
-void PlayerInputSystem::jump(Vector2D* velocity, PlayerMotionComponent* motion) {
+void PlayerInputSystem::move(VelocityComponent *vel, PlayerMotionComponent* motion) {
+	Vector2D* velocity = vel->getVelocity();
+	int facing = vel->mFacing;
+
+	velocity->x() += motion->xVelocity * facing;
+}
+
+
+void PlayerInputSystem::jump(VelocityComponent *vel, PlayerMotionComponent* motion) {
+	Vector2D* velocity = vel->getVelocity();
 	if (motion->jumpsLeft > 0) {
 		velocity->y() -= motion->yVelocity; 
 		motion->isOnGround = false; 
