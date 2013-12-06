@@ -40,7 +40,7 @@ void CollisionDetectionSystem::update() {
 	
 }
 
-bool CollisionDetectionSystem::isColliding(SDL_Rect* A, SDL_Rect* B) {
+SDL_bool CollisionDetectionSystem::isColliding(SDL_Rect* A, SDL_Rect* B) {
 	
 	//return (
 	////Is A to the bottomright of B?

@@ -20,8 +20,8 @@ void MoveSystem::update() {
 
 		float timeStep = mEngine->getdt();
 
-		float temp_x_vel = velocity->x()*timeStep>=0 ? floor(velocity->x()*timeStep+0.5) : ceil(velocity->x()*timeStep-0.5);
-		float temp_y_vel = velocity->y()*timeStep>=0 ? floor(velocity->y()*timeStep+0.5) : ceil(velocity->y()*timeStep-0.5);
+		double temp_x_vel = velocity->x()*timeStep>=0 ? floor(velocity->x()*timeStep+0.5) : ceil(velocity->x()*timeStep-0.5);
+		double temp_y_vel = velocity->y()*timeStep>=0 ? floor(velocity->y()*timeStep+0.5) : ceil(velocity->y()*timeStep-0.5);
 
 		cout << temp_x_vel << " : " << temp_y_vel << endl;
 

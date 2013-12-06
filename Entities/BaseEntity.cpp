@@ -16,4 +16,5 @@ BaseComponent* BaseEntity::getComponent(string get) {
 	if ( hasComponent(get) ) {
 		return componentMap[get];
 	}
+	return NULL;
 }

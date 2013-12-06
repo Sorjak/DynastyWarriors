@@ -20,22 +20,22 @@ void BounceSystem::update() {
 		Vector2D *position = new Vector2D((float)rect->x, (float)rect->y);
 
 		if (position->x() + rect->w > mWidth) {
-			velocity->x() = velocity->x() * -1;
-			position->x() = mWidth - rect->w - 1;
+			velocity->x() = (velocity->x() * -1) * 1.f;
+			position->x() = (mWidth - rect->w - 1) * 1.f;
 		}
 		if (position->x() < 0) {
-			velocity->x() = velocity->x() * -1;
-			position->x() = 1;
+			velocity->x() = (velocity->x() * -1) * 1.f;
+			position->x() = 1.f;
 		}
 
 		if (position->y() + rect->h > mHeight) {
-			velocity->y() = velocity->y() * -1;
-			position->y() = mHeight - rect->h - 1;
+			velocity->y() = (velocity->y() * -1) * 1.f;
+			position->y() = (mHeight - rect->h - 1) * 1.f;
 		}
 
 		if (position->y() < 0) {
-			velocity->y() = velocity->y() * -1;
-			position->y() = 1;
+			velocity->y() = (velocity->y() * -1) * 1.f;
+			position->y() = 1.f;
 		}
 	}
 }

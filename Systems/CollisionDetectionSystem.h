@@ -14,7 +14,7 @@ public:
 	~CollisionDetectionSystem();
 
 	void update();
-	bool isColliding(SDL_Rect*, SDL_Rect*);
+	SDL_bool isColliding(SDL_Rect*, SDL_Rect*);
 	int collidedFrom(SDL_Rect*, SDL_Rect*);
 	string getPrettyDirection(int);
 

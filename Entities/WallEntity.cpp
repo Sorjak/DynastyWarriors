@@ -12,4 +12,3 @@ WallEntity::WallEntity(long id, SDL_Rect* dimensions){
 	componentMap["collision"] = new CollisionComponent();
 	componentMap["friction"] = new FrictionComponent(10);
 }
-
