@@ -2,7 +2,9 @@
 
 PlayerInputSystem::PlayerInputSystem(){
 
-	// Initialize the joystick soundsystem if it hasn't been already
+	mJumped = 0;
+
+	// Initialize the joystick subsystem if it hasn't been already
 	if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0)
 	{
 		SDL_InitSubSystem(SDL_INIT_JOYSTICK);
@@ -66,14 +68,28 @@ void PlayerInputSystem::process(SDL_Event e) {
 		//
 		// JOYSTICK AXIS MOTION
 		//
-		if (e.type == SDL_JOYBUTTONDOWN)
-		{
-			printf("Button was pressed: %d\n", e.jbutton.button);
+		if (e.type == SDL_JOYBUTTONDOWN) {
+			printf("Button down!\n");
 			if (e.jbutton.button == 10) {
-				jump(vel, motion);
+				mJumped++;
 			}
+			printf("Times the damn thing has increased: %d\n", mJumped);
 
 		}
+		else if (e.type == SDL_JOYBUTTONUP) {
+			printf("Button up!\n");
+			if (e.jbutton.button == 10) {
+				mJumped = 0;
+			}
+		}
+
+		if (mJumped == 1) {
+			printf("mJumped: %d\n", mJumped);
+			jump(vel, motion);
+			mJumped = 0;
+		}
+
+
 		SDL_PumpEvents();
 		int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
 		if (joystickValue > joystickDeadZone) {
@@ -100,7 +116,7 @@ void PlayerInputSystem::move(VelocityComponent *vel, float amount) {
 void PlayerInputSystem::jump(VelocityComponent *vel, PlayerMotionComponent* motion) {
 	Vector2D* velocity = vel->getVelocity();
 	if (motion->jumpsLeft > 0) {
-		velocity->y() = -motion->xVelocity; 
+		velocity->y() -= motion->yVelocity; 
 		motion->isOnGround = false; 
 		motion->jumpsLeft--;
 	}

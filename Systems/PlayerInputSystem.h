@@ -27,7 +27,8 @@ public:
 	void jump(VelocityComponent*, PlayerMotionComponent*);
 
 	vector<SDL_Joystick*> mJoysticks;
-	vector<pair<Vector2D*, Vector2D*> > mJoystickValues;
+	
+	int mJumped;
 
 };
 

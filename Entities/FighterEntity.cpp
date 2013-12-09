@@ -16,6 +16,6 @@ FighterEntity::FighterEntity(long id){
 	componentMap["texture"] = new TextureComponent("media/fighter.png");
 	componentMap["dimension"] = new DimensionComponent(50, 400, 32, 32);
 	componentMap["velocity"] = new VelocityComponent(0, 0);
-	componentMap["player_motion"] = new PlayerMotionComponent(100, 500, 2); // X velocity, Y velocity, number of jumps
+	componentMap["player_motion"] = new PlayerMotionComponent(100, 200, 2); // X velocity, Y velocity, number of jumps
 	componentMap["collision"] = new CollisionComponent();
 }
