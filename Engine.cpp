@@ -77,6 +77,10 @@ void Engine::initSystems() {
 	friction->init(this);
 	systemList["friction"] = friction;
 
+	BaseSystem *animation = new AnimationSystem();
+	animation->init(this);
+	systemList["animation"] = animation;
+
 	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
 	render->init(this);
 	systemList["render"] = render;

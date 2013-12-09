@@ -18,6 +18,7 @@
 #include "Systems/PlayerCollisionResolutionSystem.h"
 #include "Systems/GravitySystem.h"
 #include "Systems/FrictionSystem.h"
+#include "Systems/AnimationSystem.h"
 
 #include "Entities/BaseEntity.h"
 #include "Entities/ShipEntity.h"

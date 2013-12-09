@@ -35,23 +35,29 @@ void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
 	for (size_t i = 0; i < entityList.size(); i++) {
-		
+		DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");
 		SDL_Texture* renderTex;
+		SDL_Rect* sourceRect = NULL;
 		SDL_Rect* renderRect;
+
 		if ( entityList[i]->hasComponent("texture")  ) {
-			TextureComponent *tex = (TextureComponent*) entityList[i]->componentMap["texture"];
-			DimensionComponent *dim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
+			TextureComponent *tex = (TextureComponent*) entityList[i]->getComponent("texture");
 			renderTex = tex->getTexture(mRenderer);
+			renderRect = dim->getRect();
+		} else if ( entityList[i]->hasComponent("animation") ) {
+			AnimationComponent *ac = (AnimationComponent*) entityList[i]->getComponent("animation");
+			renderTex = ac->getCurrentTexture(mRenderer);
+			sourceRect = ac->getIndexRect();
 			renderRect = dim->getRect();
 		}
 		
-		SDL_RenderCopy(mRenderer, renderTex, NULL, renderRect);
+		SDL_RenderCopy(mRenderer, renderTex, sourceRect, renderRect);
 		outlineRect(mRenderer, renderRect);
 
-		SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
-		SDL_Rect* idRect = new SDL_Rect();
-		idRect->x = renderRect->x; idRect->y = renderRect->y; idRect->w = renderRect->w; idRect->h = renderRect->h;
-		displayText(idColor, idRect, to_string(entityList[i]->mID));
+		//SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
+		//SDL_Rect* idRect = new SDL_Rect();
+		//idRect->x = renderRect->x; idRect->y = renderRect->y; idRect->w = renderRect->w; idRect->h = renderRect->h;
+		//displayText(idColor, idRect, to_string(entityList[i]->mID));
 
 	}
 	//Calculate FPS

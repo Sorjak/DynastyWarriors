@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "BaseComponent.h"
 
 class PlayerMotionComponent :
@@ -13,5 +15,7 @@ public:
 	int maxJumps;
 	int xVelocity;
 	int yVelocity;
+
+	string fighterState;
 };
 

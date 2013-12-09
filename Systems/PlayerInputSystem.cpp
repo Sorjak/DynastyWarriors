@@ -61,6 +61,11 @@ void PlayerInputSystem::process(SDL_Event e) {
 				int y = dim->getRect()->y;
 				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y, vel->mFacing));
 			}
+			if (e.key.keysym.sym == SDLK_d) {
+				vel->mFacing = 1;
+				move(vel, x_velocity);
+				motion->fighterState = "RUNNING";
+			}
 		}
 
 
@@ -91,16 +96,18 @@ void PlayerInputSystem::process(SDL_Event e) {
 
 
 		SDL_PumpEvents();
-		int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
-		if (joystickValue > joystickDeadZone) {
-			vel->mFacing = 1;
-			move(vel, abs(joystickValue / 162));
+		if (mJoysticks.size() > 0) {
+			int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
+			if (joystickValue > joystickDeadZone) {
+				vel->mFacing = 1;
+				move(vel, abs(joystickValue / 162));
+			}
+			else if (joystickValue < -joystickDeadZone) {
+				vel->mFacing = -1;
+				move(vel, abs(joystickValue / 162));
+			}
+			else {}
 		}
-		else if (joystickValue < -joystickDeadZone) {
-			vel->mFacing = -1;
-			move(vel, abs(joystickValue / 162));
-		}
-		else {}
 
 	}
 }
@@ -110,6 +117,7 @@ void PlayerInputSystem::move(VelocityComponent *vel, float amount) {
 	int facing = vel->mFacing;
 
 	velocity->x() += amount * facing;
+
 }
 
 

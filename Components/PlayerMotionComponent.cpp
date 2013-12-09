@@ -7,6 +7,8 @@ PlayerMotionComponent::PlayerMotionComponent(int xvel, int yvel, int totaljumps)
 	maxJumps = totaljumps;
 	xVelocity = xvel;
 	yVelocity = yvel;
+
+	fighterState = "IDLE";
 }
 
 

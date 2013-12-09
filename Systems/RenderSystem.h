@@ -6,6 +6,7 @@
 #include "basesystem.h"
 #include "../Components/TextureComponent.h"
 #include "../Components/DimensionComponent.h"
+#include "../Components/AnimationComponent.h"
 
 class RenderSystem : public BaseSystem
 {
