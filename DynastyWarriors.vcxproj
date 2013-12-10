@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
     <ClCompile Include="Components\FrictionComponent.cpp" />
     <ClCompile Include="Systems\FrictionSystem.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="Entities\WallEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
     <ClInclude Include="Components\FrictionComponent.h" />
     <ClInclude Include="Systems\FrictionSystem.h" />

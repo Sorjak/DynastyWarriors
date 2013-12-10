@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include "../Animation.h"
+
 #include "baseentity.h"
 
 #include "../Components/TextureComponent.h"

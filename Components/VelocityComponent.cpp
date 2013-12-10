@@ -3,7 +3,7 @@
 
 VelocityComponent::VelocityComponent(float x, float y) {
 	mVelocity = new Vector2D(x, y);
-	mFacing = 1;
+	
 }
 
 

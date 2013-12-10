@@ -1,7 +1,7 @@
 #include "AnimationComponent.h"
 
 
-AnimationComponent::AnimationComponent(const string filename, map<string, pair<int, int>> state_map, int img_size){
+AnimationComponent::AnimationComponent(const string filename, map<string, Animation*> state_map, int img_size){
 	mSurface = IMG_Load(filename.c_str());
 	mStateMap = state_map;
 	mSpriteSize = img_size;
@@ -26,15 +26,27 @@ SDL_Texture* AnimationComponent::getCurrentTexture(SDL_Renderer* ren) {
 
 SDL_Rect* AnimationComponent::getIndexRect() {
 	mIndexRect->x = currentFrame * mSpriteSize;
-	mIndexRect->y = mStateMap[currentState].first * mSpriteSize;
+	mIndexRect->y = mStateMap[currentState]->mColumn * mSpriteSize;
 	return mIndexRect;
 }
 
 int AnimationComponent::getTotalFrames() {
-	return mStateMap[currentState].second;
+	return mStateMap[currentState]->mNumFrames;
 }
 
 void AnimationComponent::setState(string state) {
+	if (state != currentState) {
+		currentFrame = 0;
+	}
 	currentState = state;
+	
+}
+
+bool AnimationComponent::isRepeat() {
+	return mStateMap[currentState]->mRepeat;
+}
+
+string AnimationComponent::getNextAnimation() {
+	return mStateMap[currentState]->mNextAnimation;
 }
 

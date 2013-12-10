@@ -4,6 +4,8 @@
 #include "../Components/FrictionComponent.h"
 #include "../Components/VelocityComponent.h"
 #include "../Components/CollisionComponent.h"
+#include "../Components/DimensionComponent.h"
+#include "../Components/PlayerMotionComponent.h"
 
 class FrictionSystem :
 	public BaseSystem

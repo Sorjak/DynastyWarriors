@@ -44,7 +44,7 @@ public:
 	void addEntity(BaseEntity*);
 	void removeEntity(BaseEntity*);
 	long getNextId();
-	float getdt();
+	float getFPS();
 
 private:
 	void initGame();

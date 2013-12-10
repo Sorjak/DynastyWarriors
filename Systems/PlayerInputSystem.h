@@ -23,7 +23,6 @@ public:
 
 	void process(SDL_Event e);
 
-	void move(VelocityComponent*, float);
 	void jump(VelocityComponent*, PlayerMotionComponent*);
 
 	vector<SDL_Joystick*> mJoysticks;

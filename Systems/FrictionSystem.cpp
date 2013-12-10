@@ -11,15 +11,26 @@ void FrictionSystem::update() {
 		if (current->hasComponent("collision") && current->hasComponent("velocity") ) {
 			CollisionComponent* cc = (CollisionComponent*)current->getComponent("collision");
 			VelocityComponent* vc = (VelocityComponent*)current->getComponent("velocity");
+			DimensionComponent* dc = (DimensionComponent*)current->getComponent("dimension");
+
 			for( vector <pair <BaseEntity*,int> >::iterator c = cc->mCollidingWith->begin(); c != cc->mCollidingWith->end(); c++ ) {
 				BaseEntity* collidee = c->first;
+
 				if (collidee->hasComponent("friction") ) {
 					FrictionComponent* fc = (FrictionComponent*) collidee->getComponent("friction");
 					Vector2D* velocity = vc->getVelocity();
-					if ( abs(velocity->x()) >= 1 ) {
-						velocity->x() += fc->mStrength * -vc->mFacing;
-					} else if ( abs(velocity->x()) < 1 && abs(velocity->x()) > 0) {
-						velocity->x() += (fc->mStrength / 2) * -vc->mFacing;
+
+					if (current->hasComponent("player_motion")) {
+						PlayerMotionComponent* pmc = (PlayerMotionComponent*) current->getComponent("player_motion");
+
+						if (pmc->fighterState == "SLOWING") {
+							if (abs(velocity->x()) > 0 ) {
+								velocity->x() += fc->mStrength * -dc->mFacing;
+							}
+							if (velocity->x() == 0) {
+								pmc->fighterState = "IDLE";
+							}
+						}
 					}
 				}
 			}

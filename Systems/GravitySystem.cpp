@@ -18,6 +18,7 @@ void GravitySystem::update() {
 
 		if (!cc->isColliding()) {
 			velocity->y() += mStrength->y();
+			motion->isOnGround = false;
 		}
 	}
 }

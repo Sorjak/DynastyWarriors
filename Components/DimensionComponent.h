@@ -18,5 +18,6 @@ public:
 	Vector2D* mPosition;
 	SDL_Rect* mRect;
 	SDL_Rect* mLastRect;
+	int mFacing;
 };
 

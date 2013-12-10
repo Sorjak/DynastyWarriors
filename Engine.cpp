@@ -77,7 +77,7 @@ void Engine::initSystems() {
 	friction->init(this);
 	systemList["friction"] = friction;
 
-	BaseSystem *animation = new AnimationSystem();
+	BaseSystem *animation = new AnimationSystem(12);
 	animation->init(this);
 	systemList["animation"] = animation;
 
@@ -150,7 +150,7 @@ long Engine::getNextId() {
 	return lastID++;
 }
 
-float Engine::getdt() {
+float Engine::getFPS() {
 	RenderSystem* rs = (RenderSystem*)systemList["render"];
-	return 1.f / rs->getCurrentFPS();
+	return rs->getCurrentFPS();
 }

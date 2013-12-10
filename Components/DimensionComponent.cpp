@@ -11,6 +11,8 @@ DimensionComponent::DimensionComponent(int x, int y, int w, int h) {
 	mRect->h = h;
 
 	mLastRect = new SDL_Rect();
+
+	mFacing = 1;
 }
 
 

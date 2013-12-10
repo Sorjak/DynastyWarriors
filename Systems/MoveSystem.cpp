@@ -18,7 +18,7 @@ void MoveSystem::update() {
 		if (velocity->y() > MAX_V_SPEED) 
 			velocity->y() = MAX_V_SPEED;
 
-		float timeStep = mEngine->getdt();
+		float timeStep = 1.f / mEngine->getFPS();
 
 		double temp_x_vel = velocity->x()*timeStep>=0 ? floor(velocity->x()*timeStep+0.5) : ceil(velocity->x()*timeStep-0.5);
 		double temp_y_vel = velocity->y()*timeStep>=0 ? floor(velocity->y()*timeStep+0.5) : ceil(velocity->y()*timeStep-0.5);

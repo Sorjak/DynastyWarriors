@@ -15,16 +15,20 @@ FighterEntity::FighterEntity(long id){
 	systemFlags.push_back("animation");
 
 	//componentMap["texture"] = new TextureComponent("media/fighter.png");
-	componentMap["dimension"] = new DimensionComponent(50, 400, 120, 120); // x, y, w, h
+	componentMap["dimension"] = new DimensionComponent(50, 400, 32, 32); // x, y, w, h
 	componentMap["velocity"] = new VelocityComponent(0, 0);
 	componentMap["player_motion"] = new PlayerMotionComponent(100, 200, 2); // X velocity, Y velocity, number of jumps
 	componentMap["collision"] = new CollisionComponent();
 
-	// Set up animation states. Map has the state as a key, and a pair holding the position of the animation, and how long it is in frames
-	map<string, pair<int, int>> state_map;
-	state_map["IDLE"] = make_pair<int, int>(18, 8);
-	state_map["IDLE_READY"] = make_pair<int, int>(19, 8);
-	state_map["RUNNING"] = make_pair<int, int>(32, 8);
+	// Set up animation states. Map has the state as a key, and an animation object which needs a column position, 
+	// number of frames, and whether it's repeating. If it's repeating, it needs a next state as well.
+	map<string, Animation*> state_map;
+	state_map["IDLE"] = new Animation(18, 8);
+	state_map["IDLE_READY"] = new Animation(19, 8);
+	state_map["RUNNING"] = new Animation(32, 8);
+	state_map["SLOWING"] = new Animation(32, 8);
+	state_map["FALLING"] = new Animation(23, 6);
+	state_map["JUMPING"] = new Animation(24, 4, true, "FALLING");
 
 	componentMap["animation"] = new AnimationComponent("media/fighter-spritesheet.png", state_map, 120); //sprite sheet location, sprite size
 }

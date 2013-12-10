@@ -39,6 +39,7 @@ void RenderSystem::update() {
 		SDL_Texture* renderTex;
 		SDL_Rect* sourceRect = NULL;
 		SDL_Rect* renderRect;
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 		if ( entityList[i]->hasComponent("texture")  ) {
 			TextureComponent *tex = (TextureComponent*) entityList[i]->getComponent("texture");
@@ -49,9 +50,12 @@ void RenderSystem::update() {
 			renderTex = ac->getCurrentTexture(mRenderer);
 			sourceRect = ac->getIndexRect();
 			renderRect = dim->getRect();
+			if (dim->mFacing == 1) {
+				flip = SDL_FLIP_HORIZONTAL;
+			}
 		}
 		
-		SDL_RenderCopy(mRenderer, renderTex, sourceRect, renderRect);
+		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
 		outlineRect(mRenderer, renderRect);
 
 		//SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
