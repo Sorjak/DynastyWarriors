@@ -11,7 +11,7 @@
 class RenderSystem : public BaseSystem
 {
 public:
-	RenderSystem(int width, int height, const char* title);
+	RenderSystem(int width, int height, const char* title, const char* background_file);
 	~RenderSystem();
 
 	void update();
@@ -21,7 +21,7 @@ public:
 	SDL_Window *mWindow;
 	SDL_Renderer *mRenderer;
 	TTF_Font* mFont;
-
+	SDL_Texture* mBackground;
 	
 
 private:
@@ -32,6 +32,7 @@ private:
 	int frameEndTime;
 	int fpsTimer;
 	int framesElapsed;
-
+	int mWidth;
+	int mHeight;
 };
 

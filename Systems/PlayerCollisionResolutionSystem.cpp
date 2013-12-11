@@ -1,14 +1,9 @@
 #include "PlayerCollisionResolutionSystem.h"
 
 
-PlayerCollisionResolutionSystem::PlayerCollisionResolutionSystem(){
-	
-}
-
+PlayerCollisionResolutionSystem::PlayerCollisionResolutionSystem(){}
 
 PlayerCollisionResolutionSystem::~PlayerCollisionResolutionSystem(){}
-
-
 
 void PlayerCollisionResolutionSystem::update() {
 	for (size_t i = 0; i < entityList.size(); i++) {
@@ -21,8 +16,6 @@ void PlayerCollisionResolutionSystem::update() {
 			SDL_Rect *rect = dim->getRect();
 			Vector2D *velocity = vel->getVelocity();
 
-			string output = "";
-			output += to_string(entityList[i]->mID) + " is to the ";
 			for( vector <pair <BaseEntity*,int> >::iterator collidee = cc->mCollidingWith->begin(); collidee != cc->mCollidingWith->end(); collidee++ ) {
 				DimensionComponent *collideedim = (DimensionComponent*) collidee->first->componentMap["dimension"];
 				PlayerMotionComponent* pmc = (PlayerMotionComponent*) current->getComponent("player_motion");
@@ -52,13 +45,7 @@ void PlayerCollisionResolutionSystem::update() {
 					velocity->x() = 0;
 					pmc->fighterState = "IDLE";
 				}
-
-				output += getPrettyDirection(collidee->second) + " of ";
-				output += to_string(collidee->first->mID) + " | ";
-
 			}
-
-			//cout << output << endl;
 		}
 	}
 		

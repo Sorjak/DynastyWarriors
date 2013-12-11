@@ -13,5 +13,7 @@ public:
 	int mNumFrames;
 	bool mRepeat;
 	std::string mNextAnimation;
+
+	bool isRepeat();
 };
 

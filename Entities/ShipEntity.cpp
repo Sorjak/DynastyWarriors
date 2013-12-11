@@ -12,7 +12,7 @@ ShipEntity::ShipEntity(long id) {
 	systemFlags.push_back("gravity");
 
 	componentMap["texture"] = new TextureComponent("media/ship.png");
-	componentMap["dimension"] = new DimensionComponent(1, 1, 32, 32);
+	componentMap["dimension"] = new DimensionComponent(1, 1, 32, 32, 1);
 	componentMap["velocity"] = new VelocityComponent(0, 0);
 	
 }

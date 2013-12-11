@@ -20,18 +20,21 @@ void BounceSystem::update() {
 		Vector2D *velocity = vel->getVelocity();
 		Vector2D *position = dim->getPosition();
 
-		if (position->x() >= mWidth) {
+		int centerx = position->x() + (rect->w / 2);
+		int centery = position->y() + (rect->h / 2);
+
+		if (centerx >= mWidth) {
 			position->x() = 1.f;
 		}
-		if (position->x() + rect->w < 0) {
+		if (centerx < 0) {
 			position->x() = mWidth - rect->w - 1;
 		}
 
-		if (position->y()  >= mHeight) {
+		if (centery >= mHeight) {
 			position->y() = 1.f;
 		}
 
-		if (position->y() + rect->h < 0) {
+		if (centery < 0) {
 			position->y() = mHeight - 1.f;
 		}
 	}

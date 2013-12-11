@@ -12,6 +12,5 @@ class LaserEntity :
 {
 public:
 	LaserEntity(long, int, int, int);
-	LaserEntity(long, int, int, int, BaseEntity*);
 };
 

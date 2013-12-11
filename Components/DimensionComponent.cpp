@@ -1,7 +1,7 @@
 #include "DimensionComponent.h"
 
 
-DimensionComponent::DimensionComponent(int x, int y, int w, int h) {
+DimensionComponent::DimensionComponent(int x, int y, int w, int h, int facing) {
 	mPosition = new Vector2D(x, y);
 
 	mRect = new SDL_Rect();
@@ -12,7 +12,7 @@ DimensionComponent::DimensionComponent(int x, int y, int w, int h) {
 
 	mLastRect = new SDL_Rect();
 
-	mFacing = 1;
+	mFacing = facing;
 }
 
 
@@ -40,4 +40,12 @@ void DimensionComponent::setLastRect(SDL_Rect* rect) {
 	mLastRect->y = rect->y;
 	mLastRect->w = rect->w;
 	mLastRect->h = rect->h;
+}
+
+int DimensionComponent::getFacing() {
+	return mFacing;
+}
+
+void DimensionComponent::setFacing(int facing) {
+	mFacing = facing;
 }

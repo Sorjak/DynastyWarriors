@@ -17,5 +17,6 @@ public:
 	int yVelocity;
 
 	string fighterState;
+	string fighterAttackState;
 };
 

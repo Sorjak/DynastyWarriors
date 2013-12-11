@@ -241,6 +241,9 @@
     <Image Include="media\fighter.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="media\aztlan_bg_2x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="media\SourceSansPro-Regular.ttf">

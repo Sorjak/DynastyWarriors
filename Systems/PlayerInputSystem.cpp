@@ -88,8 +88,6 @@ void PlayerInputSystem::update() {
 			}
 		}
 		
-
-		//printf("Fighter state: %s\n", motion->fighterState.c_str());
 	}
 }
 
@@ -106,15 +104,13 @@ void PlayerInputSystem::process(SDL_Event e) {
 
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {
-			if (e.key.keysym.sym == SDLK_SPACE) {
-				int x = 0;
-				if (dim->mFacing == 1) {
-					x = dim->getRect()->x + dim->getRect()->w;
-				} else if (dim->mFacing == -1) {
-					x = dim->getRect()->x - 64;
-				}
-				int y = dim->getRect()->y;
-				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y, dim->mFacing));
+			if (e.key.keysym.sym == SDLK_j) {
+				if (motion->isOnGround && motion->fighterState != "RUNNING")
+					motion->fighterAttackState = "PUNCHING";
+			}
+			if (e.key.keysym.sym == SDLK_i) {
+				if (motion->isOnGround && motion->fighterState != "RUNNING")
+					motion->fighterAttackState = "KICKING";
 			}
 			if (e.key.keysym.sym == SDLK_w) {
 				jump(vel, motion);

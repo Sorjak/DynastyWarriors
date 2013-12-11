@@ -135,6 +135,7 @@
     <ClInclude Include="Entities\WallEntity.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="media\aztlan_bg_2x.png" />
     <Image Include="media\fighter.png" />
     <Image Include="media\redlaser.png" />
     <Image Include="media\ship.png" />

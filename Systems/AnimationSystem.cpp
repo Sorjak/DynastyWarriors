@@ -17,16 +17,29 @@ void AnimationSystem::update() {
 
 			if (current->hasComponent("animation") ) {
 				AnimationComponent* ac = (AnimationComponent*) current->getComponent("animation");
+
 				if (current->hasComponent("player_motion") ){
 					PlayerMotionComponent* pmc = (PlayerMotionComponent*) current->getComponent("player_motion");
-					ac->setState(pmc->fighterState);
+
+					if (pmc->fighterAttackState != "") {
+						ac->setState(pmc->fighterAttackState);
+					} else {
+						ac->setState(pmc->fighterState);
+					}
 				}
+
 				if (ac->currentFrame == ac->getTotalFrames() - 1) {
-					if (ac->isRepeat()) {
+
+					if (!ac->isRepeat()) {
 						ac->setState(ac->getNextAnimation());
+
 						if (current->hasComponent("player_motion") ){
 							PlayerMotionComponent* pmc = (PlayerMotionComponent*) current->getComponent("player_motion");
-							pmc->fighterState = ac->getNextAnimation();
+							if (pmc->fighterAttackState != "") {
+								pmc->fighterAttackState = "";
+							} else {
+								pmc->fighterState = ac->getNextAnimation();
+							}
 						}
 					} else {
 						ac->currentFrame = 0;

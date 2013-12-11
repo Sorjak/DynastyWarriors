@@ -90,7 +90,7 @@ void Engine::initSystems() {
 	animation->init(this);
 	systemList["animation"] = animation;
 
-	BaseSystem *render = new RenderSystem(SCREEN_WIDTH, SCREEN_HEIGHT, "Dynasty Warriors");
+	BaseSystem *render = new RenderSystem(SCREEN_WIDTH, SCREEN_HEIGHT, "Dynasty Warriors", "media/aztlan_bg_2x.png");
 	render->init(this);
 	systemList["render"] = render;
 }

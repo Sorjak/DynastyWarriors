@@ -35,7 +35,6 @@ int AnimationComponent::getTotalFrames() {
 }
 
 void AnimationComponent::setState(string state) {
-	printf("Changing state to %s\n", state.c_str());
 	if (state != currentState) {
 		currentFrame = 0;
 	}
@@ -44,10 +43,12 @@ void AnimationComponent::setState(string state) {
 }
 
 bool AnimationComponent::isRepeat() {
-	return mStateMap[currentState]->mRepeat;
+	return mStateMap[currentState]->isRepeat();
 }
 
 string AnimationComponent::getNextAnimation() {
-	return mStateMap[currentState]->mNextAnimation;
+	if (!isRepeat()) {
+		return mStateMap[currentState]->mNextAnimation;
+	}
+	return currentState;
 }
-

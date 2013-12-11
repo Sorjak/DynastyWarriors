@@ -9,16 +9,19 @@ void outlineRect(SDL_Renderer* renderer, SDL_Rect* rect) {
 	SDL_SetRenderDrawColor(renderer, mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
-RenderSystem::RenderSystem(int width, int height, const char* title)
+RenderSystem::RenderSystem(int width, int height, const char* title, const char* background_file)
 {
-	const int SCREEN_WIDTH  = width;
-	const int SCREEN_HEIGHT = height;
-	mWindow = SDL_CreateWindow(title, 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	mWidth  = width;
+	mHeight = height;
+	mWindow = SDL_CreateWindow(title, 100, 100, mWidth, mHeight, SDL_WINDOW_SHOWN);
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	mBackground = IMG_LoadTexture(mRenderer, background_file);
+
 	if( TTF_Init() == -1 ) {
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
 	mFont = TTF_OpenFont("media/SourceSansPro-Regular.ttf", 24 );
+
 	fpsTimer = SDL_GetTicks();
 	framesElapsed = 0;
 	currentFPS = 60;
@@ -34,6 +37,9 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
+
+	SDL_RenderCopy(mRenderer, mBackground, NULL, NULL);
+
 	for (size_t i = 0; i < entityList.size(); i++) {
 		DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");
 		SDL_Texture* renderTex;
@@ -50,13 +56,13 @@ void RenderSystem::update() {
 			renderTex = ac->getCurrentTexture(mRenderer);
 			sourceRect = ac->getIndexRect();
 			renderRect = dim->getRect();
-			if (dim->mFacing == 1) {
+			if (dim->getFacing() == 1) {
 				flip = SDL_FLIP_HORIZONTAL;
 			}
 		}
 		
 		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
-		//outlineRect(mRenderer, renderRect);
+		outlineRect(mRenderer, renderRect);
 
 		//SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
 		//SDL_Rect* idRect = new SDL_Rect();

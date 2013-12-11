@@ -15,7 +15,7 @@ FighterEntity::FighterEntity(long id){
 	systemFlags.push_back("animation");
 
 	//componentMap["texture"] = new TextureComponent("media/fighter.png");
-	componentMap["dimension"] = new DimensionComponent(50, 400, 32, 32); // x, y, w, h
+	componentMap["dimension"] = new DimensionComponent(50, 400, 32, 32, 1); // x, y, w, h, facing
 	componentMap["velocity"] = new VelocityComponent(0, 0);
 	componentMap["player_motion"] = new PlayerMotionComponent(100, 200, 2); // X velocity, Y velocity, number of jumps
 	componentMap["collision"] = new CollisionComponent();
@@ -28,7 +28,9 @@ FighterEntity::FighterEntity(long id){
 	state_map["RUNNING"] = new Animation(32, 8);
 	state_map["SLOWING"] = new Animation(32, 8);
 	state_map["FALLING"] = new Animation(23, 6);
-	state_map["JUMPING"] = new Animation(24, 4, true, "FALLING");
+	state_map["JUMPING"] = new Animation(24, 4, false, "FALLING");
+	state_map["PUNCHING"] = new Animation(29, 4, false, "IDLE");
+	state_map["KICKING"] = new Animation(26, 5, false, "IDLE");
 
 	componentMap["animation"] = new AnimationComponent("media/fighter-spritesheet.png", state_map, 120); //sprite sheet location, sprite size
 }
