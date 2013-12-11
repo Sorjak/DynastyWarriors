@@ -25,7 +25,12 @@ void FrictionSystem::update() {
 
 						if (pmc->fighterState == "SLOWING") {
 							if (abs(velocity->x()) > 0 ) {
-								velocity->x() += fc->mStrength * -dc->mFacing;
+								if (abs(velocity->x()) > fc->mStrength) {
+									velocity->x() += fc->mStrength * -dc->mFacing;
+								}
+								else {
+									velocity->x() = 0;
+								}
 							}
 							if (velocity->x() == 0) {
 								pmc->fighterState = "IDLE";

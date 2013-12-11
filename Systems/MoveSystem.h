@@ -15,7 +15,7 @@ public:
 
 	void update();
 
-	static const int MAX_H_SPEED = 150;
+	static const int MAX_H_SPEED = 200;
 	static const int MAX_V_SPEED = 300;
 };
 

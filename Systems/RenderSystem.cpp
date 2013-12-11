@@ -56,7 +56,7 @@ void RenderSystem::update() {
 		}
 		
 		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
-		outlineRect(mRenderer, renderRect);
+		//outlineRect(mRenderer, renderRect);
 
 		//SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
 		//SDL_Rect* idRect = new SDL_Rect();

@@ -40,19 +40,23 @@ void PlayerInputSystem::update() {
 		int y_velocity = motion->yVelocity;
 		Vector2D* velocity = vel->getVelocity();
 
-		int joystickDeadZone = 5000;
+		int joystickDeadZone = 8000;
+		int maxJoystickValue = 32768;
+		int scaleFactor = 200;
 		bool moving = false;
 
 		if (mJoysticks.size() > 0) {
 			int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
 			if (joystickValue > joystickDeadZone) {
+				int amountToMove = abs(joystickValue / scaleFactor);
 				dim->mFacing = 1;
-				velocity->x() += x_velocity * dim->mFacing;
+				velocity->x() = amountToMove * dim->mFacing;
 				moving = true;
 			}
 			else if (joystickValue < -joystickDeadZone) {
+				int amountToMove = abs(joystickValue / scaleFactor);
 				dim->mFacing = -1;
-				velocity->x() += x_velocity * dim->mFacing;
+				velocity->x() = amountToMove * dim->mFacing;
 				moving = true;
 			}
 			else {}
@@ -85,7 +89,7 @@ void PlayerInputSystem::update() {
 		}
 		
 
-		printf("Fighter state: %s\n", motion->fighterState.c_str());
+		//printf("Fighter state: %s\n", motion->fighterState.c_str());
 	}
 }
 
@@ -113,6 +117,11 @@ void PlayerInputSystem::process(SDL_Event e) {
 				mEngine->addEntity(new LaserEntity(mEngine->getNextId(), x, y, dim->mFacing));
 			}
 			if (e.key.keysym.sym == SDLK_w) {
+				jump(vel, motion);
+			}
+		}
+		if (e.type == SDL_JOYBUTTONDOWN) {
+			if (e.jbutton.button == 10) {
 				jump(vel, motion);
 			}
 		}

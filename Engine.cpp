@@ -6,7 +6,16 @@ Engine::Engine() {
 	initEntities();
 }
 
-Engine::~Engine() {}
+Engine::~Engine() {
+	//for (map<string, BaseSystem*>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
+	//	delete it->second;
+	//}
+
+	//for (size_t i = 0; i < entityList.size(); i++) {
+	//	delete entityList[i];
+	//}
+
+}
 
 void Engine::startGame() {
 	running = true;
@@ -57,7 +66,7 @@ void Engine::initSystems() {
 	move->init(this);
 	systemList["move"] = move;
 
-	BaseSystem *bounce =  new BounceSystem(800, 600);
+	BaseSystem *bounce = new BounceSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
 	bounce->init(this);
 	systemList["bounce"] = bounce;
 
@@ -81,7 +90,7 @@ void Engine::initSystems() {
 	animation->init(this);
 	systemList["animation"] = animation;
 
-	BaseSystem *render = new RenderSystem(800, 600, "Dynasty Warriors");
+	BaseSystem *render = new RenderSystem(SCREEN_WIDTH, SCREEN_HEIGHT, "Dynasty Warriors");
 	render->init(this);
 	systemList["render"] = render;
 }

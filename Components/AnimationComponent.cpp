@@ -35,6 +35,7 @@ int AnimationComponent::getTotalFrames() {
 }
 
 void AnimationComponent::setState(string state) {
+	printf("Changing state to %s\n", state.c_str());
 	if (state != currentState) {
 		currentFrame = 0;
 	}
