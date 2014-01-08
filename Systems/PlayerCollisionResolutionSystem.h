@@ -3,8 +3,9 @@
 
 #include "../Components/DimensionComponent.h"
 #include "../Components/VelocityComponent.h"
-#include "../Components/PlayerMotionComponent.h"
+#include "../Components/StateComponent.h"
 #include "../Components/CollisionComponent.h"
+#include "../Components/PlayerMotionComponent.h"
 
 class PlayerCollisionResolutionSystem :
 	public BaseSystem

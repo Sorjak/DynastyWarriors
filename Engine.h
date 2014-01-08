@@ -28,6 +28,7 @@
 #include "Entities/LaserEntity.h"
 #include "Entities/WallEntity.h"
 #include "Entities/FighterEntity.h"
+#include "Entities/DummyEntity.h"
 
 
 

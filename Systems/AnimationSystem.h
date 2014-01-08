@@ -5,6 +5,7 @@
 
 #include "../Components/AnimationComponent.h"
 #include "../Components/PlayerMotionComponent.h"
+#include "../Components/StateComponent.h"
 
 class AnimationSystem :
 	public BaseSystem
@@ -12,6 +13,9 @@ class AnimationSystem :
 public:
 	AnimationSystem(int);
 	~AnimationSystem();
+
+	AnimationComponent* mAnimation;
+	StateComponent* mState;
 
 	void update();
 

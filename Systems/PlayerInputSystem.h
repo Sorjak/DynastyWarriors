@@ -5,6 +5,8 @@
 #include "../Vector2D.h"
 #include "../Components/PlayerMotionComponent.h"
 #include "../Components/VelocityComponent.h"
+#include "../Components/StateComponent.h"
+#include "../Components/DimensionComponent.h"
 
 #define INPUT_ANALOG_UP -1
 #define INPUT_ANALOG_DOWN 1
@@ -23,11 +25,16 @@ public:
 
 	void process(SDL_Event e);
 
-	void jump(VelocityComponent*, PlayerMotionComponent*);
+	bool initEntity();
+	void jump();
 
 	vector<SDL_Joystick*> mJoysticks;
-	
-	int mJumped;
+
+
+	PlayerMotionComponent* mPlayerMotion;
+	VelocityComponent* mPlayerVelocity;
+	DimensionComponent* mPlayerDimension;
+	StateComponent* mPlayerState;
 
 };
 

@@ -1,24 +1,18 @@
 #pragma once
 
-#include <string>
 #include "../Animation.h"
+#include "BaseEntity.h"
 
-#include "baseentity.h"
-
-#include "../Components/TextureComponent.h"
-#include "../Components/VelocityComponent.h"
 #include "../Components/DimensionComponent.h"
-#include "../Components/PlayerMotionComponent.h"
+#include "../Components/VelocityComponent.h"
 #include "../Components/CollisionComponent.h"
 #include "../Components/AnimationComponent.h"
 #include "../Components/StateComponent.h"
-
-
-
-class FighterEntity :
+class DummyEntity :
 	public BaseEntity
 {
 public:
-	FighterEntity(long);
+	DummyEntity(long id);
+	~DummyEntity();
 };
 

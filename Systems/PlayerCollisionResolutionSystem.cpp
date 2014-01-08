@@ -18,7 +18,7 @@ void PlayerCollisionResolutionSystem::update() {
 
 			for( vector <pair <BaseEntity*,int> >::iterator collidee = cc->mCollidingWith->begin(); collidee != cc->mCollidingWith->end(); collidee++ ) {
 				DimensionComponent *collideedim = (DimensionComponent*) collidee->first->componentMap["dimension"];
-				PlayerMotionComponent* pmc = (PlayerMotionComponent*) current->getComponent("player_motion");
+				StateComponent *sc = (StateComponent*)current->getComponent("state");
 				SDL_Rect * collideerect = collideedim->getRect();
 				Vector2D* position = dim->getPosition();
 
@@ -26,24 +26,26 @@ void PlayerCollisionResolutionSystem::update() {
 				if (collidee->second == TOP ) { 
 					position->y() = collideerect->y - rect->h + 1; 
 					velocity->y() = 0;
-					pmc->isOnGround = true;
-					pmc->fighterState = "IDLE";
-					pmc->jumpsLeft = 2;
+					sc->setVerticalState("GROUND");
+					if (current->hasComponent("player_motion")){
+						PlayerMotionComponent* pmc = (PlayerMotionComponent*)current->getComponent("player_motion");
+						pmc->jumpsLeft = 2;
+					}
 				}
 				if (collidee->second == BOTTOM) { 
 					position->y() = collideerect->y + collideerect->h;
 					velocity->y() = 0; 
-					pmc->fighterState = "FALLING";
+					sc->setVerticalState("FALLING");
 				}
 				if (collidee->second == LEFT ) { 
 					position->x() = collideerect->x - rect->w;
 					velocity->x() = 0;
-					pmc->fighterState = "IDLE";
+					sc->setHorizontalState("IDLE");
 				}
 				if (collidee->second == RIGHT) { 
 					position->x() = collideerect->x + collideerect->w;
 					velocity->x() = 0;
-					pmc->fighterState = "IDLE";
+					sc->setHorizontalState("IDLE");
 				}
 			}
 		}

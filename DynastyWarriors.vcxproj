@@ -18,7 +18,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -67,6 +67,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Entities\DummyEntity.cpp" />
+    <ClCompile Include="Components\StateComponent.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
     <ClCompile Include="Components\FrictionComponent.cpp" />
     <ClCompile Include="Systems\FrictionSystem.cpp" />
@@ -102,6 +104,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Entities\DummyEntity.h" />
+    <ClInclude Include="Components\StateComponent.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
     <ClInclude Include="Components\FrictionComponent.h" />
     <ClInclude Include="Systems\FrictionSystem.h" />

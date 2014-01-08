@@ -5,7 +5,7 @@
 #include "../Components/VelocityComponent.h"
 #include "../Components/CollisionComponent.h"
 #include "../Components/DimensionComponent.h"
-#include "../Components/PlayerMotionComponent.h"
+#include "../Components/StateComponent.h"
 
 class FrictionSystem :
 	public BaseSystem

@@ -11,14 +11,15 @@ GravitySystem::~GravitySystem(){}
 
 void GravitySystem::update() {
 	for (size_t i = 0; i < entityList.size(); i++) {
-		VelocityComponent *vel = (VelocityComponent*) entityList[i]->componentMap["velocity"];
-		PlayerMotionComponent *motion = (PlayerMotionComponent*) entityList[i]->componentMap["player_motion"];
-		CollisionComponent *cc = (CollisionComponent*) entityList[i]->componentMap["collision"];
+		BaseEntity* current = entityList[i];
+		VelocityComponent *vel = (VelocityComponent*)current->getComponent("velocity");
+		StateComponent* sc = (StateComponent*)current->getComponent("state");
+		CollisionComponent *cc = (CollisionComponent*)current->getComponent("collision");
 		Vector2D *velocity = vel->getVelocity();
 
 		if (!cc->isColliding()) {
 			velocity->y() += mStrength->y();
-			motion->isOnGround = false;
+			sc->setVerticalState("FALLING");
 		}
 	}
 }

@@ -10,13 +10,9 @@ public:
 	PlayerMotionComponent(int, int, int);
 	~PlayerMotionComponent();
 
-	bool isOnGround;
 	int jumpsLeft;
 	int maxJumps;
 	int xVelocity;
 	int yVelocity;
-
-	string fighterState;
-	string fighterAttackState;
 };
 

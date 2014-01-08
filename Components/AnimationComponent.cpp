@@ -38,7 +38,11 @@ void AnimationComponent::setState(string state) {
 	if (state != currentState) {
 		currentFrame = 0;
 	}
+	if (mStateMap.find(state) == mStateMap.end()) {
+		printf("Could not load %s", state.c_str());
+	}
 	currentState = state;
+	
 	
 }
 

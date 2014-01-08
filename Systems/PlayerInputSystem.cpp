@@ -2,8 +2,6 @@
 
 PlayerInputSystem::PlayerInputSystem(){
 
-	mJumped = 0;
-
 	// Initialize the joystick subsystem if it hasn't been already
 	if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0){
 		SDL_InitSubSystem(SDL_INIT_JOYSTICK);
@@ -30,15 +28,11 @@ PlayerInputSystem::PlayerInputSystem(){
 PlayerInputSystem::~PlayerInputSystem(){}
 
 void PlayerInputSystem::update() {
-	if (entityList.size() >= 1) {
-		FighterEntity* fighter = (FighterEntity*)entityList[0];
-		VelocityComponent *vel = (VelocityComponent*)fighter->getComponent("velocity");
-		DimensionComponent *dim = (DimensionComponent*)fighter->getComponent("dimension");
-		PlayerMotionComponent *motion = (PlayerMotionComponent*)fighter->getComponent("player_motion");
+	if (initEntity()) {
 
-		int x_velocity = motion->xVelocity;
-		int y_velocity = motion->yVelocity;
-		Vector2D* velocity = vel->getVelocity();
+		int x_velocity = mPlayerMotion->xVelocity;
+		int y_velocity = mPlayerMotion->yVelocity;
+		Vector2D* velocity = mPlayerVelocity->getVelocity();
 
 		int joystickDeadZone = 8000;
 		int maxJoystickValue = 32768;
@@ -47,90 +41,109 @@ void PlayerInputSystem::update() {
 
 		if (mJoysticks.size() > 0) {
 			int joystickValue = SDL_JoystickGetAxis(mJoysticks[0], 0);
-			if (joystickValue > joystickDeadZone) {
-				int amountToMove = abs(joystickValue / scaleFactor);
-				dim->mFacing = 1;
-				velocity->x() = amountToMove * dim->mFacing;
+			if (abs(joystickValue) > joystickDeadZone && mPlayerState->getVerticalState() != "GROUND") {
+				joystickValue = maxJoystickValue * (joystickValue / abs(joystickValue));
+			}
+			int amountToMove = abs(joystickValue / scaleFactor);
+
+			if (joystickValue > joystickDeadZone) {	
+				mPlayerDimension->mFacing = 1;
+				velocity->x() = amountToMove * mPlayerDimension->mFacing;
 				moving = true;
 			}
 			else if (joystickValue < -joystickDeadZone) {
-				int amountToMove = abs(joystickValue / scaleFactor);
-				dim->mFacing = -1;
-				velocity->x() = amountToMove * dim->mFacing;
+				mPlayerDimension->mFacing = -1;
+				velocity->x() = amountToMove * mPlayerDimension->mFacing;
 				moving = true;
 			}
-			else {}
 		}
 
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
-		
+
 		if (state[SDL_SCANCODE_D]) {
-			dim->mFacing = 1;
-			velocity->x() += x_velocity * dim->mFacing;
+			mPlayerDimension->mFacing = 1;
+			velocity->x() += x_velocity * mPlayerDimension->mFacing;
 			moving = true;
-		} else if (state[SDL_SCANCODE_A]) {
-			dim->mFacing = -1;
-			velocity->x() += x_velocity * dim->mFacing;
+		}
+		else if (state[SDL_SCANCODE_A]) {
+			mPlayerDimension->mFacing = -1;
+			velocity->x() += x_velocity * mPlayerDimension->mFacing;
 			moving = true;
 		}
 
-		if (motion->isOnGround) {
+		if (mPlayerState->getVerticalState() == "GROUND") { 
 			if (moving) {
-				motion->fighterState = "RUNNING";
-			} else {
+				mPlayerState->setHorizontalState("RUNNING");
+			}
+			else {
 				if (abs(velocity->x()) > 0) {
-					motion->fighterState = "SLOWING";
+					mPlayerState->setHorizontalState("SLOWING");
 				}
 			}
 		} else {
-			if (motion->fighterState != "JUMPING") {
-				motion->fighterState = "FALLING";
+			if (mPlayerState->getVerticalState() != "JUMPING") {
+				mPlayerState->setVerticalState("FALLING");
 			}
 		}
-		
 	}
 }
 
 void PlayerInputSystem::process(SDL_Event e) {
-	if (entityList.size() >= 1) {
-		FighterEntity* fighter = (FighterEntity*)entityList[0];
-		VelocityComponent *vel = (VelocityComponent*)fighter->getComponent("velocity");
-		DimensionComponent *dim = (DimensionComponent*)fighter->getComponent("dimension");
-		PlayerMotionComponent *motion = (PlayerMotionComponent*)fighter->getComponent("player_motion");
+	if (initEntity()) {
 
-		int x_velocity = motion->xVelocity;
-		int y_velocity = motion->yVelocity;
-		Vector2D* velocity = vel->getVelocity();
+		int x_velocity = mPlayerMotion->xVelocity;
+		int y_velocity = mPlayerMotion->yVelocity;
+		Vector2D* velocity = mPlayerVelocity->getVelocity();
 
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {
 			if (e.key.keysym.sym == SDLK_j) {
-				if (motion->isOnGround && motion->fighterState != "RUNNING")
-					motion->fighterAttackState = "PUNCHING";
+				if (mPlayerState->getVerticalState() == "GROUND")
+					mPlayerState->setAttackState("PUNCHING");
 			}
 			if (e.key.keysym.sym == SDLK_i) {
-				if (motion->isOnGround && motion->fighterState != "RUNNING")
-					motion->fighterAttackState = "KICKING";
+				if (mPlayerState->getVerticalState() == "GROUND")
+					mPlayerState->setAttackState("KICKING");
 			}
 			if (e.key.keysym.sym == SDLK_w) {
-				jump(vel, motion);
+				jump();
 			}
 		}
 		if (e.type == SDL_JOYBUTTONDOWN) {
 			if (e.jbutton.button == 10) {
-				jump(vel, motion);
+				jump();
+			}
+			if (e.jbutton.button == 12) {
+				if (mPlayerState->getVerticalState() == "GROUND" && mPlayerState->getHorizonalState() != "RUNNING")
+					mPlayerState->setAttackState("PUNCHING");
+			}
+			if (e.jbutton.button == 11) {
+				if (mPlayerState->getVerticalState() == "GROUND" && mPlayerState->getHorizonalState() != "RUNNING")
+					mPlayerState->setAttackState("KICKING");
 			}
 		}
 	}
 }
 
-void PlayerInputSystem::jump(VelocityComponent *vel, PlayerMotionComponent* motion) {
-	Vector2D* velocity = vel->getVelocity();
-	if (motion->jumpsLeft > 0) {
-		velocity->y() -= motion->yVelocity; 
-		motion->isOnGround = false; 
-		motion->jumpsLeft--;
-		motion->fighterState = "JUMPING";
+bool PlayerInputSystem::initEntity() {
+	if (entityList.size() >= 1) {
+		FighterEntity* fighter = (FighterEntity*)entityList[0];
+		mPlayerVelocity = (VelocityComponent*)fighter->getComponent("velocity");
+		mPlayerDimension = (DimensionComponent*)fighter->getComponent("dimension");
+		mPlayerMotion = (PlayerMotionComponent*)fighter->getComponent("player_motion");
+		mPlayerState = (StateComponent*)fighter->getComponent("state");
+		return true;
+	}
+
+	return false;
+}
+
+void PlayerInputSystem::jump() {
+	Vector2D* velocity = mPlayerVelocity->getVelocity();
+	if (mPlayerMotion->jumpsLeft > 0) {
+		velocity->y() -= mPlayerMotion->yVelocity;
+		mPlayerMotion->jumpsLeft--;
+		mPlayerState->setVerticalState("JUMPING");
 	}
 }
 

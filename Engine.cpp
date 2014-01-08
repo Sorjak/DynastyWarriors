@@ -100,24 +100,19 @@ void Engine::initEntities() {
 	int wallheight = 32;
 
 	addEntity(new FighterEntity(getNextId()));
+	addEntity(new DummyEntity(getNextId()));
 
-	SDL_Rect topwall = {400 - 32, 300, 64, 32};
+	SDL_Rect leftwall = {250, 330, 180, 32};
+	addEntity(new WallEntity(getNextId(), &leftwall));
+
+	SDL_Rect rightwall = { 835, 330, 180, 32 };
+	addEntity(new WallEntity(getNextId(), &rightwall));
+
+	SDL_Rect  topwall = {540, 250, 200, 32};
 	addEntity(new WallEntity(getNextId(), &topwall));
 
-	SDL_Rect  middlewall = {400 + 32, 600 - 128, 32, 96};
-	addEntity(new WallEntity(getNextId(), &middlewall));
-
-	SDL_Rect  bottomwall = {0, 600 - 32, 800, 32};
+	SDL_Rect  bottomwall = {140, 490, 1000, 32};
 	addEntity(new WallEntity(getNextId(), &bottomwall));
-	
-	// Turn this on if you want some serious lag
-	//SDL_Rect  bottomwall = {0, 600 - 32, 32, 32};
-
-	//for (int i = 0; i < 800 / 32; i++) {
-	//	bottomwall.x = i * 32;
-	//	addEntity(new WallEntity(getNextId(), &bottomwall));
-	//}
-
 
 }
 
