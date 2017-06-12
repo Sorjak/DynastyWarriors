@@ -17,3 +17,8 @@ vector<string> getKeysFromMap(map<string, BaseComponent*> input) {
 
 	return output;
 }
+
+
+T InverseLerp(T min, T max, T value) {
+    return (max - min) / value;
+}

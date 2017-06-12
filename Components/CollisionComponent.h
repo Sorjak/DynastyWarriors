@@ -20,5 +20,5 @@ public:
 	// right = 4
 	// bottom = 8
 	// topleft = left + top = 3, and so on
-	vector<pair<BaseEntity*, int>> *mCollidingWith;
+	vector< pair<BaseEntity*, int> > *mCollidingWith;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 #include "basesystem.h"
 
 #include "../Components/DimensionComponent.h"

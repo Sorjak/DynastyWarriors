@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stdio.h>
 
 #include <SDL2/SDL.h>
 

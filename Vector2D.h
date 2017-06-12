@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 // Stolen from the Solidity 2D game engine
 
 class Vector2D {

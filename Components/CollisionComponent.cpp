@@ -1,10 +1,7 @@
 #include "CollisionComponent.h"
 
-
-
-
 CollisionComponent::CollisionComponent(){
-	mCollidingWith = new vector<pair<BaseEntity*, int>>();
+	mCollidingWith = new vector< pair<BaseEntity*, int> >();
 }
 
 

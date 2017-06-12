@@ -3,7 +3,7 @@
 Engine::Engine() {
 	initGame();
 	initSystems();
-	initEntities();
+	// initEntities();
 }
 
 Engine::~Engine() {
@@ -21,6 +21,7 @@ void Engine::startGame() {
 	running = true;
 	
 	while (running) {
+
 		// Now let's iterate through the systems map and update everyone
 		for(map<string,BaseSystem*>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
 			it->second->update();
@@ -50,45 +51,45 @@ void Engine::initSystems() {
 	input->init(this);
 	systemList["input"] = input;
 
-	BaseSystem *player_input = new PlayerInputSystem();
-	player_input->init(this);
-	systemList["player_input"] = player_input;
+	// BaseSystem *player_input = new PlayerInputSystem();
+	// player_input->init(this);
+	// systemList["player_input"] = player_input;
 
 	//Here we add the different input types;
 	InputSystem* myinput = (InputSystem*)systemList["input"];
-	myinput->inputList.push_back(player_input);
+	myinput->inputList.push_back(input);
 
-	GravitySystem *gravity = new GravitySystem(7.f);
-	gravity->init(this);
-	systemList["gravity"] = gravity;
+	// GravitySystem *gravity = new GravitySystem(7.f);
+	// gravity->init(this);
+	// systemList["gravity"] = gravity;
 
-	BaseSystem *move =  new MoveSystem();
-	move->init(this);
-	systemList["move"] = move;
+	// BaseSystem *move =  new MoveSystem();
+	// move->init(this);
+	// systemList["move"] = move;
 
-	BaseSystem *bounce = new BounceSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
-	bounce->init(this);
-	systemList["bounce"] = bounce;
+	// BaseSystem *bounce = new BounceSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
+	// bounce->init(this);
+	// systemList["bounce"] = bounce;
 
-	ExpiresSystem *expires = new ExpiresSystem();
-	expires->init(this);
-	systemList["expires"] = expires;
+	// ExpiresSystem *expires = new ExpiresSystem();
+	// expires->init(this);
+	// systemList["expires"] = expires;
 
-	CollisionDetectionSystem *collisionD = new CollisionDetectionSystem();
-	collisionD->init(this);
-	systemList["collides"] = collisionD;
+	// CollisionDetectionSystem *collisionD = new CollisionDetectionSystem();
+	// collisionD->init(this);
+	// systemList["collides"] = collisionD;
 
-	PlayerCollisionResolutionSystem *collisionR = new PlayerCollisionResolutionSystem();
-	collisionR->init(this);
-	systemList["player_resolves"] = collisionR;
+	// PlayerCollisionResolutionSystem *collisionR = new PlayerCollisionResolutionSystem();
+	// collisionR->init(this);
+	// systemList["player_resolves"] = collisionR;
 
-	BaseSystem *friction = new FrictionSystem();
-	friction->init(this);
-	systemList["friction"] = friction;
+	// BaseSystem *friction = new FrictionSystem();
+	// friction->init(this);
+	// systemList["friction"] = friction;
 
-	BaseSystem *animation = new AnimationSystem(12);
-	animation->init(this);
-	systemList["animation"] = animation;
+	// BaseSystem *animation = new AnimationSystem(12);
+	// animation->init(this);
+	// systemList["animation"] = animation;
 
 	BaseSystem *render = new RenderSystem(SCREEN_WIDTH, SCREEN_HEIGHT, "Dynasty Warriors", "media/aztlan_bg_2x.png");
 	render->init(this);

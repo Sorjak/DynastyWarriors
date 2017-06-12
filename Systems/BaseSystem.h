@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 #include "../Entities/BaseEntity.h"
 
