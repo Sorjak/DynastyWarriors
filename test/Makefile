@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = ../TerrainGenerator/*.cpp ../Texture.cpp ../Vector2D.cpp ../Log.h test.cpp
+OBJS = ../TerrainGenerator/*.cpp ../Vector2D.cpp ../Texture.cpp ../Log.h test.cpp
 
 #CC specifies which compiler we're using
 CC = g++
@@ -16,7 +16,7 @@ LIBRARY_PATHS = -L../lib
 COMPILER_FLAGS = -Wall -g -Wl,-subsystem,windows -std=c++0x
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lcygwin -lSDL2main -lSDL2 -lSDL2_image -lnoise
+LINKER_FLAGS = -lcygwin -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lnoise
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = test.exe

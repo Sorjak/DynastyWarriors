@@ -29,3 +29,4 @@ obj/
 Ankh.NoLoad
 *.opensdf
 *.exe
+*.exe.stackdump

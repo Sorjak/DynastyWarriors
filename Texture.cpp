@@ -4,6 +4,7 @@
 
 //==============================================================================
 Texture::Texture() {
+
 }
 
 //------------------------------------------------------------------------------
@@ -26,18 +27,17 @@ SDL_Surface* Texture::GetSurface(SDL_Renderer* Renderer, int width, int height, 
 }
 
 //==============================================================================
-bool Texture::Create(SDL_Renderer* Renderer, int width, int height, int depth) {
-    SDL_Surface* surf = GetSurface(Renderer, width, height, depth);
+bool Texture::Create(SDL_Renderer* Renderer, int width, int height) {
+    this->Renderer = Renderer;
 
-    if((SDLTexture = SDL_CreateTextureFromSurface(Renderer, surf)) == NULL) {
+    if((SDLTexture = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_ARGB8888, 
+        SDL_TEXTUREACCESS_STREAMING, width, height)) == NULL) {
         Log("Unable to create SDL Texture");
         return false;
     }
 
     // Grab dimensions
     SDL_QueryTexture(SDLTexture, NULL, NULL, &Width, &Height);
-
-    SDL_FreeSurface(surf);
 
     return true;
 }
@@ -55,6 +55,40 @@ bool Texture::Create(SDL_Renderer* Renderer, SDL_Surface* surf) {
     SDL_FreeSurface(surf);
 
     return true;
+}
+
+bool Texture::Update(HeightMap* heightMap) {
+    int height = heightMap->getMapHeight();
+    int width = heightMap->getMapWidth();
+
+    unsigned char* pixels = new unsigned char[width * height * 4];
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            const unsigned int offset = ( width * 4 * y ) + x * 4;
+            double value = heightMap->getHeightAt(x, y);
+
+            SDL_Color* current = &water;
+            if (value < .15) { current = &deep_water; }
+            if (value >= .15 && value < .3) { current = &water; }
+            if (value >= .3 && value < .4) { current = &sand; }
+            if (value >= .4 && value < .7) { current = &grass; }
+            if (value >= .7 && value < .9) { current = &mountain; }
+            if (value > .9) { current = &snow; }
+
+            pixels[ offset + 0 ] = current->b;        // b
+            pixels[ offset + 1 ] = current->g;        // g
+            pixels[ offset + 2 ] = current->r;        // r
+            pixels[ offset + 3 ] = SDL_ALPHA_OPAQUE;    // a
+
+            // cout << to_string(x) << ", " << to_string(y) << ": " << to_string() << "\n";
+        }
+    }
+
+    bool returnVal = SDL_UpdateTexture( SDLTexture, NULL, &pixels[0], width * 4);
+    delete pixels;
+    return returnVal;
+
 }
 
 

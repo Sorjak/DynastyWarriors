@@ -15,6 +15,10 @@
 
 #include <string>
 
+#include "TerrainGenerator/HeightMap.h"
+
+
+
 class Texture {
     private:
         std::string Filename;
@@ -28,6 +32,13 @@ class Texture {
 
         void PutPixelColor(SDL_Surface*, int, int, Uint32);
 
+        SDL_Color deep_water = {0,0,205};
+        SDL_Color water = {0,191,255};
+        SDL_Color sand = {245,222,179};
+        SDL_Color grass = {0, 128, 0};
+        SDL_Color mountain = {139, 69, 19};
+        SDL_Color snow = {255, 250, 250};
+
     public:
         Texture();
         ~Texture();
@@ -35,7 +46,9 @@ class Texture {
         SDL_Surface* GetSurface(SDL_Renderer*, int, int, int);
 
         bool Create(SDL_Renderer*, SDL_Surface*);
-        bool Create(SDL_Renderer*, int, int, int);
+        bool Create(SDL_Renderer*, int, int);
+
+        bool Update(HeightMap*);
         bool Load(SDL_Renderer* Renderer, std::string Filename);
 
         void Render(int X, int Y);

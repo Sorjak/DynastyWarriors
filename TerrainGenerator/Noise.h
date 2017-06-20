@@ -3,8 +3,10 @@
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <vector>
+// #include <vector>
+#include <random>
 
+#include <SDL2/SDL.h>
 #include <noise/noise.h>
 
 #include "../Vector2D.h"
@@ -12,16 +14,29 @@
 
 using namespace std;
 
+static std::mt19937 Generator;
+
 class Noise
 {
     public:
-        Noise();
+        Noise(int seed);
         ~Noise();
+        HeightMap* generateHeightMap(int width, int height, Vector2D*);
+        HeightMap* generateSubMap(HeightMap* original, SDL_Rect* region);
+        bool updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region);
 
-        HeightMap* generateHeightMap(int, int, int seed, double, int, double, double, Vector2D*);
+        float scale = 100.0;
+        int octaves = 5;
+        float persistance = .5;
+        float lacunarity = 2.0;
+
+        bool falloff = false;
+        int seed;
 
     private:
         noise::module::Perlin noiseModule;
-        // module::Voronoi noiseModule;
-        int seed;
+
+        float getRandom(float min, float max);
+
+        float clamp(float x, float upper, float lower);
 };
