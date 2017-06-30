@@ -13,7 +13,7 @@ LIBRARY_PATHS = -L../lib
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
 # -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = -Wall -g -Wl,-subsystem,windows -std=c++0x
+COMPILER_FLAGS = -Wall -g -Wl,-subsystem,windows -std=c++0x -pthread
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lcygwin -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lnoise

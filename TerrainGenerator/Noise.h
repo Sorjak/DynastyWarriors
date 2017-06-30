@@ -19,9 +19,12 @@ static std::mt19937 Generator;
 class Noise
 {
     public:
+        Noise(int minSeed, int maxSeed);
         Noise(int seed);
         ~Noise();
-        HeightMap* generateHeightMap(int width, int height, Vector2D*);
+        float getRandom(float min, float max);
+        int getRandom(int min, int max);
+        HeightMap* generateHeightMap(int width, int height, Vector2D* offset, SDL_Rect* islandBounds);
         HeightMap* generateSubMap(HeightMap* original, SDL_Rect* region);
         bool updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region);
 
@@ -30,13 +33,12 @@ class Noise
         float persistance = .5;
         float lacunarity = 2.0;
 
-        bool falloff = false;
+        bool falloff = true;
         int seed;
 
     private:
         noise::module::Perlin noiseModule;
-
-        float getRandom(float min, float max);
+        // noise::module::Voronoi noiseModule;
 
         float clamp(float x, float upper, float lower);
 };
