@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <thread>
 
 #include <SDL2/SDL.h>
@@ -20,29 +21,36 @@ class Island {
         Vector2D* position;
         Vector2D* coord;
 
-        vector<MapChunk*> chunks;
-        vector<MapChunk*> chunksVisible;
+        map<pair<int, int>, shared_ptr<MapChunk>> chunks;
+        vector<shared_ptr<MapChunk>> chunksVisible;
+
+        int chunksPerLine = 0;
 
         int chunksToLoad = 0;
 
-        Noise* noise;
+        shared_ptr<Noise> noise;
 
     public:
-        Island(SDL_Rect rect, Noise* n, int chunksPerLine);
-        Island(SDL_Rect rect, Noise* n, vector<MapChunk*> chunks);
+        Island(SDL_Rect rect, shared_ptr<Noise> n, int totalChunks);
         ~Island();
 
         // void Render(SDL_Renderer* ren);
         void Update(SDL_Rect* area);
         void Render(SDL_Renderer* ren, SDL_Rect* area);
 
-        void LoadChunk(MapChunk* chunk);
+        void LoadChunk(shared_ptr<MapChunk> chunk);
 
-        MapChunk* GetChunkAtPoint(SDL_Point mousePos);
-        vector<MapChunk*> GetChunksInRect(SDL_Rect* area);
+        shared_ptr<MapChunk> GetChunkAtPoint(SDL_Point point);
+        vector<shared_ptr<MapChunk>> GetChunksInRect(SDL_Rect* area);
 
         int getWidth();
         int getHeight();
 
+        void AddChunk(SDL_Rect chunkRect);
+        shared_ptr<MapChunk> GetChunkFromCoord(int x, int y);
+        shared_ptr<MapChunk> GetChunkFromPosition(int x, int y);
+
+
+        SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include <SDL2/SDL.h>
@@ -19,32 +20,36 @@ class MapChunk {
         Vector2D* worldPosition;
         Vector2D* coord;
         Texture* chunkTex = NULL;
-        HeightMap* heightMap;
+        shared_ptr<HeightMap> heightMap;
 
         bool selected = false;
 
     public:
-        bool loadingHeightMap = false;
+        // bool loadingHeightMap = false;
         bool hasHeightMap = false;
         bool hasTexture = false;
 
-
         MapChunk(SDL_Rect rect, SDL_Rect islandBounds);
         // MapChunk(SDL_Rect rect, Noise* n,  SDL_Rect islandBounds);
-        MapChunk(int width, int height, HeightMap* hm);
+        MapChunk(int width, int height, shared_ptr<HeightMap> hm);
         ~MapChunk();
 
-        void Load(Noise* n, SDL_Rect islandBounds);
+        void Load(shared_ptr<HeightMap> heightMap);
 
         void Render(SDL_Renderer*);
         void Render(SDL_Renderer*, int offsetX, int offsetY);
 
         void Select(bool val);
 
-        string getName();
+        std::string getName();
+
+        shared_ptr<HeightMap> getHeightMap();
 
         int getWidth();
         int getHeight();
+        Vector2D* getLocalPosition();
+        Vector2D* getWorldPosition();
+
         SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();
 };

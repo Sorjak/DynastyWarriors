@@ -1,9 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 #include <cmath>
-// #include <vector>
 #include <random>
 
 #include <SDL2/SDL.h>
@@ -24,7 +22,10 @@ class Noise
         ~Noise();
         float getRandom(float min, float max);
         int getRandom(int min, int max);
+
         HeightMap* generateHeightMap(int width, int height, Vector2D* offset, SDL_Rect* islandBounds);
+        
+
         HeightMap* generateSubMap(HeightMap* original, SDL_Rect* region);
         bool updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region);
 

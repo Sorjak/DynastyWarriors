@@ -14,6 +14,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <string>
+#include <memory>
 
 #include "TerrainGenerator/HeightMap.h"
 
@@ -48,7 +49,7 @@ class Texture {
         bool Create(SDL_Renderer*, SDL_Surface*);
         bool Create(SDL_Renderer*, int, int);
 
-        bool Update(HeightMap*);
+        bool Update(std::shared_ptr<HeightMap>);
         bool Load(SDL_Renderer* Renderer, std::string Filename);
 
         void Render(int X, int Y);

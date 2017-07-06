@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <memory>
 #include <vector>
 #include <map>
 
@@ -14,6 +15,31 @@
 
 using namespace std;
 
+void RaiseLand(shared_ptr<MapChunk> chunk, int amountToRaise) {
+    shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
+    cout << originalMap->getHeightAt(0, 0) << endl;
+    if (originalMap != NULL) {
+        int width = originalMap->getMapWidth();
+        int height = originalMap->getMapHeight();
+        shared_ptr<HeightMap> newMap(new HeightMap(width, height));
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                float oldValue = originalMap->getHeightAt(x, y);
+                float newValue = oldValue + (amountToRaise * .001);
+                // cout << "Setting new value: " << newValue << endl;
+                newMap->setHeightAt(x, y, newValue);
+            }
+        }
+
+
+        chunk->Load(newMap);
+    } else {
+        cout << "Failed to raise land" << endl;
+    }
+}
+
+
 int main( int argc, char* args[] ) 
 { 
     cout << "starting test" << endl;
@@ -26,8 +52,10 @@ int main( int argc, char* args[] )
     int screenWidth = 800;
     int screenHeight = 600;
 
-    int mapWidth = 1600;
-    int mapHeight = 1200;
+    int islandWidth = screenWidth * 2;
+    int islandHeight = screenHeight * 2;
+
+    int chunksPerIsland = 10 * 10;
 
     int currentFPS = 60;
     int frameStartTime;
@@ -60,26 +88,18 @@ int main( int argc, char* args[] )
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    map<pair<int, int>, Island*> islands;
-
-    // for (int x = 0; x < (mapWidth / screenWidth); ++x) {
-    //     for (int y = 0; y < (mapHeight / screenHeight); ++y) {
-    //         Vector2D* coord = new Vector2D(x, y);
-    //         Noise* n = new Noise(0, 1000);
-
-    //         SDL_Rect islandBounds = {x, y, screenWidth, screenHeight};
-    //         Island* island = new Island(islandBounds, n, 40);   
-    //         islands[coord] = island;   
-    //     }
-    // }
-
+    map<pair<int, int>, shared_ptr<Island>> islands;
 
     pair<int, int> coord = make_pair(0, 0);
-    Noise* n = new Noise(0, 1000);
+    // Noise* n = new Noise(0, 1000);
+    shared_ptr<Noise> n(new Noise(0, 1000));
 
-    SDL_Rect islandBounds = {0, 0, screenWidth, screenHeight};
-    Island* island = new Island(islandBounds, n, 40);   
+    SDL_Rect islandBounds = {0, 0, islandWidth, islandHeight};
+    // Island* island = new Island(islandBounds, n, 40);
+    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
     islands[coord] = island;
+
+    bool mouseIsDown = false;
 
     while (running) {
         
@@ -126,9 +146,19 @@ int main( int argc, char* args[] )
 
             //If user clicks the mouse
             if (mEvent.type == SDL_MOUSEBUTTONDOWN) {
-                
                 mousePos.x = mEvent.button.x;
                 mousePos.y = mEvent.button.y;
+                selectAction = true;
+                mouseIsDown = true;
+            }
+
+            if (mEvent.type == SDL_MOUSEBUTTONUP) {
+                mouseIsDown = false;
+            }
+
+            if (mEvent.type == SDL_MOUSEMOTION && mouseIsDown) {
+                mousePos.x = mEvent.motion.x;
+                mousePos.y = mEvent.motion.y;
                 selectAction = true;
             }
 
@@ -143,10 +173,10 @@ int main( int argc, char* args[] )
             {
                 pair<int, int> current = make_pair(x, y);
                 if (islands.count(current) == 0) {
-                    Noise* n = new Noise(0, 1000);
+                    shared_ptr<Noise> n(new Noise(0, 1000));
 
-                    SDL_Rect islandBounds = {x, y, screenWidth, screenHeight};
-                    Island* island = new Island(islandBounds, n, 40);   
+                    SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
+                    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));   
                     islands[current] = island;
                 }
             }
@@ -154,7 +184,7 @@ int main( int argc, char* args[] )
 
         for (auto i = islands.begin(); i != islands.end(); ++i)
         {
-            Island* island = i->second;
+            shared_ptr<Island> island = i->second;
 
             island->Update(&view_rect);
 
@@ -164,9 +194,11 @@ int main( int argc, char* args[] )
 
                 if (SDL_PointInRect(&worldMouse, &islandBounds)) {
                     cout << "Island coords: " << islandBounds.x << ", " << islandBounds.y << endl;
-                    MapChunk* c = island->GetChunkAtPoint(worldMouse);
-                    if (c != NULL)
-                        c->Select(true);
+                    shared_ptr<MapChunk> c = island->GetChunkAtPoint(worldMouse);
+                    if (c != NULL) {
+                        // c->Select(true);
+                        RaiseLand(c, 5);
+                    }
                 }
             }
 

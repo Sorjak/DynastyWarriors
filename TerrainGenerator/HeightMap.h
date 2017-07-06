@@ -7,6 +7,9 @@ class HeightMap {
         int width = 0;
         int height = 0;
 
+        int maxValue = 0;
+        int minValue = 0;
+
         float* values;
 
     public:

@@ -57,7 +57,7 @@ bool Texture::Create(SDL_Renderer* Renderer, SDL_Surface* surf) {
     return true;
 }
 
-bool Texture::Update(HeightMap* heightMap) {
+bool Texture::Update(std::shared_ptr<HeightMap> heightMap) {
     int height = heightMap->getMapHeight();
     int width = heightMap->getMapWidth();
 
