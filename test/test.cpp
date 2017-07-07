@@ -15,9 +15,53 @@
 
 using namespace std;
 
-void RaiseLand(shared_ptr<MapChunk> chunk, int amountToRaise) {
+const int screenWidth = 800;
+const int screenHeight = 600;
+
+const int islandWidth = screenWidth * 2;
+const int islandHeight = screenHeight * 2;
+
+const int chunksPerIsland = 50 * 50;
+
+
+SDL_Rect landMorphBox = {0, 0, 50, 50};
+
+int currentFPS = 60;
+int frameStartTime;
+
+int fpsTimer = 0;
+int framesElapsed = 0;
+
+SDL_Rect FPS_rect = {5, 5, 200, 24};
+SDL_Rect view_rect = {0, 0, screenWidth, screenHeight};
+
+map<pair<int, int>, shared_ptr<Island>> islands;
+
+int distanceSquared(int x1, int y1, int x2, int y2) {
+    int deltaX = x2 - x1;
+    int deltaY = y2 - y1;
+    return deltaX*deltaX + deltaY*deltaY;
+}
+
+struct Circle {
+    int x, y;
+    int r;
+
+    bool CheckPoint(int x2, int y2) {
+        int distanceSqr = distanceSquared(x, y, x2, y2);
+        return distanceSqr < (r * r);
+    }
+
+    float DistanceFromCenter(int x2, int y2) {
+        return sqrt(distanceSquared(x, y, x2, y2));
+    }
+};
+
+void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
     shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
-    cout << originalMap->getHeightAt(0, 0) << endl;
+    SDL_Rect chunkRect = chunk->getWorldRect();
+    Circle c = {point.x, point.y, 25};
+
     if (originalMap != NULL) {
         int width = originalMap->getMapWidth();
         int height = originalMap->getMapHeight();
@@ -26,17 +70,108 @@ void RaiseLand(shared_ptr<MapChunk> chunk, int amountToRaise) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 float oldValue = originalMap->getHeightAt(x, y);
-                float newValue = oldValue + (amountToRaise * .001);
-                // cout << "Setting new value: " << newValue << endl;
-                newMap->setHeightAt(x, y, newValue);
+
+                if (c.CheckPoint(chunkRect.x + x, chunkRect.y + y)) {
+                    float val = 1 - (c.DistanceFromCenter(chunkRect.x + x, chunkRect.y + y) / c.r);
+                    float curved = pow(val, 3) / (pow(val, 3) + pow(2.2 - 2.2 * val, 3));
+                    float newValue = oldValue;
+
+                    if (raise)
+                        newValue += curved * .001;
+                    else 
+                        newValue -= curved * .001;
+
+                    newMap->setHeightAt(x, y, newValue);
+                } else {
+                    newMap->setHeightAt(x, y, oldValue);
+                }
             }
         }
 
-
         chunk->Load(newMap);
-    } else {
-        cout << "Failed to raise land" << endl;
     }
+}
+
+void MakeIsland(int x, int y) {
+    shared_ptr<Noise> n(new Noise(0, 1000));
+    SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
+    pair<int, int> coord = make_pair(x, y);
+
+    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
+    islands[coord] = island;
+}
+
+void UpdateAll(bool mouseIsDown, SDL_Point mousePos, bool raise) {
+    int leftEdge = view_rect.x  / screenWidth;
+    int topEdge = view_rect.y / screenHeight;
+
+    for (int x = leftEdge - 1 ; x < leftEdge + 2; ++x)
+    {
+        for (int y = topEdge - 1; y < topEdge + 2; ++y)
+        {
+            pair<int, int> current = make_pair(x, y);
+            if (islands.count(current) == 0) {
+                MakeIsland(x, y);
+            }
+        }
+    }
+
+    for (auto i = islands.begin(); i != islands.end(); ++i)
+    {
+        shared_ptr<Island> island = i->second;
+
+        island->Update(&view_rect);
+
+        if (mouseIsDown) {
+            SDL_Point worldMouse = {mousePos.x + view_rect.x, mousePos.y + view_rect.y};
+            SDL_Rect mouseBox = {
+                mousePos.x + view_rect.x - (landMorphBox.w / 2), 
+                mousePos.y + view_rect.y - (landMorphBox.h / 2),
+                landMorphBox.w,
+                landMorphBox.h
+            };
+
+            vector<shared_ptr<MapChunk>> chunks = island->GetChunksInRect(&mouseBox);
+            for (auto c = chunks.begin(); c != chunks.end(); ++c) {
+                MorphLand((*c), worldMouse, raise);
+            }
+        }
+        
+    }
+}
+
+
+void RenderAll(SDL_Renderer* renderer, TTF_Font* mFont) {
+    
+    SDL_RenderClear(renderer);
+
+    for (auto i = islands.begin(); i != islands.end(); ++i)
+    {
+        i->second->Render(renderer, &view_rect);
+    }
+
+    //Calculate FPS
+    if (frameStartTime - fpsTimer >= 1000) {
+        currentFPS = framesElapsed;
+        framesElapsed = 0;
+        fpsTimer = SDL_GetTicks();
+    } else {
+        framesElapsed++;
+    }
+
+    // cout << to_string(currentFPS) << endl;
+    SDL_Color color; color.r = 255; color.b = 128; color.g = 128;
+    string ui_string = "X:" + to_string(view_rect.x) + ", Y:" + to_string(view_rect.y);
+
+    ui_string += " | FPS: " + to_string(currentFPS);
+
+    SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, ui_string.c_str(), color );
+    SDL_Texture* renderTex = SDL_CreateTextureFromSurface( renderer, textSurface );
+    SDL_RenderCopy( renderer, renderTex, NULL, &FPS_rect );
+    SDL_FreeSurface( textSurface );
+    SDL_free( renderTex );
+
+    SDL_RenderPresent(renderer);
 }
 
 
@@ -49,22 +184,8 @@ int main( int argc, char* args[] )
     SDL_Event       mEvent;
 
     bool running = true;
-    int screenWidth = 800;
-    int screenHeight = 600;
 
-    int islandWidth = screenWidth * 2;
-    int islandHeight = screenHeight * 2;
-
-    int chunksPerIsland = 10 * 10;
-
-    int currentFPS = 60;
-    int frameStartTime;
-
-    int fpsTimer = SDL_GetTicks();
-    int framesElapsed = 0;
-
-    SDL_Rect FPS_rect = {5, 5, 200, 24};
-    SDL_Rect view_rect = {0, 0, screenWidth, screenHeight};
+    fpsTimer = SDL_GetTicks();
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -88,27 +209,21 @@ int main( int argc, char* args[] )
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    map<pair<int, int>, shared_ptr<Island>> islands;
-
-    pair<int, int> coord = make_pair(0, 0);
-    // Noise* n = new Noise(0, 1000);
-    shared_ptr<Noise> n(new Noise(0, 1000));
-
-    SDL_Rect islandBounds = {0, 0, islandWidth, islandHeight};
-    // Island* island = new Island(islandBounds, n, 40);
-    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
-    islands[coord] = island;
+    MakeIsland(0, 0);
 
     bool mouseIsDown = false;
+    bool raise = false;
+
+    // SDL_Point temp;
+    // UpdateAll(mouseIsDown, temp, raise);
+    // RenderAll(renderer, mFont);
 
     while (running) {
-        
         frameStartTime = SDL_GetTicks();
-        bool selectAction = false;
+
+        
         SDL_Point mousePos;
         
-        SDL_RenderClear(renderer);
-
         //Event polling
         while (SDL_PollEvent(&mEvent)){
 
@@ -148,8 +263,9 @@ int main( int argc, char* args[] )
             if (mEvent.type == SDL_MOUSEBUTTONDOWN) {
                 mousePos.x = mEvent.button.x;
                 mousePos.y = mEvent.button.y;
-                selectAction = true;
                 mouseIsDown = true;
+
+                raise = mEvent.button.button == SDL_BUTTON_LEFT;
             }
 
             if (mEvent.type == SDL_MOUSEBUTTONUP) {
@@ -159,74 +275,15 @@ int main( int argc, char* args[] )
             if (mEvent.type == SDL_MOUSEMOTION && mouseIsDown) {
                 mousePos.x = mEvent.motion.x;
                 mousePos.y = mEvent.motion.y;
-                selectAction = true;
             }
 
         }
 
-        int leftEdge = view_rect.x  / screenWidth;
-        int topEdge = view_rect.y / screenHeight;
+        thread update(UpdateAll, mouseIsDown, mousePos, raise);
+        update.join();
 
-        for (int x = leftEdge - 1 ; x < leftEdge + 2; ++x)
-        {
-            for (int y = topEdge - 1; y < topEdge + 2; ++y)
-            {
-                pair<int, int> current = make_pair(x, y);
-                if (islands.count(current) == 0) {
-                    shared_ptr<Noise> n(new Noise(0, 1000));
-
-                    SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
-                    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));   
-                    islands[current] = island;
-                }
-            }
-        }
-
-        for (auto i = islands.begin(); i != islands.end(); ++i)
-        {
-            shared_ptr<Island> island = i->second;
-
-            island->Update(&view_rect);
-
-            if (selectAction) {
-                SDL_Rect islandBounds = island->getWorldRect();
-                SDL_Point worldMouse = {mousePos.x + view_rect.x, mousePos.y + view_rect.y};
-
-                if (SDL_PointInRect(&worldMouse, &islandBounds)) {
-                    cout << "Island coords: " << islandBounds.x << ", " << islandBounds.y << endl;
-                    shared_ptr<MapChunk> c = island->GetChunkAtPoint(worldMouse);
-                    if (c != NULL) {
-                        // c->Select(true);
-                        RaiseLand(c, 5);
-                    }
-                }
-            }
-
-            island->Render(renderer, &view_rect);
-        }
-
-        //Calculate FPS
-        if (frameStartTime - fpsTimer >= 1000) {
-            currentFPS = framesElapsed;
-            framesElapsed = 0;
-            fpsTimer = SDL_GetTicks();
-        } else {
-            framesElapsed++;
-        }
-
-        // cout << to_string(currentFPS) << endl;
-        SDL_Color color; color.r = 255; color.b = 128; color.g = 128;
-        string ui_string = "X:" + to_string(view_rect.x) + ", Y:" + to_string(view_rect.y);
-
-        ui_string += " | FPS: " + to_string(currentFPS);
-
-        SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, ui_string.c_str(), color );
-        SDL_Texture* renderTex = SDL_CreateTextureFromSurface( renderer, textSurface );
-        SDL_RenderCopy( renderer, renderTex, NULL, &FPS_rect );
-        SDL_FreeSurface( textSurface );
-        SDL_free( renderTex );
-
-        SDL_RenderPresent(renderer);
+        thread render(RenderAll, renderer, mFont);
+        render.join();
     }
 
     SDL_DestroyWindow(window); 

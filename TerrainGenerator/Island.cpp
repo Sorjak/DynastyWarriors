@@ -66,8 +66,6 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 }
 
 shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {
-    cout << "Getting chunk at point: " << point.x << ", " << point.y << endl;
-
     int islandX = point.x - position->x();
     int islandY = point.y - position->y();
 

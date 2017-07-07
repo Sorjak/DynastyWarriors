@@ -11,16 +11,9 @@ MapChunk::MapChunk(SDL_Rect rect, SDL_Rect islandBounds) {
     );
 }
 
-MapChunk::MapChunk(int width, int height, shared_ptr<HeightMap> hm) {
-    this->width     = width;
-    this->height    = height;
-    this->heightMap = hm;
-}
-
 MapChunk::~MapChunk() {
     // delete this->heightMap;
 }
-
 
 /*
 *   Load a heightmap into this chunk, and update the texture if it has already been created.
@@ -31,32 +24,30 @@ void MapChunk::Load(std::shared_ptr<HeightMap> heightMap) {
     this->hasHeightMap = true;
 
     if (hasTexture) {
-        chunkTex->Update(this->heightMap);
+        this->updateHeightMap = true;
     }
 }
 
-void MapChunk::Render(SDL_Renderer* ren) {
-    this->Render(ren, 0, 0);
-}
-
 void MapChunk::Render(SDL_Renderer* ren, int offsetX, int offsetY) {
-    if (!hasTexture && hasHeightMap) {
+    if (!hasTexture) {
         chunkTex = new Texture();
         chunkTex->Create(ren, this->width, this->height);
-        chunkTex->Update(this->heightMap);
+        if (hasHeightMap)
+            chunkTex->Update(this->heightMap);
+
         hasTexture = true;
-    } 
+    }
 
-    else {
+    if (updateHeightMap)
+        chunkTex->Update(this->heightMap);
 
-        chunkTex->Render(worldPosition->x() + offsetX, worldPosition->y() + offsetY); 
+    chunkTex->Render(worldPosition->x() + offsetX, worldPosition->y() + offsetY); 
 
-        if (selected) {
-            SDL_Rect r = getWorldRect();
-            r.x += offsetX;
-            r.y += offsetY;
-            SDL_RenderDrawRect(ren, &r);
-        }
+    if (selected) {
+        SDL_Rect r = getWorldRect();
+        r.x += offsetX;
+        r.y += offsetY;
+        SDL_RenderDrawRect(ren, &r);
     }
 }
 

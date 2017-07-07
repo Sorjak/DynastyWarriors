@@ -28,15 +28,13 @@ class MapChunk {
         // bool loadingHeightMap = false;
         bool hasHeightMap = false;
         bool hasTexture = false;
+        bool updateHeightMap = false;
 
         MapChunk(SDL_Rect rect, SDL_Rect islandBounds);
-        // MapChunk(SDL_Rect rect, Noise* n,  SDL_Rect islandBounds);
-        MapChunk(int width, int height, shared_ptr<HeightMap> hm);
         ~MapChunk();
 
         void Load(shared_ptr<HeightMap> heightMap);
 
-        void Render(SDL_Renderer*);
         void Render(SDL_Renderer*, int offsetX, int offsetY);
 
         void Select(bool val);

@@ -62,12 +62,6 @@ void RenderSystem::update() {
 		}
 		
 		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
-		//outlineRect(mRenderer, renderRect);
-
-		//SDL_Color idColor; idColor.r = 0; idColor.b = 0; idColor.g = 0;
-		//SDL_Rect* idRect = new SDL_Rect();
-		//idRect->x = renderRect->x; idRect->y = renderRect->y; idRect->w = renderRect->w; idRect->h = renderRect->h;
-		//displayText(idColor, idRect, to_string(entityList[i]->mID));
 
 	}
 	//Calculate FPS
