@@ -50,15 +50,15 @@ HeightMap* Noise::generateHeightMap
     float minNoiseHeight = 100.0;
     float maxNoiseHeight = -100.0; 
 
-
-    Vector2D* octaveOffsets[octaves];
+    //Vector2D* octaveOffsets[octaves];
+	vector<shared_ptr<Vector2D>> octaveOffsets;
     for (int i = 0; i < octaves; i++ ) {
         float offsetX = getRandom(-10001, 10000) + offset->x();
         float offsetY = getRandom(-10001, 10000) + offset->y();
 
-        Vector2D* temp = new Vector2D(offsetX, offsetY);
+        shared_ptr<Vector2D> temp(new Vector2D(offsetX, offsetY));
 
-        octaveOffsets[i] = temp;
+        octaveOffsets.push_back(temp);
 
         maxPossibleHeight += amplitude;
         amplitude *= persistance;

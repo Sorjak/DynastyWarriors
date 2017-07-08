@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <algorithm>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <noise/noise.h>
@@ -29,10 +31,10 @@ class Noise
         HeightMap* generateSubMap(HeightMap* original, SDL_Rect* region);
         bool updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region);
 
-        float scale = 100.0;
-        int octaves = 5;
-        float persistance = .5;
-        float lacunarity = 2.0;
+        const float scale = 100.0;
+        const int octaves = 5;
+        const float persistance = .5;
+        const float lacunarity = 2.0;
 
         bool falloff = true;
         int seed;

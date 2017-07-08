@@ -43,13 +43,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\include;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\include;C:\Users\Ulisses\Dropbox\projects\vs2012\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\uli\projects\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\ugurge\Dropbox\projects\vs2012\DynastyWarriors\lib;C:\Users\Ulisses\Dropbox\projects\vs2012\DynastyWarriors\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\uli\projects\DynastyWarriors\lib\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,77 +67,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Entities\DummyEntity.cpp" />
-    <ClCompile Include="Components\StateComponent.cpp" />
-    <ClCompile Include="Systems\AnimationSystem.cpp" />
-    <ClCompile Include="Components\FrictionComponent.cpp" />
-    <ClCompile Include="Systems\FrictionSystem.cpp" />
-    <ClCompile Include="Systems\PlayerCollisionResolutionSystem.cpp" />
-    <ClCompile Include="Components\CollisionComponent.cpp" />
-    <ClCompile Include="Entities\FighterEntity.cpp" />
-    <ClCompile Include="Components\PlayerMotionComponent.cpp" />
-    <ClCompile Include="Systems\PlayerInputSystem.cpp" />
-    <ClCompile Include="Systems\GravitySystem.cpp" />
-    <ClCompile Include="Systems\CollisionDetectionSystem.cpp" />
-    <ClCompile Include="Components\AnimationComponent.cpp" />
-    <ClCompile Include="Components\BaseComponent.cpp" />
-    <ClCompile Include="Components\DimensionComponent.cpp" />
-    <ClCompile Include="Components\ExpirationComponent.cpp" />
-    <ClCompile Include="Components\InputComponent.cpp" />
-    <ClCompile Include="Components\ProjectileComponent.cpp" />
-    <ClCompile Include="Components\TextureComponent.cpp" />
-    <ClCompile Include="Components\VelocityComponent.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entities\BaseEntity.cpp" />
-    <ClCompile Include="Entities\LaserEntity.cpp" />
-    <ClCompile Include="Entities\ShipEntity.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Systems\BaseSystem.cpp" />
-    <ClCompile Include="Systems\BounceSystem.cpp" />
-    <ClCompile Include="Systems\ExpiresSystem.cpp" />
-    <ClCompile Include="Systems\InputSystem.cpp" />
-    <ClCompile Include="Systems\MoveSystem.cpp" />
-    <ClCompile Include="Systems\RenderSystem.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="TerrainGenerator\HeightMap.cpp" />
+    <ClCompile Include="TerrainGenerator\Island.cpp" />
+    <ClCompile Include="TerrainGenerator\MapChunk.cpp" />
+    <ClCompile Include="TerrainGenerator\Noise.cpp" />
+    <ClCompile Include="test\test.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector2D.cpp" />
-    <ClCompile Include="Entities\WallEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Entities\DummyEntity.h" />
-    <ClInclude Include="Components\StateComponent.h" />
-    <ClInclude Include="Systems\AnimationSystem.h" />
-    <ClInclude Include="Components\FrictionComponent.h" />
-    <ClInclude Include="Systems\FrictionSystem.h" />
-    <ClInclude Include="Systems\PlayerCollisionResolutionSystem.h" />
-    <ClInclude Include="Components\CollisionComponent.h" />
-    <ClInclude Include="Entities\FighterEntity.h" />
-    <ClInclude Include="Components\PlayerMotionComponent.h" />
-    <ClInclude Include="Systems\PlayerInputSystem.h" />
-    <ClInclude Include="Systems\GravitySystem.h" />
-    <ClInclude Include="Systems\CollisionDetectionSystem.h" />
-    <ClInclude Include="Components\AnimationComponent.h" />
-    <ClInclude Include="Components\BaseComponent.h" />
-    <ClInclude Include="Components\DimensionComponent.h" />
-    <ClInclude Include="Components\ExpirationComponent.h" />
-    <ClInclude Include="Components\InputComponent.h" />
-    <ClInclude Include="Components\ProjectileComponent.h" />
-    <ClInclude Include="Components\TextureComponent.h" />
-    <ClInclude Include="Components\VelocityComponent.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Entities\BaseEntity.h" />
-    <ClInclude Include="Entities\LaserEntity.h" />
-    <ClInclude Include="Entities\ShipEntity.h" />
-    <ClInclude Include="Systems\BaseSystem.h" />
-    <ClInclude Include="Systems\BounceSystem.h" />
-    <ClInclude Include="Systems\ExpiresSystem.h" />
-    <ClInclude Include="Systems\InputSystem.h" />
-    <ClInclude Include="Systems\MoveSystem.h" />
-    <ClInclude Include="Systems\RenderSystem.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="TerrainGenerator\HeightMap.h" />
+    <ClInclude Include="TerrainGenerator\Island.h" />
+    <ClInclude Include="TerrainGenerator\MapChunk.h" />
+    <ClInclude Include="TerrainGenerator\Noise.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="Entities\WallEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="media\aztlan_bg_2x.png" />

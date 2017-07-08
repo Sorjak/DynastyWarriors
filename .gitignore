@@ -33,3 +33,5 @@ Ankh.NoLoad
 
 *.sublime-project
 *.sublime-workspace
+
+lib/windows

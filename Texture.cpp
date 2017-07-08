@@ -61,6 +61,13 @@ bool Texture::Update(std::shared_ptr<HeightMap> heightMap) {
     int height = heightMap->getMapHeight();
     int width = heightMap->getMapWidth();
 
+	SDL_Color deep_water = { 0,0,205 };
+	SDL_Color water = { 0,191,255 };
+	SDL_Color sand = { 245,222,179 };
+	SDL_Color grass = { 0, 128, 0 };
+	SDL_Color mountain = { 139, 69, 19 };
+	SDL_Color snow = { 255, 250, 250 };
+
     unsigned char* pixels = new unsigned char[width * height * 4];
 
     for (int y = 0; y < height; y++) {
