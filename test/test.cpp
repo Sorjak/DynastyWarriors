@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <random>
 #include <vector>
 #include <map>
 
@@ -23,8 +24,10 @@ const int islandHeight = screenHeight * 2;
 
 const int chunksPerIsland = 50 * 50;
 
+const float morphPowerMod = .005;
 
-SDL_Rect landMorphBox = {0, 0, 50, 50};
+
+SDL_Rect landMorphBox = {0, 0, 150, 150};
 
 int currentFPS = 60;
 int frameStartTime;
@@ -60,7 +63,7 @@ struct Circle {
 void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
     shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
     SDL_Rect chunkRect = chunk->getWorldRect();
-    Circle c = {point.x, point.y, 25};
+    Circle c = {point.x, point.y, landMorphBox.w / 2};
 
     if (originalMap != NULL) {
         int width = originalMap->getMapWidth();
@@ -73,13 +76,13 @@ void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
 
                 if (c.CheckPoint(chunkRect.x + x, chunkRect.y + y)) {
                     float val = 1 - (c.DistanceFromCenter(chunkRect.x + x, chunkRect.y + y) / c.r);
-                    float curved = pow(val, 3) / (pow(val, 3) + pow(2.2 - 2.2 * val, 3));
+                    float curved = pow(val, 2.7) / (pow(val, 2.7) + pow(4.5 - 4.5 * val, 2.7));
                     float newValue = oldValue;
 
                     if (raise)
-                        newValue += curved * .001;
+                        newValue += curved * morphPowerMod;
                     else 
-                        newValue -= curved * .001;
+                        newValue -= curved * morphPowerMod;
 
                     newMap->setHeightAt(x, y, newValue);
                 } else {
@@ -93,7 +96,8 @@ void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
 }
 
 void MakeIsland(int x, int y) {
-    shared_ptr<Noise> n(new Noise(0, 1000));
+    int seed = rand() * 1000;
+    shared_ptr<Noise> n(new Noise(seed));
     SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
     pair<int, int> coord = make_pair(x, y);
 

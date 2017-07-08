@@ -24,6 +24,8 @@ class MapChunk {
 
         bool selected = false;
 
+        bool ocean = false;
+
     public:
         // bool loadingHeightMap = false;
         bool hasHeightMap = false;
@@ -42,6 +44,8 @@ class MapChunk {
         std::string getName();
 
         shared_ptr<HeightMap> getHeightMap();
+
+        bool isOceanChunk();
 
         int getWidth();
         int getHeight();

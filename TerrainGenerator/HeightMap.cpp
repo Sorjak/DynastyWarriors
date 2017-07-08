@@ -24,6 +24,19 @@ float* HeightMap::getValues() {
     return this->values;
 }
 
+float HeightMap::getAverageValue() {
+    float total = 0;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            float value = getHeightAt(x, y);
+            total += value;
+        }
+    }
+
+    return total / (width * height);
+}
+
 
 void HeightMap::setHeightAt(int x, int y, float value) {
     this->values[x + this->width * y] = value;

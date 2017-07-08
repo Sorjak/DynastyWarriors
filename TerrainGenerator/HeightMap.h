@@ -18,6 +18,7 @@ class HeightMap {
         ~HeightMap();
 
         float* getValues();
+        float getAverageValue();
         void setHeightAt(int x, int y, float value);
         float getHeightAt(int x, int y);
 

@@ -1,0 +1,122 @@
+#include "TerrainSystem.h"
+
+int distanceSquared(int x1, int y1, int x2, int y2) {
+    int deltaX = x2 - x1;
+    int deltaY = y2 - y1;
+    return deltaX*deltaX + deltaY*deltaY;
+}
+
+struct Circle {
+    int x, y;
+    int r;
+
+    bool CheckPoint(int x2, int y2) {
+        int distanceSqr = distanceSquared(x, y, x2, y2);
+        return distanceSqr < (r * r);
+    }
+
+    float DistanceFromCenter(int x2, int y2) {
+        return sqrt(distanceSquared(x, y, x2, y2));
+    }
+};
+
+
+TerrainSystem::TerrainSystem(int width, int height){
+    this->islandWidth = width * 2;
+    this->islandHeight = height * 2;
+
+    MakeIsland(0, 0);
+}
+
+
+TerrainSystem::~TerrainSystem(){}
+
+void TerrainSystem::update() {
+    CameraSystem* cam = (CameraSystem *) mEngine->getSystem("camera");
+    InputSystem* input = (InputSystem *) mEngine->getSystem("input");
+    SDL_Point mousePos = input->mousePosition;
+
+    int leftEdge = cam->view.x  / mEngine->screenWidth;
+    int topEdge = cam->view.y / mEngine->screenHeight;
+
+    for (int x = leftEdge - 1 ; x < leftEdge + 2; ++x)
+    {
+        for (int y = topEdge - 1; y < topEdge + 2; ++y)
+        {
+            pair<int, int> current = make_pair(x, y);
+            if (islands.count(current) == 0) {
+                MakeIsland(x, y);
+            }
+        }
+    }
+
+    for (auto i = islands.begin(); i != islands.end(); ++i)
+    {
+        shared_ptr<Island> island = i->second;
+
+        island->Update(&cam->view);
+
+        if (input->mouseIsDown) {
+            SDL_Point worldMouse = {mousePos.x + cam->view.x, mousePos.y + cam->view.y};
+            SDL_Rect mouseBox = {
+                mousePos.x + cam->view.x - (landMorphBox.w / 2), 
+                mousePos.y + cam->view.y - (landMorphBox.h / 2),
+                landMorphBox.w,
+                landMorphBox.h
+            };
+
+            vector<shared_ptr<MapChunk>> chunks = island->GetChunksInRect(&mouseBox);
+            for (auto c = chunks.begin(); c != chunks.end(); ++c) {
+                MorphLand((*c), worldMouse, input->mouseLeft);
+            }
+        }
+        
+    }
+}
+
+
+void TerrainSystem::MakeIsland(int x, int y) {
+    int seed = rand() * 1000;
+    shared_ptr<Noise> n(new Noise(seed));
+    SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
+    pair<int, int> coord = make_pair(x, y);
+
+    shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
+    islands[coord] = island;
+}
+
+
+void TerrainSystem::MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
+    shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
+    SDL_Rect chunkRect = chunk->getWorldRect();
+    Circle c = {point.x, point.y, landMorphBox.w / 2};
+
+    if (originalMap != NULL) {
+        int width = originalMap->getMapWidth();
+        int height = originalMap->getMapHeight();
+        shared_ptr<HeightMap> newMap(new HeightMap(width, height));
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                float oldValue = originalMap->getHeightAt(x, y);
+
+                if (c.CheckPoint(chunkRect.x + x, chunkRect.y + y)) {
+                    float val = 1 - (c.DistanceFromCenter(chunkRect.x + x, chunkRect.y + y) / c.r);
+                    float curved = pow(val, 2.7) / (pow(val, 2.7) + pow(4.5 - 4.5 * val, 2.7));
+                    float newValue = oldValue;
+
+                    if (raise)
+                        newValue += curved * morphPowerMod;
+                    else 
+                        newValue -= curved * morphPowerMod;
+
+                    newMap->setHeightAt(x, y, newValue);
+                } else {
+                    newMap->setHeightAt(x, y, oldValue);
+                }
+            }
+        }
+
+        chunk->Load(newMap);
+    }
+}

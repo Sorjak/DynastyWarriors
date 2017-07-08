@@ -19,8 +19,8 @@ BaseComponent* BaseEntity::getComponent(string get) {
 	return NULL;
 }
 
-// template <class T>
-// T* BaseEntity::getComponent(string to_get) {
+// template <typename T>
+// T* BaseEntity::getComponent() {
 //     if ( hasComponent(to_get) ) {
 //         return (T*) componentMap[to_get];
 //     }

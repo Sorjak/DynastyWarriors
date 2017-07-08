@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-#include <SDL2\SDL.h>
+#include <SDL2/SDL.h>
 
 #include "Components/BaseComponent.h"
 
@@ -15,7 +15,3 @@ using namespace std;
 void logSDLError(ostream &os, const string &msg);
 
 vector<string> getKeysFromMap(map<string, BaseComponent*>);
-
-
-template<class T>
-T InverseLerp(T min, T max, T value);

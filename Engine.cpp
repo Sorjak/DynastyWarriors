@@ -1,5 +1,6 @@
 #include "Engine.h"
 
+
 Engine::Engine() {
 	initGame();
 	initSystems();
@@ -20,8 +21,8 @@ Engine::~Engine() {
 void Engine::startGame() {
 	running = true;
 	
+	cout << "Starting game" << endl;
 	while (running) {
-
 		// Now let's iterate through the systems map and update everyone
 		for(map<string,BaseSystem*>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
 			it->second->update();
@@ -47,6 +48,8 @@ void Engine::initGame() {
 }
 
 void Engine::initSystems() {
+	cout << "Initializing Systems" << endl;
+
 	BaseSystem *input = new InputSystem();
 	input->init(this);
 	systemList["input"] = input;
@@ -91,7 +94,15 @@ void Engine::initSystems() {
 	// animation->init(this);
 	// systemList["animation"] = animation;
 
-	BaseSystem *render = new RenderSystem(SCREEN_WIDTH, SCREEN_HEIGHT, "Dynasty Warriors", "media/aztlan_bg_2x.png");
+	BaseSystem *Terrain = new TerrainSystem(screenWidth, screenHeight);
+	Terrain->init(this);
+	systemList["terrain"] = Terrain;
+
+	BaseSystem *Camera = new CameraSystem(screenWidth, screenHeight);
+	Camera->init(this);
+	systemList["camera"] = Camera;
+
+	BaseSystem *render = new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors");//"media/aztlan_bg_2x.png");
 	render->init(this);
 	systemList["render"] = render;
 }
@@ -158,4 +169,8 @@ long Engine::getNextId() {
 float Engine::getFPS() {
 	RenderSystem* rs = (RenderSystem*)systemList["render"];
 	return rs->getCurrentFPS();
+}
+
+BaseSystem* Engine::getSystem(string get) {
+	return systemList[get];
 }
