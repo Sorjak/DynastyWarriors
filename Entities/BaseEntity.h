@@ -18,8 +18,8 @@ public:
 	bool hasComponent(string);
 	BaseComponent* getComponent(string);
     
-    // template<class T>
-    // T* getComponent(string);
+    // template<typename T>
+    // T* getComponent();
 
 	long mID;
 	std::vector<string> systemFlags;

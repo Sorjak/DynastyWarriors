@@ -9,13 +9,13 @@ void outlineRect(SDL_Renderer* renderer, SDL_Rect* rect) {
 	SDL_SetRenderDrawColor(renderer, mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
-RenderSystem::RenderSystem(int width, int height, const char* title, const char* background_file)
+RenderSystem::RenderSystem(int width, int height, const char* title) //const char* background_file)
 {
 	mWidth  = width;
 	mHeight = height;
 	mWindow = SDL_CreateWindow(title, 100, 100, mWidth, mHeight, SDL_WINDOW_SHOWN);
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	mBackground = IMG_LoadTexture(mRenderer, background_file);
+	// mBackground = IMG_LoadTexture(mRenderer, background_file);
 
 	if( TTF_Init() == -1 ) {
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -37,8 +37,16 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
+	
+	TerrainSystem* terrain = (TerrainSystem*) mEngine->getSystem("terrain");
+	auto islands = terrain->islands;
+	CameraSystem* cam = (CameraSystem*) mEngine->getSystem("camera");
 
-	SDL_RenderCopy(mRenderer, mBackground, NULL, NULL);
+    for (auto i = islands.begin(); i != islands.end(); ++i)
+    {
+        i->second->Render(mRenderer, &cam->view);
+    }
+
 
 	for (size_t i = 0; i < entityList.size(); i++) {
 		DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");

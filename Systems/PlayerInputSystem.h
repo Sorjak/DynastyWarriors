@@ -30,7 +30,6 @@ public:
 
 	vector<SDL_Joystick*> mJoysticks;
 
-
 	PlayerMotionComponent* mPlayerMotion;
 	VelocityComponent* mPlayerVelocity;
 	DimensionComponent* mPlayerDimension;

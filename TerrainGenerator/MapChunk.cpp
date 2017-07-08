@@ -21,6 +21,11 @@ MapChunk::~MapChunk() {
 */
 void MapChunk::Load(std::shared_ptr<HeightMap> heightMap) {
     this->heightMap = heightMap;
+
+    float average = this->heightMap->getAverageValue();
+    
+    ocean = average <= -.1;
+
     this->hasHeightMap = true;
 
     if (hasTexture) {
@@ -60,6 +65,11 @@ shared_ptr<HeightMap> MapChunk::getHeightMap() {
         return this->heightMap;
 
     return NULL;
+}
+
+
+bool MapChunk::isOceanChunk() {
+    return ocean;
 }
 
 std::string MapChunk::getName() {

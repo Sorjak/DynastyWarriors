@@ -1,12 +1,10 @@
 #pragma once
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
-
 #include <vector>
+#include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "Utils.h"
 
@@ -30,9 +28,6 @@
 #include "Entities/FighterEntity.h"
 #include "Entities/DummyEntity.h"
 
-
-
-
 using namespace std;
 
 class Engine
@@ -50,6 +45,12 @@ public:
 	long getNextId();
 	float getFPS();
 
+	BaseSystem* getSystem(string);
+
+	const int screenWidth = 800;
+	const int screenHeight = 600;
+
+
 private:
 	void initGame();
 	void initSystems();
@@ -61,5 +62,7 @@ private:
 	map<string, BaseSystem*> systemList;
 	vector<BaseEntity*> entityList;
 	vector<BaseEntity*> toadd;
+
+
 };
 

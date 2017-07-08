@@ -33,12 +33,7 @@ class Texture {
 
         void PutPixelColor(SDL_Surface*, int, int, Uint32);
 
-        SDL_Color deep_water = {0,0,205};
-        SDL_Color water = {0,191,255};
-        SDL_Color sand = {245,222,179};
-        SDL_Color grass = {0, 128, 0};
-        SDL_Color mountain = {139, 69, 19};
-        SDL_Color snow = {255, 250, 250};
+
 
     public:
         Texture();

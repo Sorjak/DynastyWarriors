@@ -1,10 +1,12 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <string>
 
 #include "basesystem.h"
+#include "CameraSystem.h"
+#include "TerrainSystem.h"
 #include "../Components/TextureComponent.h"
 #include "../Components/DimensionComponent.h"
 #include "../Components/AnimationComponent.h"
@@ -12,7 +14,7 @@
 class RenderSystem : public BaseSystem
 {
 public:
-	RenderSystem(int width, int height, const char* title, const char* background_file);
+	RenderSystem(int width, int height, const char* title);//, const char* background_file);
 	~RenderSystem();
 
 	void update();
@@ -22,7 +24,7 @@ public:
 	SDL_Window *mWindow;
 	SDL_Renderer *mRenderer;
 	TTF_Font* mFont;
-	SDL_Texture* mBackground;
+	// SDL_Texture* mBackground;
 	
 
 private:
