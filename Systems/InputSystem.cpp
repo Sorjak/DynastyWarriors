@@ -14,7 +14,7 @@ void InputSystem::update() {
 
 		//If user presses any key
 		if (mEvent.type == SDL_KEYDOWN) {
-			CameraSystem* cam = (CameraSystem*) mEngine->getSystem("camera");
+			shared_ptr<CameraSystem> cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
 			SDL_Point delta = {0, 0};
 
             if (mEvent.key.keysym.sym == SDLK_q) {

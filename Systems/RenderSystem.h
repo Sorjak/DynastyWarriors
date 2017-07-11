@@ -7,6 +7,10 @@
 #include "basesystem.h"
 #include "CameraSystem.h"
 #include "TerrainSystem.h"
+
+class TerrainSystem;
+class CameraSystem;
+
 #include "../Components/TextureComponent.h"
 #include "../Components/DimensionComponent.h"
 #include "../Components/AnimationComponent.h"
@@ -17,6 +21,7 @@ public:
 	RenderSystem(int width, int height, const char* title);//, const char* background_file);
 	~RenderSystem();
 
+	void init(Engine* e);
 	void update();
 	int getCurrentFPS();
 	
@@ -26,6 +31,8 @@ public:
 	TTF_Font* mFont;
 	// SDL_Texture* mBackground;
 	
+	shared_ptr<TerrainSystem> terrain;
+	shared_ptr<CameraSystem> cam;
 
 private:
 	void displayFPSTexture();

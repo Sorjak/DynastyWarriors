@@ -23,7 +23,7 @@ class Noise
         float getRandom(float min, float max);
         int getRandom(int min, int max);
 
-        HeightMap* generateHeightMap(int width, int height, Vector2D* offset, SDL_Rect* islandBounds);
+        HeightMap* generateHeightMap(int width, int height, SDL_Point offset, SDL_Rect* islandBounds);
         
 
         HeightMap* generateSubMap(HeightMap* original, SDL_Rect* region);

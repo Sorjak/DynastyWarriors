@@ -18,8 +18,8 @@ class Island {
         int width = 0;
         int height = 0;
 
-        Vector2D* position;
-        Vector2D* coord;
+        SDL_Point position;
+        SDL_Point coord;
 
         map<pair<int, int>, shared_ptr<MapChunk>> chunks;
         vector<shared_ptr<MapChunk>> chunksVisible;
