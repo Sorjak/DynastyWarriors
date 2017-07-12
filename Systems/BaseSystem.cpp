@@ -4,6 +4,7 @@ BaseSystem::~BaseSystem() {
 	for (size_t i = 0; i < entityList.size(); i++) {
 		//delete entityList[i];
 	}
+
 }
 
 void BaseSystem::init(Engine* e) {

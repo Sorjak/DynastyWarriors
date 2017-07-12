@@ -16,9 +16,9 @@ class MapChunk {
         int width = 0;
         int height = 0;
 
-        Vector2D* localPosition;
-        Vector2D* worldPosition;
-        Vector2D* coord;
+        SDL_Point localPosition;
+        SDL_Point worldPosition;
+        SDL_Point coord;
         Texture* chunkTex = NULL;
         shared_ptr<HeightMap> heightMap;
 
@@ -49,8 +49,8 @@ class MapChunk {
 
         int getWidth();
         int getHeight();
-        Vector2D* getLocalPosition();
-        Vector2D* getWorldPosition();
+        SDL_Point getLocalPosition();
+        SDL_Point getWorldPosition();
 
         SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();

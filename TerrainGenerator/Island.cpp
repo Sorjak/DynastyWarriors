@@ -3,8 +3,8 @@
 Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     this->width     = bounds.w;
     this->height    = bounds.h;
-    this->coord     = new Vector2D(bounds.x, bounds.y);
-    this->position  = new Vector2D(bounds.x * bounds.w, bounds.y * bounds.h);
+    this->coord     = {bounds.x, bounds.y}; //new Vector2D(bounds.x, bounds.y);
+    this->position  = {bounds.x * bounds.w, bounds.y * bounds.h};
     this->noise     = n;
 
     chunksPerLine = sqrt(totalChunks);
@@ -22,8 +22,7 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
 }
 
 Island::~Island() {
-    delete coord;
-    delete position;
+
 }
 
 void Island::Update(SDL_Rect* view_rect) {
@@ -66,8 +65,8 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 }
 
 shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {
-    int islandX = point.x - position->x();
-    int islandY = point.y - position->y();
+    int islandX = point.x - position.x;
+    int islandY = point.y - position.y;
 
 
     return GetChunkFromPosition(islandX, islandY);
@@ -131,12 +130,12 @@ shared_ptr<MapChunk> Island::GetChunkFromPosition(int x, int y) {
 }
 
 SDL_Rect Island::getLocalRect() {
-    SDL_Rect out = {(int)coord->x(), (int)coord->y(), width, height};
+    SDL_Rect out = {(int) coord.x, (int) coord.y, width, height};
     return out;
 }
 
 SDL_Rect Island::getWorldRect() {
-    SDL_Rect out = {(int)position->x(), (int)position->y(), width, height};
+    SDL_Rect out = {(int) position.x, (int) position.y, width, height};
     return out;
 }
 

@@ -4,8 +4,7 @@
 
 #include "../Engine.h"
 
-class CameraSystem :
-    public BaseSystem
+class CameraSystem : public BaseSystem
 {
 
 private:

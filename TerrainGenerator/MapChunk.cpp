@@ -3,12 +3,12 @@
 MapChunk::MapChunk(SDL_Rect rect, SDL_Rect islandBounds) {
     this->width         = rect.w;
     this->height        = rect.h;
-    this->coord         = new Vector2D(rect.x, rect.y);
-    this->localPosition = new Vector2D(rect.x * rect.w, rect.y * rect.h);
-    this->worldPosition = new Vector2D(
-        (islandBounds.x * islandBounds.w) + localPosition->x(),
-        (islandBounds.y * islandBounds.h) + localPosition->y()
-    );
+    this->coord         = {rect.x, rect.y};
+    this->localPosition = {rect.x * rect.w, rect.y * rect.h};
+    this->worldPosition = {
+        (islandBounds.x * islandBounds.w) + localPosition.x,
+        (islandBounds.y * islandBounds.h) + localPosition.y
+    };
 }
 
 MapChunk::~MapChunk() {
@@ -46,7 +46,7 @@ void MapChunk::Render(SDL_Renderer* ren, int offsetX, int offsetY) {
     if (updateHeightMap)
         chunkTex->Update(this->heightMap);
 
-    chunkTex->Render(worldPosition->x() + offsetX, worldPosition->y() + offsetY); 
+    chunkTex->Render(worldPosition.x + offsetX, worldPosition.y + offsetY); 
 
     if (selected) {
         SDL_Rect r = getWorldRect();
@@ -73,14 +73,14 @@ bool MapChunk::isOceanChunk() {
 }
 
 std::string MapChunk::getName() {
-    return to_string(coord->x()) + ", " + to_string(coord->y());
+    return to_string(coord.x) + ", " + to_string(coord.y);
 }
 
-Vector2D* MapChunk::getLocalPosition() {
+SDL_Point MapChunk::getLocalPosition() {
     return this->localPosition;
 }
 
-Vector2D* MapChunk::getWorldPosition() {
+SDL_Point MapChunk::getWorldPosition() {
     return this->worldPosition;
 }
 
@@ -93,12 +93,12 @@ int MapChunk::getHeight() {
 }
 
 SDL_Rect MapChunk::getLocalRect() {
-    SDL_Rect out = {(int)localPosition->x(), (int)localPosition->y(), width, height};
+    SDL_Rect out = {(int) localPosition.x, (int) localPosition.y, width, height};
     return out;
 }
 
 SDL_Rect MapChunk::getWorldRect() {
-    SDL_Rect out = {(int)worldPosition->x(), (int)worldPosition->y(), width, height};
+    SDL_Rect out = {(int) worldPosition.x, (int) worldPosition.y, width, height};
     return out;
 }
 

@@ -21,19 +21,24 @@ struct Circle {
 };
 
 
-TerrainSystem::TerrainSystem(int width, int height){
-    this->islandWidth = width * 2;
-    this->islandHeight = height * 2;
+TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
+    this->islandWidth = screenWidth * islandSizeMod;
+    this->islandHeight = screenHeight * islandSizeMod;
 
     MakeIsland(0, 0);
+}
+
+void TerrainSystem::init(Engine* e) {
+    mEngine = e;
+
+    cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
+    input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));
 }
 
 
 TerrainSystem::~TerrainSystem(){}
 
 void TerrainSystem::update() {
-    CameraSystem* cam = (CameraSystem *) mEngine->getSystem("camera");
-    InputSystem* input = (InputSystem *) mEngine->getSystem("input");
     SDL_Point mousePos = input->mousePosition;
 
     int leftEdge = cam->view.x  / mEngine->screenWidth;
@@ -45,14 +50,22 @@ void TerrainSystem::update() {
         {
             pair<int, int> current = make_pair(x, y);
             if (islands.count(current) == 0) {
-                MakeIsland(x, y);
+                float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+                cout << "Random: " << r << endl;
+                if (r > .75) {
+                    MakeIsland(x, y);
+                } else {
+                    islands[current] = NULL;
+                }
             }
         }
     }
 
-    for (auto i = islands.begin(); i != islands.end(); ++i)
+    auto islands_in_view = getIslandsInRect(&cam->view);
+
+    for (auto i = islands_in_view.begin(); i != islands_in_view.end(); ++i)
     {
-        shared_ptr<Island> island = i->second;
+        shared_ptr<Island> island = (*i);
 
         island->Update(&cam->view);
 
@@ -72,6 +85,25 @@ void TerrainSystem::update() {
         }
         
     }
+}
+
+vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) {
+    vector<shared_ptr<Island>> islands_in_view;
+
+    for (auto i = islands.begin(); i != islands.end(); ++i)
+    {
+        shared_ptr<Island> island = i->second;
+
+        if (island != NULL) {
+            SDL_Rect islandRect = island->getWorldRect();
+
+            if (SDL_HasIntersection(view_rect, &islandRect)) {
+                islands_in_view.push_back(island);
+            }
+        }
+    }
+
+    return islands_in_view;
 }
 
 

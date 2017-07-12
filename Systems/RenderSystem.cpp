@@ -27,6 +27,13 @@ RenderSystem::RenderSystem(int width, int height, const char* title) //const cha
 	currentFPS = 60;
 }
 
+void RenderSystem::init(Engine* e) {
+	mEngine = e;
+
+	terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
+	cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
+}
+
 
 RenderSystem::~RenderSystem()
 {
@@ -38,13 +45,11 @@ void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
 	
-	TerrainSystem* terrain = (TerrainSystem*) mEngine->getSystem("terrain");
-	auto islands = terrain->islands;
-	CameraSystem* cam = (CameraSystem*) mEngine->getSystem("camera");
+	auto islands = terrain->getIslandsInRect(&cam->view);
 
     for (auto i = islands.begin(); i != islands.end(); ++i)
     {
-        i->second->Render(mRenderer, &cam->view);
+        (*i)->Render(mRenderer, &cam->view);
     }
 
 

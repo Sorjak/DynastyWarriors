@@ -11,7 +11,6 @@ Noise::Noise(int seed) {
 Noise::~Noise() {}
 
 
-
 float Noise::getRandom(float min, float max) {
     static std::uniform_int_distribution<int> uid(min, max);
     return uid(Generator);
@@ -27,7 +26,7 @@ float Noise::clamp(float x, float lower, float upper) {
 }
 
 HeightMap* Noise::generateHeightMap
-    (int width, int height, Vector2D* offset, SDL_Rect* islandBounds) {
+    (int width, int height, SDL_Point offset, SDL_Rect* islandBounds) {
 
     // cout << "Generating height map" << endl;
     // cout << "Seed: " << to_string(seed) << endl;
@@ -50,15 +49,14 @@ HeightMap* Noise::generateHeightMap
     float minNoiseHeight = 100.0;
     float maxNoiseHeight = -100.0; 
 
-    //Vector2D* octaveOffsets[octaves];
-	vector<shared_ptr<Vector2D>> octaveOffsets;
+	const int octaves = 5;
+
+    SDL_Point octaveOffsets[octaves];
     for (int i = 0; i < octaves; i++ ) {
-        float offsetX = getRandom(-10001, 10000) + offset->x();
-        float offsetY = getRandom(-10001, 10000) + offset->y();
+        float offsetX = getRandom(-10001, 10000) + offset.x;
+        float offsetY = getRandom(-10001, 10000) + offset.y;
 
-        shared_ptr<Vector2D> temp(new Vector2D(offsetX, offsetY));
-
-        octaveOffsets.push_back(temp);
+        octaveOffsets[i] = {(int) offsetX, (int) offsetY};
 
         maxPossibleHeight += amplitude;
         amplitude *= persistance;
@@ -76,8 +74,8 @@ HeightMap* Noise::generateHeightMap
             float currentHeight = 0.0;
 
             for (int i = 0; i < octaves; i++) {
-                float sampleX = (x - halfWidth + octaveOffsets[i]->x()) / (scale * frequency);
-                float sampleY = (y - halfHeight + octaveOffsets[i]->y()) / (scale * frequency);
+                float sampleX = (x - halfWidth + octaveOffsets[i].x) / (scale * frequency);
+                float sampleY = (y - halfHeight + octaveOffsets[i].y) / (scale * frequency);
 
                 float noiseVal = noiseModule.GetValue(sampleX, sampleY, 1.0);
                 currentHeight += noiseVal * amplitude;
@@ -96,8 +94,8 @@ HeightMap* Noise::generateHeightMap
             // Subtract falloff height from our current height
             if (falloff) {
                 // Get x an y values between -1 and 1
-                float i = ((offset->x() + x) / (float)islandBounds->w) * 2 - 1;
-                float j = ((offset->y() + y) / (float)islandBounds->h) * 2 - 1;
+                float i = ((offset.x + x) / (float) islandBounds->w) * 2 - 1;
+                float j = ((offset.y + y) / (float) islandBounds->h) * 2 - 1;
 
                 // cout << i << ", " << j << endl;
                 // Which one is closer to the edge?

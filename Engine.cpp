@@ -8,7 +8,7 @@ Engine::Engine() {
 }
 
 Engine::~Engine() {
-	//for (map<string, BaseSystem*>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
+	//for (map<string, shared_ptr<BaseSystem>>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
 	//	delete it->second;
 	//}
 
@@ -20,11 +20,12 @@ Engine::~Engine() {
 
 void Engine::startGame() {
 	running = true;
+	srand(static_cast<unsigned int>(time(0)));
 	
 	cout << "Starting game" << endl;
 	while (running) {
 		// Now let's iterate through the systems map and update everyone
-		for(map<string,BaseSystem*>::iterator it = systemList.begin(); it != systemList.end(); ++it) {
+		for(auto it = systemList.begin(); it != systemList.end(); ++it) {
 			it->second->update();
 		}
 
@@ -50,8 +51,7 @@ void Engine::initGame() {
 void Engine::initSystems() {
 	cout << "Initializing Systems" << endl;
 
-	BaseSystem *input = new InputSystem();
-	input->init(this);
+	shared_ptr<BaseSystem> input(new InputSystem());
 	systemList["input"] = input;
 
 	// BaseSystem *player_input = new PlayerInputSystem();
@@ -59,57 +59,30 @@ void Engine::initSystems() {
 	// systemList["player_input"] = player_input;
 
 	//Here we add the different input types;
-	InputSystem* myinput = (InputSystem*)systemList["input"];
-	myinput->inputList.push_back(input);
-
-	// GravitySystem *gravity = new GravitySystem(7.f);
-	// gravity->init(this);
-	// systemList["gravity"] = gravity;
-
-	// BaseSystem *move =  new MoveSystem();
-	// move->init(this);
-	// systemList["move"] = move;
-
-	// BaseSystem *bounce = new BounceSystem(SCREEN_WIDTH, SCREEN_HEIGHT);
-	// bounce->init(this);
-	// systemList["bounce"] = bounce;
-
-	// ExpiresSystem *expires = new ExpiresSystem();
-	// expires->init(this);
-	// systemList["expires"] = expires;
-
-	// CollisionDetectionSystem *collisionD = new CollisionDetectionSystem();
-	// collisionD->init(this);
-	// systemList["collides"] = collisionD;
-
-	// PlayerCollisionResolutionSystem *collisionR = new PlayerCollisionResolutionSystem();
-	// collisionR->init(this);
-	// systemList["player_resolves"] = collisionR;
-
-	// BaseSystem *friction = new FrictionSystem();
-	// friction->init(this);
-	// systemList["friction"] = friction;
+	// InputSystem* myinput = (InputSystem*)systemList["input"];
+	// input->inputList.push_back(input);
 
 	// BaseSystem *animation = new AnimationSystem(12);
 	// animation->init(this);
 	// systemList["animation"] = animation;
 
-	BaseSystem *Terrain = new TerrainSystem(screenWidth, screenHeight);
-	Terrain->init(this);
+	shared_ptr<BaseSystem> Terrain(new TerrainSystem(screenWidth, screenHeight));
 	systemList["terrain"] = Terrain;
 
-	BaseSystem *Camera = new CameraSystem(screenWidth, screenHeight);
-	Camera->init(this);
+	shared_ptr<BaseSystem> Camera(new CameraSystem(screenWidth, screenHeight));
 	systemList["camera"] = Camera;
 
-	BaseSystem *render = new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors");//"media/aztlan_bg_2x.png");
-	render->init(this);
+	shared_ptr<BaseSystem> render(new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors"));//"media/aztlan_bg_2x.png");
 	systemList["render"] = render;
+
+	for(auto it = systemList.begin(); it != systemList.end(); ++it) {
+		it->second->init(this);
+	}
 }
 
 void Engine::initEntities() {
-	int wallwidth = 32;
-	int wallheight = 32;
+	// int wallwidth = 32;
+	// int wallheight = 32;
 
 	addEntity(new FighterEntity(getNextId()));
 	addEntity(new DummyEntity(getNextId()));
@@ -151,10 +124,10 @@ void Engine::removeEntity(BaseEntity* e) {
 	}
 
 	if (pos >= 0) {
-		vector<BaseEntity*>::iterator it = entityList.begin()+pos;
+		auto it = entityList.begin()+pos;
 		entityList.erase(it);
 
-		for(map<string,BaseSystem*>::iterator itx = systemList.begin(); itx != systemList.end(); ++itx) {
+		for(auto itx = systemList.begin(); itx != systemList.end(); ++itx) {
 			itx->second->removeEntity(e);
 		}
 		delete e;
@@ -167,10 +140,10 @@ long Engine::getNextId() {
 }
 
 float Engine::getFPS() {
-	RenderSystem* rs = (RenderSystem*)systemList["render"];
+	shared_ptr<RenderSystem> rs = static_pointer_cast<RenderSystem>(systemList["render"]);
 	return rs->getCurrentFPS();
 }
 
-BaseSystem* Engine::getSystem(string get) {
+shared_ptr<BaseSystem> Engine::getSystem(string get) {
 	return systemList[get];
 }

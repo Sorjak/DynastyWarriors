@@ -15,9 +15,7 @@ void BounceSystem::update() {
 	for (size_t i = 0; i < entityList.size(); i++) {
 		BaseEntity* current = entityList[i];
 		DimensionComponent *dim = (DimensionComponent*) current->getComponent("dimension");
-		VelocityComponent *vel = (VelocityComponent*)current->getComponent("velocity");
 		SDL_Rect *rect = dim->getRect();
-		Vector2D *velocity = vel->getVelocity();
 		Vector2D *position = dim->getPosition();
 
 		int centerx = position->x() + (rect->w / 2);

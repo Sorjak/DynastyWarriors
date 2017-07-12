@@ -31,7 +31,7 @@ void PlayerInputSystem::update() {
 	if (initEntity()) {
 
 		int x_velocity = mPlayerMotion->xVelocity;
-		int y_velocity = mPlayerMotion->yVelocity;
+		// int y_velocity = mPlayerMotion->yVelocity;
 		Vector2D* velocity = mPlayerVelocity->getVelocity();
 
 		int joystickDeadZone = 8000;
@@ -91,9 +91,9 @@ void PlayerInputSystem::update() {
 void PlayerInputSystem::process(SDL_Event e) {
 	if (initEntity()) {
 
-		int x_velocity = mPlayerMotion->xVelocity;
-		int y_velocity = mPlayerMotion->yVelocity;
-		Vector2D* velocity = mPlayerVelocity->getVelocity();
+		// int x_velocity = mPlayerMotion->xVelocity;
+		// int y_velocity = mPlayerMotion->yVelocity;
+		// Vector2D* velocity = mPlayerVelocity->getVelocity();
 
 		//If user presses any key
 		if (e.type == SDL_KEYDOWN) {

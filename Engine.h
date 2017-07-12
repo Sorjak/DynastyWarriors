@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <string>
 
@@ -45,7 +46,7 @@ public:
 	long getNextId();
 	float getFPS();
 
-	BaseSystem* getSystem(string);
+	shared_ptr<BaseSystem> getSystem(string);
 
 	const int screenWidth = 800;
 	const int screenHeight = 600;
@@ -59,7 +60,7 @@ private:
 
 	int running;
 	int lastID;
-	map<string, BaseSystem*> systemList;
+	map<string, shared_ptr<BaseSystem>> systemList;
 	vector<BaseEntity*> entityList;
 	vector<BaseEntity*> toadd;
 
