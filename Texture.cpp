@@ -92,7 +92,7 @@ bool Texture::Update(std::shared_ptr<HeightMap> heightMap) {
         }
     }
 
-    bool returnVal = SDL_UpdateTexture( SDLTexture, NULL, &pixels[0], width * 4);
+    bool returnVal = SDL_UpdateTexture( SDLTexture, NULL, &pixels[0], width * 4) < 1;
     delete pixels;
     return returnVal;
 

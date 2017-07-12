@@ -18,5 +18,5 @@ public:
 
     void moveView(SDL_Point delta);
 
-    SDL_Rect view = {0, 0, 0, 0};
+	SDL_Rect view;
 };

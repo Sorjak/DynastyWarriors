@@ -1,8 +1,7 @@
 #include "CameraSystem.h"
 
 CameraSystem::CameraSystem(int screenWidth, int screenHeight) {
-    view.w = screenWidth;
-    view.h = screenHeight;
+	view = { 0, 0, screenWidth, screenHeight };
 
 }
 

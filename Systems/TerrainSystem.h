@@ -42,6 +42,6 @@ private:
     int islandWidth;
     int islandHeight;
 
-    SDL_Rect landMorphBox = {0, 0, 150, 150};
+    SDL_Rect landMorphBox;
 };
 

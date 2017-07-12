@@ -32,7 +32,7 @@ class Noise
         bool updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region);
 
         const float scale = 100.0;
-        const int octaves = 5;
+        
         const float persistance = .5;
         const float lacunarity = 2.0;
 

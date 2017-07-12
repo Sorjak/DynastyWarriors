@@ -7,7 +7,7 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     this->position  = {bounds.x * bounds.w, bounds.y * bounds.h};
     this->noise     = n;
 
-    chunksPerLine = sqrt(totalChunks);
+    chunksPerLine = (int) sqrt(totalChunks);
     int chunkWidth  = this->width / this->chunksPerLine;
     int chunkHeight = this->height / this->chunksPerLine;
 
@@ -81,8 +81,7 @@ vector<shared_ptr<MapChunk>> Island::GetChunksInRect(SDL_Rect* area) {
 
         SDL_Rect chunkRect = chunk->getWorldRect(); 
 
-        bool inRect = SDL_HasIntersection(area, &chunkRect);
-        if (inRect)
+        if (SDL_HasIntersection(area, &chunkRect) == SDL_TRUE)
             output.push_back(chunk);
     }
 

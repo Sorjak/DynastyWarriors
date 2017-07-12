@@ -23,7 +23,7 @@ public:
 
 	void init(Engine* e);
 	void update();
-	int getCurrentFPS();
+	float getCurrentFPS();
 	
 
 	SDL_Window *mWindow;
@@ -37,7 +37,7 @@ public:
 private:
 	void displayFPSTexture();
 	void displayText(SDL_Color, SDL_Rect*, string);
-	int currentFPS;
+	float currentFPS;
 	int frameStartTime;
 	int frameEndTime;
 	int fpsTimer;

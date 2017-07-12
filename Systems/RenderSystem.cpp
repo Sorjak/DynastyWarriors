@@ -79,7 +79,7 @@ void RenderSystem::update() {
 	}
 	//Calculate FPS
 	if (frameStartTime - fpsTimer >= 1000) {
-		currentFPS = framesElapsed;
+		currentFPS = framesElapsed * 1.0;
 		framesElapsed = 0;
 		fpsTimer = SDL_GetTicks();
 	} else {
@@ -110,7 +110,7 @@ void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {
 	SDL_free( renderTex );
 }
 
-int RenderSystem::getCurrentFPS() {
+float RenderSystem::getCurrentFPS() {
 	return currentFPS;
 }
 

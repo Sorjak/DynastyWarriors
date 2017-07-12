@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window* window): 
+Renderer::Renderer(SDL_Window* window)
 {
     this->mWindow   = window;
     this->mRenderer = nullptr;

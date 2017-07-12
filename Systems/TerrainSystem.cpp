@@ -25,6 +25,8 @@ TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
     this->islandWidth = screenWidth * islandSizeMod;
     this->islandHeight = screenHeight * islandSizeMod;
 
+	landMorphBox = { 0, 0, 150, 150 };
+
     MakeIsland(0, 0);
 }
 
