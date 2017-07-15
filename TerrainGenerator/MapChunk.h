@@ -45,6 +45,8 @@ class MapChunk {
 
         shared_ptr<HeightMap> getHeightMap();
 
+		float getHeightAt(int x, int y);
+
         bool isOceanChunk();
 
         int getWidth();

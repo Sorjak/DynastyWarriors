@@ -58,10 +58,10 @@ void InputSystem::update() {
             mousePosition.y = mEvent.motion.y;
         }
 
-		for (size_t i = 0; i < inputList.size(); i++) {
-			PlayerInputSystem* pi = (PlayerInputSystem*)inputList[i];
-			pi->process(mEvent);
-		}
+		//for (size_t i = 0; i < inputList.size(); i++) {
+		//	PlayerInputSystem* pi = (PlayerInputSystem*)inputList[i];
+		//	pi->process(mEvent);
+		//}
 		
 	}
 

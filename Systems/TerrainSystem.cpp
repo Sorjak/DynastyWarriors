@@ -54,11 +54,11 @@ void TerrainSystem::update() {
             if (islands.count(current) == 0) {
                 float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                 cout << "Random: " << r << endl;
-                if (r > .75) {
+                //if (r > .75) {
                     MakeIsland(x, y);
-                } else {
-                    islands[current] = NULL;
-                }
+                //} else {
+                //    islands[current] = NULL;
+                //}
             }
         }
     }

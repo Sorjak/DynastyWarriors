@@ -88,7 +88,7 @@ HeightMap* Noise::generateHeightMap
             else if (currentHeight < minNoiseHeight) { minNoiseHeight = currentHeight; }
 
             // Normalize and clamp resulting height
-            float normalizedHeight = (currentHeight + 1) / (maxPossibleHeight / 0.9f);
+			float normalizedHeight = (currentHeight + 1) / (maxPossibleHeight);
             float clampedHeight = clamp(normalizedHeight, 0.0f, 100.0f);
 
             // Subtract falloff height from our current height
@@ -103,7 +103,8 @@ HeightMap* Noise::generateHeightMap
 
                 // Gradual increase curve from 0 to 1
                 float falloffHeight = pow(val, a) / (pow(val, a) + pow(b - b * val, a));
-                clampedHeight -= falloffHeight;
+
+				clampedHeight -= falloffHeight;
             }
 
             heightMap->setHeightAt(x, y, clampedHeight);

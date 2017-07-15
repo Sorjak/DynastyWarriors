@@ -86,15 +86,16 @@ bool Texture::Update(std::shared_ptr<HeightMap> heightMap) {
             pixels[ offset + 0 ] = current->b;        // b
             pixels[ offset + 1 ] = current->g;        // g
             pixels[ offset + 2 ] = current->r;        // r
-            pixels[ offset + 3 ] = SDL_ALPHA_OPAQUE;    // a
+            pixels[ offset + 3 ] = SDL_ALPHA_OPAQUE;  // a
 
             // cout << to_string(x) << ", " << to_string(y) << ": " << to_string() << "\n";
         }
     }
 
-    bool returnVal = SDL_UpdateTexture( SDLTexture, NULL, &pixels[0], width * 4) < 1;
+	SDL_UpdateTexture(SDLTexture, NULL, &pixels[0], width * 4);
+
     delete pixels;
-    return returnVal;
+    return true;
 
 }
 

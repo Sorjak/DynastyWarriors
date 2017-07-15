@@ -84,20 +84,20 @@ void Engine::initEntities() {
 	// int wallwidth = 32;
 	// int wallheight = 32;
 
-	addEntity(new FighterEntity(getNextId()));
-	addEntity(new DummyEntity(getNextId()));
+	//addEntity(new FighterEntity(getNextId()));
+	//addEntity(new DummyEntity(getNextId()));
 
-	SDL_Rect leftwall = {250, 330, 180, 32};
-	addEntity(new WallEntity(getNextId(), &leftwall));
+	//SDL_Rect leftwall = {250, 330, 180, 32};
+	//addEntity(new WallEntity(getNextId(), &leftwall));
 
-	SDL_Rect rightwall = { 835, 330, 180, 32 };
-	addEntity(new WallEntity(getNextId(), &rightwall));
+	//SDL_Rect rightwall = { 835, 330, 180, 32 };
+	//addEntity(new WallEntity(getNextId(), &rightwall));
 
-	SDL_Rect  topwall = {540, 250, 200, 32};
-	addEntity(new WallEntity(getNextId(), &topwall));
+	//SDL_Rect  topwall = {540, 250, 200, 32};
+	//addEntity(new WallEntity(getNextId(), &topwall));
 
-	SDL_Rect  bottomwall = {140, 490, 1000, 32};
-	addEntity(new WallEntity(getNextId(), &bottomwall));
+	//SDL_Rect  bottomwall = {140, 490, 1000, 32};
+	//addEntity(new WallEntity(getNextId(), &bottomwall));
 
 }
 

@@ -7,6 +7,13 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     this->position  = {bounds.x * bounds.w, bounds.y * bounds.h};
     this->noise     = n;
 
+	deep_water = { 0,0,205 };
+	water = { 0,191,255 };
+	sand = { 245,222,179 };
+	grass = { 0, 128, 0 };
+	mountain = { 139, 69, 19 };
+	snow = { 255, 250, 250 };
+
     chunksPerLine = (int) sqrt(totalChunks);
     int chunkWidth  = this->width / this->chunksPerLine;
     int chunkHeight = this->height / this->chunksPerLine;
@@ -19,6 +26,8 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
             AddChunk(chunkRect);
         }
     }
+
+	islandTex = nullptr;
 }
 
 Island::~Island() {
@@ -57,11 +66,24 @@ void Island::LoadChunk(shared_ptr<MapChunk> chunk) {
 
 void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 
+	if (islandTex == nullptr) {
+		islandTex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, width, height);
+		hasTexture = true;
+	}
+
     for (auto i = chunksVisible.begin(); i != chunksVisible.end(); ++i)
     {
         shared_ptr<MapChunk> chunk = (*i);
-        chunk->Render(ren, -view_rect->x, -view_rect->y);
+		UpdateTexture(chunk);
+        //chunk->Render(ren, -view_rect->x, -view_rect->y);
+
     }
+
+	SDL_Rect renderRect = { position.x - view_rect->x, position.y - view_rect->y, width, height };
+
+	if (hasTexture && chunksVisible.size() > 0)
+		SDL_RenderCopy(ren, islandTex, NULL, renderRect);
 }
 
 shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {
@@ -136,5 +158,36 @@ SDL_Rect Island::getLocalRect() {
 SDL_Rect Island::getWorldRect() {
     SDL_Rect out = {(int) position.x, (int) position.y, width, height};
     return out;
+}
+
+
+void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
+	SDL_Rect area = chunk->getLocalRect();
+
+	unsigned char* pixels = new unsigned char[area.w * area.h * 4];
+
+	for (int y = 0; y < area.h; y++) {
+		for (int x = 0; x < area.w; x++) {
+			const unsigned int offset = (area.w * 4 * y) + x * 4;
+			double value = chunk->getHeightAt(x, y);
+
+			SDL_Color* current = &water;
+			if (value < .15) { current = &deep_water; }
+			if (value >= .15 && value < .3) { current = &water; }
+			if (value >= .3 && value < .4) { current = &sand; }
+			if (value >= .4 && value < .7) { current = &grass; }
+			if (value >= .7 && value < .9) { current = &mountain; }
+			if (value > .9) { current = &snow; }
+
+			pixels[offset + 0] = current->b;        // b
+			pixels[offset + 1] = current->g;        // g
+			pixels[offset + 2] = current->r;        // r
+			pixels[offset + 3] = SDL_ALPHA_OPAQUE;  // a
+		}
+	}
+
+	SDL_UpdateTexture(islandTex, &area, &pixels[0], area.w * 4);
+
+	delete pixels;
 }
 

@@ -67,6 +67,11 @@ shared_ptr<HeightMap> MapChunk::getHeightMap() {
     return NULL;
 }
 
+float MapChunk::getHeightAt(int x, int y)
+{
+	return heightMap->getHeightAt(x, y);
+}
+
 
 bool MapChunk::isOceanChunk() {
     return ocean;

@@ -36,7 +36,7 @@ private:
     void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise);
 
     const int chunksPerIsland = 50 * 50;
-    const float islandSizeMod = .5;
+    const float islandSizeMod = 1;
     const float morphPowerMod = .005;
 
     int islandWidth;

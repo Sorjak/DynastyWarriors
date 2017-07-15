@@ -64,14 +64,14 @@ void RenderSystem::update() {
 			TextureComponent *tex = (TextureComponent*) entityList[i]->getComponent("texture");
 			renderTex = tex->getTexture(mRenderer);
 			renderRect = dim->getRect();
-		} else if ( entityList[i]->hasComponent("animation") ) {
-			AnimationComponent *ac = (AnimationComponent*) entityList[i]->getComponent("animation");
-			renderTex = ac->getCurrentTexture(mRenderer);
-			sourceRect = ac->getIndexRect();
-			renderRect = dim->getRect();
-			if (dim->getFacing() == 1) {
-				flip = SDL_FLIP_HORIZONTAL;
-			}
+		//} else if ( entityList[i]->hasComponent("animation") ) {
+		//	AnimationComponent *ac = (AnimationComponent*) entityList[i]->getComponent("animation");
+		//	renderTex = ac->getCurrentTexture(mRenderer);
+		//	sourceRect = ac->getIndexRect();
+		//	renderRect = dim->getRect();
+		//	if (dim->getFacing() == 1) {
+		//		flip = SDL_FLIP_HORIZONTAL;
+		//	}
 		}
 		
 		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
@@ -94,9 +94,9 @@ void RenderSystem::displayFPSTexture() {
 	SDL_Color color; color.r = 255; color.b = 255; color.g = 255;
 	string fpsString = "FPS: ";
 
-	fpsString += to_string(getCurrentFPS());
+	fpsString += to_string((int) getCurrentFPS());
 
-	SDL_Rect rect = {5, 5, 36, 24};
+	SDL_Rect rect = {5, 5, 52, 24};
 
 	displayText(color, &rect, fpsString);
 }

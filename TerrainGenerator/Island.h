@@ -30,9 +30,20 @@ class Island {
 
         shared_ptr<Noise> noise;
 
+		SDL_Texture* islandTex;
+
+		SDL_Color deep_water;
+		SDL_Color water;
+		SDL_Color sand;
+		SDL_Color grass;
+		SDL_Color mountain;
+		SDL_Color snow;
+
     public:
         Island(SDL_Rect rect, shared_ptr<Noise> n, int totalChunks);
         ~Island();
+
+		bool hasTexture = false;
 
         // void Render(SDL_Renderer* ren);
         void Update(SDL_Rect* area);
@@ -50,6 +61,7 @@ class Island {
         shared_ptr<MapChunk> GetChunkFromCoord(int x, int y);
         shared_ptr<MapChunk> GetChunkFromPosition(int x, int y);
 
+		void UpdateTexture(shared_ptr<MapChunk> chunk);
 
         SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();
