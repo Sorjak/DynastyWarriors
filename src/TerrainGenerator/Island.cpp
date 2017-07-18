@@ -66,7 +66,7 @@ void Island::LoadChunk(shared_ptr<MapChunk> chunk) {
 
 void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 
-	if (islandTex == nullptr) {
+	if (!hasTexture) {
 		islandTex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, width, height);
 		hasTexture = true;
@@ -75,7 +75,10 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
     for (auto i = chunksVisible.begin(); i != chunksVisible.end(); ++i)
     {
         shared_ptr<MapChunk> chunk = (*i);
-		UpdateTexture(chunk);
+        if (chunk->dirty){
+		  UpdateTexture(chunk);
+          chunk->dirty = false;
+        }
         //chunk->Render(ren, -view_rect->x, -view_rect->y);
 
     }
@@ -83,7 +86,7 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 	SDL_Rect renderRect = { position.x - view_rect->x, position.y - view_rect->y, width, height };
 
 	if (hasTexture && chunksVisible.size() > 0)
-		SDL_RenderCopy(ren, islandTex, NULL, renderRect);
+		SDL_RenderCopy(ren, islandTex, NULL, &renderRect);
 }
 
 shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {

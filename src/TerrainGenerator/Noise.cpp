@@ -1,11 +1,10 @@
 #include "Noise.h"
 
-Noise::Noise(int minSeed, int maxSeed) {
-    this->seed = getRandom(minSeed, maxSeed);
-}
-
-Noise::Noise(int seed) {
+Noise::Noise(int seed, float persistance, float lacunarity, float scale) {
     this->seed = seed;
+    this->persistance = persistance;
+    this->lacunarity = lacunarity;
+    this->scale = scale;
 }
 
 Noise::~Noise() {}
@@ -25,7 +24,7 @@ float Noise::clamp(float x, float lower, float upper) {
     return min(upper, max(x, lower));
 }
 
-HeightMap* Noise::generateHeightMap
+shared_ptr<HeightMap> Noise::generateHeightMap
     (int width, int height, SDL_Point offset, SDL_Rect* islandBounds) {
 
     // cout << "Generating height map" << endl;
@@ -37,7 +36,7 @@ HeightMap* Noise::generateHeightMap
     // cout << "Offset: x: " << offset->x() << ", y: " <<  offset->y() << endl;
 
     Generator.seed(seed);
-    HeightMap* heightMap = new HeightMap(width, height);
+    shared_ptr<HeightMap> heightMap(new HeightMap(width, height));
 
     float maxPossibleHeight = 0;
     float amplitude = 1.0;
@@ -117,17 +116,17 @@ HeightMap* Noise::generateHeightMap
     return heightMap;
 }
 
-HeightMap* Noise::generateSubMap(HeightMap* original, SDL_Rect* region) {
+shared_ptr<HeightMap> Noise::generateSubMap(shared_ptr<HeightMap> original, SDL_Rect* region) {
     int mapWidth = region->w;
     int mapHeight = region->h;
 
-    HeightMap* submap = new HeightMap(mapWidth, mapHeight);
+    shared_ptr<HeightMap> submap(new HeightMap(mapWidth, mapHeight));
 
     updateSubMap(original, submap, region);
     return submap;
 }
 
-bool Noise::updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* region) {
+bool Noise::updateSubMap(shared_ptr<HeightMap> original, shared_ptr<HeightMap> submap, SDL_Rect* region) {
 
     for (int y = 0; y < region->h; y++) {
         for (int x = 0; x < region->w; x++) {
@@ -140,7 +139,7 @@ bool Noise::updateSubMap(HeightMap* original, HeightMap* submap, SDL_Rect* regio
             // float newHeight = noiseModule.GetValue(x, y, 1.0); //submap->getHeightAt(x, y);
             // float clampedHeight = clamp(origHeight + (newHeight / 1.0f), 0.0f, 100.0f);
 
-            submap->setHeightAt(x, y, origHeight);
+            // submap->setHeightAt(x, y, origHeight);
         }
     }
 

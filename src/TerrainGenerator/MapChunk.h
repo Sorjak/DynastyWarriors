@@ -26,11 +26,15 @@ class MapChunk {
 
         bool ocean = false;
 
+
+
     public:
         // bool loadingHeightMap = false;
         bool hasHeightMap = false;
         bool hasTexture = false;
         bool updateHeightMap = false;
+
+        bool dirty = false;
 
         MapChunk(SDL_Rect rect, SDL_Rect islandBounds);
         ~MapChunk();
@@ -46,8 +50,6 @@ class MapChunk {
         shared_ptr<HeightMap> getHeightMap();
 
 		float getHeightAt(int x, int y);
-
-        bool isOceanChunk();
 
         int getWidth();
         int getHeight();

@@ -40,6 +40,7 @@ void Engine::setRunning(bool set) {
 }
 
 void Engine::endGame() {
+	cout << "Ending Game" << endl;
 	SDL_Quit();
 }
 

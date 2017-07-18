@@ -52,8 +52,8 @@ void TerrainSystem::update() {
         {
             pair<int, int> current = make_pair(x, y);
             if (islands.count(current) == 0) {
-                float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                cout << "Random: " << r << endl;
+                // float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+                // cout << "Random: " << r << endl;
                 //if (r > .75) {
                     MakeIsland(x, y);
                 //} else {
@@ -82,6 +82,7 @@ void TerrainSystem::update() {
 
             vector<shared_ptr<MapChunk>> chunks = island->GetChunksInRect(&mouseBox);
             for (auto c = chunks.begin(); c != chunks.end(); ++c) {
+                (*c)->dirty = true;
                 MorphLand((*c), worldMouse, input->mouseLeft);
             }
         }
@@ -111,7 +112,7 @@ vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) 
 
 void TerrainSystem::MakeIsland(int x, int y) {
     int seed = rand() * 1000;
-    shared_ptr<Noise> n(new Noise(seed));
+    shared_ptr<Noise> n(new Noise(seed, .5, 2.0, 100.0));
     SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
     pair<int, int> coord = make_pair(x, y);
 
@@ -121,18 +122,18 @@ void TerrainSystem::MakeIsland(int x, int y) {
 
 
 void TerrainSystem::MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
-    shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
+    // shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
     SDL_Rect chunkRect = chunk->getWorldRect();
     Circle c = {point.x, point.y, landMorphBox.w / 2};
 
-    if (originalMap != NULL) {
-        int width = originalMap->getMapWidth();
-        int height = originalMap->getMapHeight();
+    if (chunk->hasHeightMap) {
+        int width = chunk->getWidth(); // originalMap->getMapWidth();
+        int height = chunk->getHeight(); //originalMap->getMapHeight();
         shared_ptr<HeightMap> newMap(new HeightMap(width, height));
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                float oldValue = originalMap->getHeightAt(x, y);
+                float oldValue = chunk->getHeightAt(x, y);
 
                 if (c.CheckPoint(chunkRect.x + x, chunkRect.y + y)) {
                     float val = 1 - (c.DistanceFromCenter(chunkRect.x + x, chunkRect.y + y) / c.r);

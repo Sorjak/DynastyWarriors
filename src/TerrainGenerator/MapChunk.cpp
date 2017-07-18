@@ -9,6 +9,8 @@ MapChunk::MapChunk(SDL_Rect rect, SDL_Rect islandBounds) {
         (islandBounds.x * islandBounds.w) + localPosition.x,
         (islandBounds.y * islandBounds.h) + localPosition.y
     };
+
+
 }
 
 MapChunk::~MapChunk() {
@@ -21,10 +23,11 @@ MapChunk::~MapChunk() {
 */
 void MapChunk::Load(std::shared_ptr<HeightMap> heightMap) {
     this->heightMap = heightMap;
+    this->dirty = true;
 
-    float average = this->heightMap->getAverageValue();
+    // float average = this->heightMap->getAverageValue();
     
-    ocean = average <= -.1;
+    // ocean = average <= -.1;
 
     this->hasHeightMap = true;
 
@@ -70,11 +73,6 @@ shared_ptr<HeightMap> MapChunk::getHeightMap() {
 float MapChunk::getHeightAt(int x, int y)
 {
 	return heightMap->getHeightAt(x, y);
-}
-
-
-bool MapChunk::isOceanChunk() {
-    return ocean;
 }
 
 std::string MapChunk::getName() {

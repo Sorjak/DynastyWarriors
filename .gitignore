@@ -30,8 +30,11 @@ Ankh.NoLoad
 *.opensdf
 *.exe
 *.exe.stackdump
+*.o
+*.d
 
 *.sublime-project
 *.sublime-workspace
 
 lib/windows
+build/

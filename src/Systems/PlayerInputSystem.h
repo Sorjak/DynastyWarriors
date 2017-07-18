@@ -3,6 +3,8 @@
 
 #include "../Engine.h"
 #include "../Vector2D.h"
+#include "../Entities/FighterEntity.h"
+
 #include "../Components/PlayerMotionComponent.h"
 #include "../Components/VelocityComponent.h"
 #include "../Components/StateComponent.h"

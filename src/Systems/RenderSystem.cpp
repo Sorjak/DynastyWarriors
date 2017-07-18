@@ -74,7 +74,7 @@ void RenderSystem::update() {
 		//	}
 		}
 		
-		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, NULL, NULL, flip);
+		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, 0, NULL, flip);
 
 	}
 	//Calculate FPS
