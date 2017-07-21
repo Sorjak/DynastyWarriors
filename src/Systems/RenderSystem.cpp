@@ -54,7 +54,7 @@ void RenderSystem::update() {
 
 
 	for (size_t i = 0; i < entityList.size(); i++) {
-		DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");
+		// DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");
 		SDL_Texture* renderTex;
 		SDL_Rect* sourceRect = NULL;
 		SDL_Rect* renderRect;
@@ -63,7 +63,7 @@ void RenderSystem::update() {
 		if ( entityList[i]->hasComponent("texture")  ) {
 			TextureComponent *tex = (TextureComponent*) entityList[i]->getComponent("texture");
 			renderTex = tex->getTexture(mRenderer);
-			renderRect = dim->getRect();
+			// renderRect = dim->getRect();
 		//} else if ( entityList[i]->hasComponent("animation") ) {
 		//	AnimationComponent *ac = (AnimationComponent*) entityList[i]->getComponent("animation");
 		//	renderTex = ac->getCurrentTexture(mRenderer);
@@ -85,6 +85,7 @@ void RenderSystem::update() {
 	} else {
 		framesElapsed++;
 	}
+	
 	displayFPSTexture();
 	SDL_RenderPresent(mRenderer);
 	frameEndTime = SDL_GetTicks();
@@ -104,10 +105,11 @@ void RenderSystem::displayFPSTexture() {
 void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {
 	SDL_Surface* textSurface = TTF_RenderText_Solid( mFont, text.c_str(), color );
 	SDL_Texture* renderTex = SDL_CreateTextureFromSurface( mRenderer, textSurface );
+	SDL_FreeSurface( textSurface );
 
 	SDL_RenderCopy( mRenderer, renderTex, NULL, rect );
-	SDL_FreeSurface( textSurface );
-	SDL_free( renderTex );
+	
+	SDL_DestroyTexture( renderTex );
 }
 
 float RenderSystem::getCurrentFPS() {

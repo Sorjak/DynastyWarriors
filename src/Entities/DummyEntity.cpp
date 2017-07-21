@@ -13,10 +13,7 @@ DummyEntity::DummyEntity(long id){
 	systemFlags.push_back("animation");
 	systemFlags.push_back("player_resolves");
 
-	componentMap["dimension"] = new DimensionComponent(500, 400, 64, 64, -1); // x, y, w, h, facing
-	componentMap["velocity"] = new VelocityComponent(0, 0);
-	componentMap["collision"] = new CollisionComponent();
-	componentMap["state"] = new StateComponent("IDLE", "GROUND", "IDLE");
+	componentMap["state"] = new StateComponent();
 
 	map<string, Animation*> state_map;
 	state_map["IDLE"] = new Animation(18, 8);

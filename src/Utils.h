@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cmath>
 #include <string>
 #include <map>
 #include <vector>
@@ -15,3 +16,5 @@ using namespace std;
 void logSDLError(ostream &os, const string &msg);
 
 vector<string> getKeysFromMap(map<string, BaseComponent*>);
+
+float smoothGradient(float val, float a, float b);

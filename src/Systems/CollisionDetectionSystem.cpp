@@ -17,27 +17,27 @@ CollisionDetectionSystem::~CollisionDetectionSystem() {}
 
 void CollisionDetectionSystem::update() {
 
-	for (size_t i = 0; i < entityList.size(); i++) {
-		if (entityList[i]->hasComponent("velocity") ) {
-			CollisionComponent *cc = (CollisionComponent*) entityList[i]->componentMap["collision"];
-			DimensionComponent *adim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
-			SDL_Rect *arect = adim->getRect();
-			SDL_Rect *aLastRect = adim->getLastRect();
-			cc->clearCollisions();
+	// for (size_t i = 0; i < entityList.size(); i++) {
+	// 	if (entityList[i]->hasComponent("velocity") ) {
+	// 		CollisionComponent *cc = (CollisionComponent*) entityList[i]->componentMap["collision"];
+	// 		DimensionComponent *adim = (DimensionComponent*) entityList[i]->componentMap["dimension"];
+	// 		SDL_Rect *arect = adim->getRect();
+	// 		SDL_Rect *aLastRect = adim->getLastRect();
+	// 		cc->clearCollisions();
 		
-			for (size_t j = 0; j < entityList.size(); j++) {
-				if (i != j) {
-					DimensionComponent *bdim = (DimensionComponent*) entityList[j]->componentMap["dimension"];
-					SDL_Rect *brect = bdim->getRect();
+	// 		for (size_t j = 0; j < entityList.size(); j++) {
+	// 			if (i != j) {
+	// 				DimensionComponent *bdim = (DimensionComponent*) entityList[j]->componentMap["dimension"];
+	// 				SDL_Rect *brect = bdim->getRect();
 
-					if (isColliding(arect, brect) == 1) {
-						int direction = collidedFrom(aLastRect, brect);
-						cc->mCollidingWith->push_back(make_pair(entityList[j], direction));
-					}
-				}
-			}
-		}
-	}
+	// 				if (isColliding(arect, brect) == 1) {
+	// 					int direction = collidedFrom(aLastRect, brect);
+	// 					cc->mCollidingWith->push_back(make_pair(entityList[j], direction));
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	
 }

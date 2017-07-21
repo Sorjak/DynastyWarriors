@@ -2,19 +2,22 @@
 
 #include "basesystem.h"
 
-#include "../Engine.h"
+#include "InputSystem.h"
+class InputSystem;
 
 class CameraSystem : public BaseSystem
 {
 
 private:
-    int moveAmount = 10;
+    const int moveAmount = 10;
+    shared_ptr<InputSystem> input;
 
 public:
     CameraSystem(int, int);
     ~CameraSystem();
 
     void update();
+    void init(Engine* e);
 
     void moveView(SDL_Point delta);
 

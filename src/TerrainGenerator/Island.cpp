@@ -3,7 +3,7 @@
 Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     this->width     = bounds.w;
     this->height    = bounds.h;
-    this->coord     = {bounds.x, bounds.y}; //new Vector2D(bounds.x, bounds.y);
+    this->coord     = {bounds.x, bounds.y};
     this->position  = {bounds.x * bounds.w, bounds.y * bounds.h};
     this->noise     = n;
 
@@ -174,17 +174,17 @@ void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
 			const unsigned int offset = (area.w * 4 * y) + x * 4;
 			double value = chunk->getHeightAt(x, y);
 
-			SDL_Color* current = &water;
-			if (value < .15) { current = &deep_water; }
-			if (value >= .15 && value < .3) { current = &water; }
-			if (value >= .3 && value < .4) { current = &sand; }
-			if (value >= .4 && value < .7) { current = &grass; }
-			if (value >= .7 && value < .9) { current = &mountain; }
-			if (value > .9) { current = &snow; }
+			SDL_Color current = deep_water;
+			// if (value < .15) { current = deep_water; }
+			if (value >= .15 && value < .3) { current = water; }
+			if (value >= .3 && value < .4) { current = sand; }
+			if (value >= .4 && value < .7) { current = grass; }
+			if (value >= .7 && value < .9) { current = mountain; }
+			if (value > .9) { current = snow; }
 
-			pixels[offset + 0] = current->b;        // b
-			pixels[offset + 1] = current->g;        // g
-			pixels[offset + 2] = current->r;        // r
+			pixels[offset + 0] = current.b;        // b
+			pixels[offset + 1] = current.g;        // g
+			pixels[offset + 2] = current.r;        // r
 			pixels[offset + 3] = SDL_ALPHA_OPAQUE;  // a
 		}
 	}

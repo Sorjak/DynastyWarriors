@@ -1,10 +1,10 @@
 #pragma once
 #include "BaseSystem.h"
 
-#include "../Components/DimensionComponent.h"
-#include "../Components/VelocityComponent.h"
-#include "../Components/PlayerMotionComponent.h"
-#include "../Components/CollisionComponent.h"
+// #include "../Components/DimensionComponent.h"
+// #include "../Components/VelocityComponent.h"
+// #include "../Components/PlayerMotionComponent.h"
+// #include "../Components/CollisionComponent.h"
 
 class CollisionDetectionSystem :
 	public BaseSystem

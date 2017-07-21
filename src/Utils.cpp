@@ -17,3 +17,7 @@ vector<string> getKeysFromMap(map<string, BaseComponent*> input) {
 
 	return output;
 }
+
+float smoothGradient(float val, float a, float b) {
+    return pow(val, a) / (pow(val, a) + pow(b - b * val, a));
+}

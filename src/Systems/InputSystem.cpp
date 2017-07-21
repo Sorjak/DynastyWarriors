@@ -4,6 +4,10 @@ InputSystem::InputSystem() {}
 
 InputSystem::~InputSystem() {}
 
+void InputSystem::init(Engine* e) {
+    mEngine = e;
+}
+
 void InputSystem::update() {
 	//Event polling
 	while (SDL_PollEvent(&mEvent)){
@@ -14,30 +18,13 @@ void InputSystem::update() {
 
 		//If user presses any key
 		if (mEvent.type == SDL_KEYDOWN) {
-			shared_ptr<CameraSystem> cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
-			SDL_Point delta = {0, 0};
+            keysDown.insert(mEvent.key.keysym.sym);
+            // cout << "Inserting: " << SDL_GetKeyName(mEvent.key.keysym.sym) << endl;
+        }
 
-            if (mEvent.key.keysym.sym == SDLK_q) {
-                mEngine->setRunning(false);
-            }
-
-            if (mEvent.key.keysym.sym == SDLK_a) {
-                delta.x -= 10;
-            }
-
-            if (mEvent.key.keysym.sym == SDLK_d) {
-                delta.x += 10;
-            }
-
-            if (mEvent.key.keysym.sym == SDLK_w) {
-                delta.y -= 10;
-            }
-
-            if (mEvent.key.keysym.sym == SDLK_s) {
-                delta.y += 10;
-            }
-
-            cam->moveView(delta);
+        if (mEvent.type == SDL_KEYUP) {
+            keysDown.erase(mEvent.key.keysym.sym);
+            // cout << "Removing: " << SDL_GetKeyName(mEvent.key.keysym.sym) << endl;
         }
 
         //If user clicks the mouse
@@ -57,13 +44,12 @@ void InputSystem::update() {
             mousePosition.x = mEvent.motion.x;
             mousePosition.y = mEvent.motion.y;
         }
-
-		//for (size_t i = 0; i < inputList.size(); i++) {
-		//	PlayerInputSystem* pi = (PlayerInputSystem*)inputList[i];
-		//	pi->process(mEvent);
-		//}
 		
 	}
+}
 
+bool InputSystem::isDown(const char* key) {
+    SDL_Keycode kc = SDL_GetKeyFromName(key);
 
+    return keysDown.count(kc) > 0;
 }

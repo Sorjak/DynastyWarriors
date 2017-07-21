@@ -64,7 +64,6 @@ void Engine::initSystems() {
 	// input->inputList.push_back(input);
 
 	// BaseSystem *animation = new AnimationSystem(12);
-	// animation->init(this);
 	// systemList["animation"] = animation;
 
 	shared_ptr<BaseSystem> Terrain(new TerrainSystem(screenWidth, screenHeight));
@@ -73,7 +72,7 @@ void Engine::initSystems() {
 	shared_ptr<BaseSystem> Camera(new CameraSystem(screenWidth, screenHeight));
 	systemList["camera"] = Camera;
 
-	shared_ptr<BaseSystem> render(new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors"));//"media/aztlan_bg_2x.png");
+	shared_ptr<BaseSystem> render(new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors"));
 	systemList["render"] = render;
 
 	for(auto it = systemList.begin(); it != systemList.end(); ++it) {

@@ -3,12 +3,11 @@
 
 #include "../Engine.h"
 #include "../Vector2D.h"
-#include "../Entities/FighterEntity.h"
 
-#include "../Components/PlayerMotionComponent.h"
-#include "../Components/VelocityComponent.h"
-#include "../Components/StateComponent.h"
-#include "../Components/DimensionComponent.h"
+// #include "../Components/PlayerMotionComponent.h"
+// #include "../Components/VelocityComponent.h"
+// #include "../Components/StateComponent.h"
+// #include "../Components/DimensionComponent.h"
 
 #define INPUT_ANALOG_UP -1
 #define INPUT_ANALOG_DOWN 1
@@ -32,10 +31,10 @@ public:
 
 	vector<SDL_Joystick*> mJoysticks;
 
-	PlayerMotionComponent* mPlayerMotion;
-	VelocityComponent* mPlayerVelocity;
-	DimensionComponent* mPlayerDimension;
-	StateComponent* mPlayerState;
+	// PlayerMotionComponent* mPlayerMotion;
+	// VelocityComponent* mPlayerVelocity;
+	// DimensionComponent* mPlayerDimension;
+	// StateComponent* mPlayerState;
 
 };
 

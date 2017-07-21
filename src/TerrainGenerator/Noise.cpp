@@ -42,8 +42,8 @@ shared_ptr<HeightMap> Noise::generateHeightMap
     float amplitude = 1.0;
     float frequency = 1.0;
 
-    float a = 3;
-    float b = 2.0f;
+    // float a = 3;
+    // float b = 2.0f;
 
     float minNoiseHeight = 100.0;
     float maxNoiseHeight = -100.0; 
@@ -101,7 +101,7 @@ shared_ptr<HeightMap> Noise::generateHeightMap
                 float val = max(abs(i), abs(j));
 
                 // Gradual increase curve from 0 to 1
-                float falloffHeight = pow(val, a) / (pow(val, a) + pow(b - b * val, a));
+                float falloffHeight = smoothGradient(val, 3.0, 2.0);
 
 				clampedHeight -= falloffHeight;
             }
@@ -139,7 +139,7 @@ bool Noise::updateSubMap(shared_ptr<HeightMap> original, shared_ptr<HeightMap> s
             // float newHeight = noiseModule.GetValue(x, y, 1.0); //submap->getHeightAt(x, y);
             // float clampedHeight = clamp(origHeight + (newHeight / 1.0f), 0.0f, 100.0f);
 
-            // submap->setHeightAt(x, y, origHeight);
+            submap->setHeightAt(x, y, origHeight);
         }
     }
 

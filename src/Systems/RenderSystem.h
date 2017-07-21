@@ -12,7 +12,7 @@ class TerrainSystem;
 class CameraSystem;
 
 #include "../Components/TextureComponent.h"
-#include "../Components/DimensionComponent.h"
+// #include "../Components/DimensionComponent.h"
 #include "../Components/AnimationComponent.h"
 
 class RenderSystem : public BaseSystem

@@ -112,7 +112,7 @@ vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) 
 
 void TerrainSystem::MakeIsland(int x, int y) {
     int seed = rand() * 1000;
-    shared_ptr<Noise> n(new Noise(seed, .5, 2.0, 100.0));
+    shared_ptr<Noise> n(new Noise(seed, .5, 2.0, 300.0));
     SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
     pair<int, int> coord = make_pair(x, y);
 
@@ -137,7 +137,7 @@ void TerrainSystem::MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool 
 
                 if (c.CheckPoint(chunkRect.x + x, chunkRect.y + y)) {
                     float val = 1 - (c.DistanceFromCenter(chunkRect.x + x, chunkRect.y + y) / c.r);
-                    float curved = pow(val, 2.7) / (pow(val, 2.7) + pow(4.5 - 4.5 * val, 2.7));
+                    float curved = smoothGradient(val, 2.7, 4.5);
                     float newValue = oldValue;
 
                     if (raise)
