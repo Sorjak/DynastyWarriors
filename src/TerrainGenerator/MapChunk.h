@@ -41,7 +41,7 @@ class MapChunk {
 
         void Load(shared_ptr<HeightMap> heightMap);
 
-        void Render(SDL_Renderer*, int offsetX, int offsetY);
+        //void Render(SDL_Renderer*, int offsetX, int offsetY);
 
         void Select(bool val);
 

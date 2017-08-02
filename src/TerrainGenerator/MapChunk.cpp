@@ -36,28 +36,28 @@ void MapChunk::Load(std::shared_ptr<HeightMap> heightMap) {
     }
 }
 
-void MapChunk::Render(SDL_Renderer* ren, int offsetX, int offsetY) {
-    if (!hasTexture) {
-        chunkTex = new Texture();
-        chunkTex->Create(ren, this->width, this->height);
-        if (hasHeightMap)
-            chunkTex->Update(this->heightMap);
-
-        hasTexture = true;
-    }
-
-    if (updateHeightMap)
-        chunkTex->Update(this->heightMap);
-
-    chunkTex->Render(worldPosition.x + offsetX, worldPosition.y + offsetY); 
-
-    if (selected) {
-        SDL_Rect r = getWorldRect();
-        r.x += offsetX;
-        r.y += offsetY;
-        SDL_RenderDrawRect(ren, &r);
-    }
-}
+//void MapChunk::Render(SDL_Renderer* ren, int offsetX, int offsetY) {
+//    if (!hasTexture) {
+//        chunkTex = new Texture();
+//        chunkTex->Create(ren, this->width, this->height);
+//        if (hasHeightMap)
+//            chunkTex->Update(this->heightMap);
+//
+//        hasTexture = true;
+//    }
+//
+//    if (updateHeightMap)
+//        chunkTex->Update(this->heightMap);
+//
+//    chunkTex->Render(worldPosition.x + offsetX, worldPosition.y + offsetY); 
+//
+//    if (selected) {
+//        SDL_Rect r = getWorldRect();
+//        r.x += offsetX;
+//        r.y += offsetY;
+//        SDL_RenderDrawRect(ren, &r);
+//    }
+//}
 
 void MapChunk::Select(bool val) {
     this->selected = val;

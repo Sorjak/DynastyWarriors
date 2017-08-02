@@ -1,25 +1,5 @@
 #include "TerrainSystem.h"
 
-int distanceSquared(int x1, int y1, int x2, int y2) {
-    int deltaX = x2 - x1;
-    int deltaY = y2 - y1;
-    return deltaX*deltaX + deltaY*deltaY;
-}
-
-struct Circle {
-    int x, y;
-    int r;
-
-    bool CheckPoint(int x2, int y2) {
-        int distanceSqr = distanceSquared(x, y, x2, y2);
-        return distanceSqr < (r * r);
-    }
-
-    float DistanceFromCenter(int x2, int y2) {
-        return sqrt(distanceSquared(x, y, x2, y2));
-    }
-};
-
 
 TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
     this->islandWidth = screenWidth * islandSizeMod;

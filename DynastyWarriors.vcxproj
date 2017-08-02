@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -7,6 +7,10 @@
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Test|Win32">
+      <Configuration>Test</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -18,13 +22,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -32,6 +42,9 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -45,12 +58,36 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\Users\uli\projects\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\uli\projects\DynastyWarriors\lib\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Users\uli\projects\DynastyWarriors\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\uli\projects\DynastyWarriors\lib\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -67,50 +104,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Components\BaseComponent.cpp" />
-    <ClCompile Include="Components\DimensionComponent.cpp" />
-    <ClCompile Include="Components\TextureComponent.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entities\BaseEntity.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Systems\BaseSystem.cpp" />
-    <ClCompile Include="Systems\CameraSystem.cpp" />
-    <ClCompile Include="Systems\InputSystem.cpp" />
-    <ClCompile Include="Systems\RenderSystem.cpp" />
-    <ClCompile Include="Systems\TerrainSystem.cpp" />
-    <ClCompile Include="TerrainGenerator\HeightMap.cpp" />
-    <ClCompile Include="TerrainGenerator\Island.cpp" />
-    <ClCompile Include="TerrainGenerator\MapChunk.cpp" />
-    <ClCompile Include="TerrainGenerator\Noise.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Vector2D.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Components\BaseComponent.h" />
-    <ClInclude Include="Components\DimensionComponent.h" />
-    <ClInclude Include="Components\TextureComponent.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Entities\BaseEntity.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Systems\BaseSystem.h" />
-    <ClInclude Include="Systems\CameraSystem.h" />
-    <ClInclude Include="Systems\InputSystem.h" />
-    <ClInclude Include="Systems\RenderSystem.h" />
-    <ClInclude Include="Systems\TerrainSystem.h" />
-    <ClInclude Include="TerrainGenerator\HeightMap.h" />
-    <ClInclude Include="TerrainGenerator\Island.h" />
-    <ClInclude Include="TerrainGenerator\MapChunk.h" />
-    <ClInclude Include="TerrainGenerator\Noise.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Vector2D.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="media\aztlan_bg_2x.png" />
     <Image Include="media\fighter.png" />
     <Image Include="media\redlaser.png" />
@@ -118,6 +111,67 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="media\SourceSansPro-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Components\AnimationComponent.cpp" />
+    <ClCompile Include="src\Components\BaseComponent.cpp" />
+    <ClCompile Include="src\Components\CollisionComponent.cpp" />
+    <ClCompile Include="src\Components\ProjectileComponent.cpp" />
+    <ClCompile Include="src\Components\StateComponent.cpp" />
+    <ClCompile Include="src\Components\TextureComponent.cpp" />
+    <ClCompile Include="src\Engine.cpp" />
+    <ClCompile Include="src\Entities\BaseEntity.cpp" />
+    <ClCompile Include="src\Entities\DummyEntity.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="src\Systems\BaseSystem.cpp" />
+    <ClCompile Include="src\Systems\CameraSystem.cpp" />
+    <ClCompile Include="src\Systems\CollisionDetectionSystem.cpp" />
+    <ClCompile Include="src\Systems\ExpiresSystem.cpp" />
+    <ClCompile Include="src\Systems\InputSystem.cpp" />
+    <ClCompile Include="src\Systems\PlayerInputSystem.cpp" />
+    <ClCompile Include="src\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\Systems\TerrainSystem.cpp" />
+    <ClCompile Include="src\TerrainGenerator\HeightMap.cpp" />
+    <ClCompile Include="src\TerrainGenerator\Island.cpp" />
+    <ClCompile Include="src\TerrainGenerator\MapChunk.cpp" />
+    <ClCompile Include="src\TerrainGenerator\Noise.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\Vector2D.cpp" />
+    <ClCompile Include="test\test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\Components\AnimationComponent.h" />
+    <ClInclude Include="src\Components\BaseComponent.h" />
+    <ClInclude Include="src\Components\CollisionComponent.h" />
+    <ClInclude Include="src\Components\ExpirationComponent.h" />
+    <ClInclude Include="src\Components\ProjectileComponent.h" />
+    <ClInclude Include="src\Components\StateComponent.h" />
+    <ClInclude Include="src\Components\TextureComponent.h" />
+    <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Entities\BaseEntity.h" />
+    <ClInclude Include="src\Entities\DummyEntity.h" />
+    <ClInclude Include="src\Log.h" />
+    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Systems\AnimationSystem.h" />
+    <ClInclude Include="src\Systems\BaseSystem.h" />
+    <ClInclude Include="src\Systems\CameraSystem.h" />
+    <ClInclude Include="src\Systems\CollisionDetectionSystem.h" />
+    <ClInclude Include="src\Systems\ExpiresSystem.h" />
+    <ClInclude Include="src\Systems\InputSystem.h" />
+    <ClInclude Include="src\Systems\PlayerInputSystem.h" />
+    <ClInclude Include="src\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Systems\TerrainSystem.h" />
+    <ClInclude Include="src\TerrainGenerator\HeightMap.h" />
+    <ClInclude Include="src\TerrainGenerator\Island.h" />
+    <ClInclude Include="src\TerrainGenerator\MapChunk.h" />
+    <ClInclude Include="src\TerrainGenerator\Noise.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
