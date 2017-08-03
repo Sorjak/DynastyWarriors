@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <random>
 
 #include <SDL2/SDL.h>
 
@@ -24,6 +25,9 @@ vector<string> getKeysFromMap(map<string, BaseComponent*>);
 float smoothGradient(float val, float a, float b);
 
 int distanceSquared(int x1, int y1, int x2, int y2);
+
+float getRand01();
+float getRand(float maxNum);
 
 struct Circle {
 	int x, y;

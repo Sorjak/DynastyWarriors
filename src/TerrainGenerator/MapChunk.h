@@ -24,7 +24,7 @@ class MapChunk {
 
         bool selected = false;
 
-        bool ocean = false;
+        float elevationAverage;
 
 
 
@@ -50,6 +50,9 @@ class MapChunk {
         shared_ptr<HeightMap> getHeightMap();
 
 		float getHeightAt(int x, int y);
+        float getElevation() {
+            return elevationAverage;
+        }
 
         int getWidth();
         int getHeight();

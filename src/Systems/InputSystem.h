@@ -25,6 +25,9 @@ class InputSystem :
 
         bool mouseIsDown = false;
 
+        Uint32 lastPressedTime = 0;
+
+        bool isClicked(const char* key);
         bool isDown(const char* key);
 };
 

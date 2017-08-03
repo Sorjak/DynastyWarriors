@@ -43,9 +43,9 @@ void TerrainSystem::update() {
         }
     }
 
-    auto islands_in_view = getIslandsInRect(&cam->view);
+    islandsInView = getIslandsInRect(&cam->view);
 
-    for (auto i = islands_in_view.begin(); i != islands_in_view.end(); ++i)
+    for (auto i = islandsInView.begin(); i != islandsInView.end(); ++i)
     {
         shared_ptr<Island> island = (*i);
 
@@ -71,7 +71,7 @@ void TerrainSystem::update() {
 }
 
 vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) {
-    vector<shared_ptr<Island>> islands_in_view;
+    vector<shared_ptr<Island>> islands_in_rect;
 
     for (auto i = islands.begin(); i != islands.end(); ++i)
     {
@@ -81,12 +81,12 @@ vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) 
             SDL_Rect islandRect = island->getWorldRect();
 
             if (SDL_HasIntersection(view_rect, &islandRect)) {
-                islands_in_view.push_back(island);
+                islands_in_rect.push_back(island);
             }
         }
     }
 
-    return islands_in_view;
+    return islands_in_rect;
 }
 
 

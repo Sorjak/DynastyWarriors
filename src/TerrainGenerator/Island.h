@@ -51,6 +51,7 @@ class Island {
 
         void LoadChunk(shared_ptr<MapChunk> chunk);
 
+        shared_ptr<MapChunk> FindChunk(float low, float high);
         shared_ptr<MapChunk> GetChunkAtPoint(SDL_Point point);
         vector<shared_ptr<MapChunk>> GetChunksInRect(SDL_Rect* area);
 

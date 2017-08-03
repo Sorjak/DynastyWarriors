@@ -31,6 +31,8 @@ public:
     shared_ptr<CameraSystem> cam;
     shared_ptr<InputSystem> input;
 
+    vector<shared_ptr<Island>> islandsInView;
+
 private:
     void MakeIsland(int x, int y);
     void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise);

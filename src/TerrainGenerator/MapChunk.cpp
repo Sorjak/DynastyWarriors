@@ -25,9 +25,8 @@ void MapChunk::Load(std::shared_ptr<HeightMap> heightMap) {
     this->heightMap = heightMap;
     this->dirty = true;
 
-    // float average = this->heightMap->getAverageValue();
-    
-    // ocean = average <= -.1;
+    elevationAverage = this->heightMap->getAverageValue();
+
 
     this->hasHeightMap = true;
 

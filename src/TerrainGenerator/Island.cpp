@@ -89,6 +89,27 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 		SDL_RenderCopy(ren, islandTex, NULL, &renderRect);
 }
 
+shared_ptr<MapChunk> Island::FindChunk(float low, float high) {
+    vector<shared_ptr<MapChunk>> possibilities;
+
+    for (auto i = chunks.begin(); i != chunks.end(); ++i)
+    {
+        shared_ptr<MapChunk> chunk = i->second;
+
+        if (chunk->getElevation() >= low && chunk->getElevation() < high) {
+            possibilities.push_back(chunk);
+        }
+    }
+
+    if (possibilities.size() > 0) {
+        int randIndex = rand() % possibilities.size();
+
+        return possibilities.at(randIndex);
+    }
+
+    return NULL;
+}
+
 shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {
     int islandX = point.x - position.x;
     int islandY = point.y - position.y;

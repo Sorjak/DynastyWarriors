@@ -32,6 +32,7 @@ void RenderSystem::init(Engine* e) {
 
 	terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
 	cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
+	creature = static_pointer_cast<CreatureSystem>(mEngine->getSystem("creature"));
 }
 
 
@@ -50,6 +51,14 @@ void RenderSystem::update() {
     for (auto i = islands.begin(); i != islands.end(); ++i)
     {
         (*i)->Render(mRenderer, &cam->view);
+    }
+
+    auto creatures = creature->GetCreaturesInRect(&cam->view);
+
+    for (auto i = creatures.begin(); i != creatures.end(); ++i)
+    {
+    	SDL_Rect drawRect = { cam->view.x, cam->view.y, 16, 16 };
+        (*i)->Render(mRenderer, &drawRect);
     }
 
 

@@ -27,3 +27,12 @@ int distanceSquared(int x1, int y1, int x2, int y2) {
 	int deltaY = y2 - y1;
 	return deltaX*deltaX + deltaY*deltaY;
 }
+
+float getRand01() {
+	return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+}
+
+
+float getRand(float maxNum) {
+	return (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * maxNum;
+}

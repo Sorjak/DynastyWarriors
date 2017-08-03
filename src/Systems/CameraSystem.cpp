@@ -15,7 +15,7 @@ void CameraSystem::init(Engine* e) {
 void CameraSystem::update() {
     SDL_Point delta = {0, 0};
 
-    if (input->isDown("Q")) {
+    if (input->isClicked("Q")) {
         mEngine->setRunning(false);
     }
 

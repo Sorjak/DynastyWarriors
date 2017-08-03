@@ -19,6 +19,7 @@ void InputSystem::update() {
 		//If user presses any key
 		if (mEvent.type == SDL_KEYDOWN) {
             keysDown.insert(mEvent.key.keysym.sym);
+            lastPressedTime = SDL_GetTicks();
             // cout << "Inserting: " << SDL_GetKeyName(mEvent.key.keysym.sym) << endl;
         }
 
@@ -46,6 +47,10 @@ void InputSystem::update() {
         }
 		
 	}
+}
+
+bool InputSystem::isClicked(const char* key) {
+    return isDown(key) && !SDL_TICKS_PASSED(SDL_GetTicks(), lastPressedTime + 20);
 }
 
 bool InputSystem::isDown(const char* key) {

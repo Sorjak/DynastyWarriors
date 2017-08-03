@@ -66,11 +66,16 @@ void Engine::initSystems() {
 	// BaseSystem *animation = new AnimationSystem(12);
 	// systemList["animation"] = animation;
 
+
+
 	shared_ptr<BaseSystem> Terrain(new TerrainSystem(screenWidth, screenHeight));
 	systemList["terrain"] = Terrain;
 
 	shared_ptr<BaseSystem> Camera(new CameraSystem(screenWidth, screenHeight));
 	systemList["camera"] = Camera;
+
+	shared_ptr<BaseSystem> Creature(new CreatureSystem());
+	systemList["creature"] = Creature;
 
 	shared_ptr<BaseSystem> render(new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors"));
 	systemList["render"] = render;
