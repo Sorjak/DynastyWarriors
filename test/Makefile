@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = ../TerrainGenerator/*.cpp ../Vector2D.cpp ../Texture.cpp ../Log.h test.cpp
+OBJS = ../src/TerrainGenerator/*cpp ../src/Entities/Creature.cpp ../src/Utils.cpp test.cpp
 
 #CC specifies which compiler we're using
 CC = g++
