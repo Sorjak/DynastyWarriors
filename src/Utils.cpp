@@ -36,3 +36,5 @@ float getRand01() {
 float getRand(float maxNum) {
 	return (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * maxNum;
 }
+
+

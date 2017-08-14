@@ -51,6 +51,8 @@ public:
 	const int screenWidth = 800;
 	const int screenHeight = 600;
 
+	// noise::module::Perlin noiseModule;
+
 
 private:
 	void initGame();

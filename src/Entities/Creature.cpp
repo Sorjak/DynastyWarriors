@@ -1,54 +1,61 @@
-#import "Creature.h"
+#include "Creature.h"
 
-Creature::Creature(int w, int h) {
-    this->creatureWidth     = w;
-    this->creatureHeight    = h;
-    this->position          = { 0, 0 };
 
-    // GenerateBody();
-    // MakeSprite();
-}
-
-Creature::Creature(SDL_Texture* tex) {
+Creature::Creature(SDL_Texture* tex, int x, int y) {
     SDL_QueryTexture(tex, NULL, NULL, &creatureWidth, &creatureHeight);
 
-    this->texture = tex;
-    this->bounds = {0, 0, creatureWidth, creatureHeight};
-}
-
-Creature::Creature(SDL_Texture* tex, int w, int h) {
-    this->creatureWidth     = w;
-    this->creatureHeight    = h;
-
     this->texture           = tex;
-    this->bounds = {0, 0, creatureWidth, creatureHeight};
+    this->bodyBounds        = {0, 0, creatureWidth, creatureHeight};
+    this->hasTexture        = true;
+    this->position          = {x, y};
+    this->target            = {x, y};
 }
+
 
 Creature::~Creature() {
     // cout << "Deleting creature" << endl;
 }
 
 void Creature::Render(SDL_Renderer* ren, SDL_Rect* drawRect) {
-    if (texture == nullptr){
-        MakeSprite(ren);
+    // if (texture == nullptr){
+    //     MakeSprite(ren);
+    // }
+
+    if (hasTexture) {
+        SDL_Rect sprect = { position.x - drawRect->x, position.y - drawRect->y, drawRect->w, drawRect->h };
+        SDL_RenderCopy(ren, texture, NULL, &sprect);
     }
-
-
-    SDL_Rect sprect = { position.x - drawRect->x, position.y - drawRect->y, drawRect->w, drawRect->h };
-    SDL_RenderCopy(ren, texture, NULL, &sprect);
 }
 
 void Creature::MoveTo(int x, int y) {
-    position = { x, y };
+    cout << "Moving creature to: " << x << ", " << y << endl;
+    // position = { x, y };
+    target = {x, y};
 }
 
-void Creature::GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* bounds) {
+void Creature::Update() {
+    Vector2 moveVector = target - position;
+
+    if (moveVector.length() > 0) {
+        Vector2 normalized = moveVector.normalize();
+
+        position.x += normalized.x;
+        position.y += normalized.y;
+    }
+}
+
+
+/* General creature static methods */
+
+void GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* bounds) {
     float noiseScale = 300.0;
-    SDL_Point noiseOffset = { getRand(10000), getRand(10000) };
+    SDL_Point noiseOffset = { (int) getRand(10000), (int) getRand(10000) };
 
     int numBodyPoints = 0;
 
     SDL_Point* enclosurePoints = new SDL_Point[width * height];
+
+    NoiseModule nm;
 
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -56,7 +63,7 @@ void Creature::GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* b
             float sampleX = (x + noiseOffset.x) / noiseScale;
             float sampleY = (y + noiseOffset.y) / noiseScale;
 
-            float r = max(-1.0, noiseModule.GetValue(sampleX, sampleY, 1.0));
+            float r = max((float) -1.0,  nm.GetNoise2D(sampleX, sampleY));
             float sample = (r + 1) / 2;
 
             // Get x an y values between -1 and 1
@@ -85,26 +92,27 @@ void Creature::GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* b
     delete enclosurePoints;
 }
 
-void Creature::MakeSprite(SDL_Renderer* ren) {
-    texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888,
-        SDL_TEXTUREACCESS_STATIC, bounds.w, bounds.h);
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_Rect* bounds) {
+    SDL_Texture* textureOutput = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888,
+        SDL_TEXTUREACCESS_STATIC, bounds->w, bounds->h);
+    SDL_SetTextureBlendMode(textureOutput, SDL_BLENDMODE_BLEND);
 
-    SDL_Color spriteColor = { getRand01() * 255, getRand01() * 255, getRand01() * 255, SDL_ALPHA_OPAQUE };
+    SDL_Color spriteColor = { (Uint8) getRand01() * 255, 
+        (Uint8) getRand01() * 255, (Uint8) getRand01() * 255, SDL_ALPHA_OPAQUE };
 
-    unsigned char* pixels = new unsigned char[bounds.w * bounds.h * 4];
+    unsigned char* pixels = new unsigned char[bounds->w * bounds->h * 4];
 
-    int eyeCenterX = bounds.w / 2;
-    int eyeCenterY = bounds.h / 2 ;
+    int eyeCenterX = bounds->w / 2;
+    int eyeCenterY = bounds->h / 2 ;
 
-    Circle eyeball = { eyeCenterX, eyeCenterY, bounds.w * .1 };
-    Circle pupil = { eyeCenterX, eyeCenterY, bounds.w * .02 };
+    Circle eyeball = { eyeCenterX, eyeCenterY, (int) (bounds->w * .1) };
+    Circle pupil = { eyeCenterX, eyeCenterY, (int) (bounds->w * .02) };
 
-    for (int y = 0; y < bounds.h; y++) {
-        for (int x = 0; x < bounds.w; x++) {
+    for (int y = 0; y < bounds->h; y++) {
+        for (int x = 0; x < bounds->w; x++) {
             
             SDL_Color pixelColor = { 0, 0, 0, SDL_ALPHA_TRANSPARENT };
-            bool isBodyPart = bodyPoints[(x + bounds.x) + this->creatureWidth * (y + bounds.y)];
+            bool isBodyPart = bodyPoints[(x + bounds->x) + fullWidth * (y + bounds->y)];
 
             if (isBodyPart) pixelColor = spriteColor;
 
@@ -112,7 +120,7 @@ void Creature::MakeSprite(SDL_Renderer* ren) {
             pixelColor = pupil.CheckPoint(x, y) ? black : pixelColor;
 
             // Get the pixel offset taking into account all color channels.
-            const unsigned int offset = (bounds.w * 4 * y) + x * 4;
+            const unsigned int offset = (bounds->w * 4 * y) + x * 4;
 
             pixels[offset + 0] = pixelColor.b;  // b
             pixels[offset + 1] = pixelColor.g;  // g
@@ -122,10 +130,9 @@ void Creature::MakeSprite(SDL_Renderer* ren) {
         }
     }
 
-    SDL_UpdateTexture(texture, NULL, &pixels[0], bounds.w * 4);
-
-    // bounds = {0, 0, bounds.w, bounds.h};
+    SDL_UpdateTexture(textureOutput, NULL, &pixels[0], bounds->w * 4);
 
     delete pixels;
-    delete bodyPoints;
+
+    return textureOutput;
 }

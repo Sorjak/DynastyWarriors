@@ -45,6 +45,8 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
+
+	// cout << "Rendering islands" << endl;
 	
 	auto islands = terrain->getIslandsInRect(&cam->view);
 
@@ -53,6 +55,11 @@ void RenderSystem::update() {
         (*i)->Render(mRenderer, &cam->view);
     }
 
+
+	// cout << "Rendering creatures" << endl;
+    if (!creature->hasTemplate)
+    	creature->CreateCreatureTemplate(mRenderer, 512, 512);
+
     auto creatures = creature->GetCreaturesInRect(&cam->view);
 
     for (auto i = creatures.begin(); i != creatures.end(); ++i)
@@ -60,7 +67,6 @@ void RenderSystem::update() {
     	SDL_Rect drawRect = { cam->view.x, cam->view.y, 16, 16 };
         (*i)->Render(mRenderer, &drawRect);
     }
-
 
 	for (size_t i = 0; i < entityList.size(); i++) {
 		// DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");

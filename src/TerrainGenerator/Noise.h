@@ -7,7 +7,7 @@
 #include <memory>
 
 #include <SDL2/SDL.h>
-#include <noise/noise.h>
+// #include <noise/noise.h>
 
 #include "../Utils.h"
 #include "../Vector2D.h"
@@ -38,7 +38,7 @@ class Noise
         bool falloff = true;
         
     private:
-        noise::module::Perlin noiseModule;
+        // noise::module::Perlin noiseModule;
         // noise::module::Voronoi noiseModule;
 
         float clamp(float x, float upper, float lower);

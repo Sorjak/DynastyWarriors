@@ -5,31 +5,42 @@
 #include <random>
 
 #include <SDL2/SDL.h>
-#include <noise/noise.h>
+// #include <noise/noise.h>
 
 #include "../Utils.h"
+// #include "../Vector2D.h"
+
+void GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* bounds);
+SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_Rect* bounds);
 
 class Creature {
+
+private:
+    bool hasTexture = false;
+    float hungerValue = 0;
+    float matingValue = 0;
+    float ageValue = 0;
+
+    float speed = 1.0;
+
+    Vector2 target;
+
 
 public:
     int creatureWidth;
     int creatureHeight;
 
-    SDL_Point position;
+    // SDL_Point position;
+    Vector2 position;
 
     SDL_Rect bodyBounds;
     SDL_Texture* texture = nullptr;
 
-    noise::module::Perlin noiseModule;
-
-    Creature(int w, int h);
-    Creature(SDL_Texture* tex);
-    Creature(SDL_Texture* tex, int w, int h);
+    Creature(SDL_Texture* tex, int x, int y);
     ~Creature();
 
     void Render(SDL_Renderer* ren, SDL_Rect* drawRect);
-    void MoveTo(int x, int y);
+    void Update();
 
-    void GenerateBody();
-    void MakeSprite(SDL_Renderer* ren);
+    void MoveTo(int x, int y);
 };

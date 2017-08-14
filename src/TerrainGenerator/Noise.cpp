@@ -36,14 +36,12 @@ shared_ptr<HeightMap> Noise::generateHeightMap
     // cout << "Offset: x: " << offset->x() << ", y: " <<  offset->y() << endl;
 
     Generator.seed(seed);
+    NoiseModule nm;
     shared_ptr<HeightMap> heightMap(new HeightMap(width, height));
 
     float maxPossibleHeight = 0;
     float amplitude = 1.0;
     float frequency = 1.0;
-
-    // float a = 3;
-    // float b = 2.0f;
 
     float minNoiseHeight = 100.0;
     float maxNoiseHeight = -100.0; 
@@ -76,7 +74,7 @@ shared_ptr<HeightMap> Noise::generateHeightMap
                 float sampleX = (x - halfWidth + octaveOffsets[i].x) / (scale * frequency);
                 float sampleY = (y - halfHeight + octaveOffsets[i].y) / (scale * frequency);
 
-                float noiseVal = noiseModule.GetValue(sampleX, sampleY, 1.0);
+                float noiseVal = nm.GetNoise2D(sampleX, sampleY);
                 currentHeight += noiseVal * amplitude;
 
                 amplitude *= persistance;

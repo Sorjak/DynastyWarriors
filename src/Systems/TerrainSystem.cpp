@@ -89,6 +89,21 @@ vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) 
     return islands_in_rect;
 }
 
+shared_ptr<Island> TerrainSystem::getIslandFromCoord(int x, int y) {
+    pair<int, int> islandCoord = make_pair(x, y);
+
+    auto search = islands.find(islandCoord);
+    if (search != islands.end()) {
+        return search->second;
+    }
+
+    return NULL;
+}
+
+shared_ptr<Island> TerrainSystem::getIslandFromPoint(int x, int y) {
+    return getIslandFromCoord(x / this->islandWidth, y / this->islandHeight);
+}
+
 
 void TerrainSystem::MakeIsland(int x, int y) {
     int seed = rand() * 1000;

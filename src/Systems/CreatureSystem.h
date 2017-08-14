@@ -25,12 +25,20 @@ public:
     shared_ptr<InputSystem> input;
 
     vector<shared_ptr<Creature>> GetCreaturesInRect(SDL_Rect* rect);
+    void KillCreature(shared_ptr<Creature> creature);
+    void CreateCreatureTemplate(SDL_Renderer* ren, int width, int height);
+
+    bool hasTemplate = false;
 
 private:
     vector<shared_ptr<Creature>> creatures;
+    vector<shared_ptr<Creature>> creaturesToRemove;
 
     const int creatureWidth = 512;
     const int creatureHeight = 512;
+
+    SDL_Texture* creatureTemplate = nullptr;
+
 
 };
 

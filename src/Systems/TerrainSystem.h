@@ -26,6 +26,8 @@ public:
     void init(Engine*);
 
     vector<shared_ptr<Island>> getIslandsInRect(SDL_Rect* view_rect);
+    shared_ptr<Island> getIslandFromCoord(int x, int y);
+    shared_ptr<Island> getIslandFromPoint(int x, int y);
 
     map<pair<int, int>, shared_ptr<Island>> islands;
     shared_ptr<CameraSystem> cam;
