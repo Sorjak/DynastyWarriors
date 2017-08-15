@@ -29,6 +29,8 @@ public:
     shared_ptr<Island> getIslandFromCoord(int x, int y);
     shared_ptr<Island> getIslandFromPoint(int x, int y);
 
+    float GetElevationAtPoint(int x, int y);
+
     map<pair<int, int>, shared_ptr<Island>> islands;
     shared_ptr<CameraSystem> cam;
     shared_ptr<InputSystem> input;

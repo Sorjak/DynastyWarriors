@@ -33,6 +33,7 @@ void RenderSystem::init(Engine* e) {
 	terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
 	cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
 	creature = static_pointer_cast<CreatureSystem>(mEngine->getSystem("creature"));
+	plant = static_pointer_cast<PlantSystem>(mEngine->getSystem("plant"));
 }
 
 
@@ -55,6 +56,14 @@ void RenderSystem::update() {
         (*i)->Render(mRenderer, &cam->view);
     }
 
+    auto plants = plant->GetPlantsInRect(&cam->view);
+
+    for (auto i = plants.begin(); i != plants.end(); ++i)
+    {
+        (*i)->Render(mRenderer, &cam->view);
+    }
+
+
 
 	// cout << "Rendering creatures" << endl;
     if (!creature->hasTemplate)
@@ -67,6 +76,7 @@ void RenderSystem::update() {
     	SDL_Rect drawRect = { cam->view.x, cam->view.y, 16, 16 };
         (*i)->Render(mRenderer, &drawRect);
     }
+
 
 	for (size_t i = 0; i < entityList.size(); i++) {
 		// DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");

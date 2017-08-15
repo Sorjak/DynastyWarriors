@@ -6,9 +6,12 @@
 #include "basesystem.h"
 #include "TerrainSystem.h"
 #include "InputSystem.h"
+#include "PlantSystem.h"
 
 class TerrainSystem;
 class InputSystem;
+class PlantSystem;
+
 
 #include "../Entities/Creature.h"
 
@@ -23,6 +26,7 @@ public:
 
     shared_ptr<TerrainSystem> terrain;
     shared_ptr<InputSystem> input;
+    shared_ptr<PlantSystem> plant;
 
     vector<shared_ptr<Creature>> GetCreaturesInRect(SDL_Rect* rect);
     void KillCreature(shared_ptr<Creature> creature);

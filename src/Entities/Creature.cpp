@@ -14,26 +14,30 @@ Creature::Creature(SDL_Texture* tex, int x, int y) {
 
 Creature::~Creature() {
     // cout << "Deleting creature" << endl;
+    // SDL_DestroyTexture(texture);
 }
 
 void Creature::Render(SDL_Renderer* ren, SDL_Rect* drawRect) {
-    // if (texture == nullptr){
-    //     MakeSprite(ren);
-    // }
-
     if (hasTexture) {
+        bodyBounds.x = position.x; bodyBounds.y = position.y;
         SDL_Rect sprect = { position.x - drawRect->x, position.y - drawRect->y, drawRect->w, drawRect->h };
         SDL_RenderCopy(ren, texture, NULL, &sprect);
     }
 }
 
 void Creature::MoveTo(int x, int y) {
-    cout << "Moving creature to: " << x << ", " << y << endl;
-    // position = { x, y };
     target = {x, y};
 }
 
+void Creature::Eat(float amount) {
+    hungerValue = max(hungerValue - amount, 0.0f);
+}
+
 void Creature::Update() {
+    ageValue += .005;
+    hungerValue += .1;
+
+
     Vector2 moveVector = target - position;
 
     if (moveVector.length() > 0) {

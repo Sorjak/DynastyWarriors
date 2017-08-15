@@ -9,6 +9,7 @@ void CreatureSystem::init(Engine* e) {
 
     terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
     input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));
+    plant = static_pointer_cast<PlantSystem>(mEngine->getSystem("plant"));
 }
 
 
@@ -16,7 +17,6 @@ CreatureSystem::~CreatureSystem(){}
 
 void CreatureSystem::update() {
     bool createNew = input->isClicked("C") && hasTemplate;
-    Vector2 target = {400, 400};
 
     if (createNew && terrain->islandsInView.size() > 0) {
         auto island = terrain->islandsInView.at(0);
@@ -25,7 +25,8 @@ void CreatureSystem::update() {
             SDL_Point chunkPos = chunk->getWorldPosition();
         
             shared_ptr<Creature> guy(new Creature(creatureTemplate, chunkPos.x, chunkPos.y));
-            guy->MoveTo(target.x, target.y);
+
+            cout << "Created creature at: " << chunkPos.x << ", " << chunkPos.y << endl;
             creatures.push_back(guy);
         }
     }
@@ -34,11 +35,22 @@ void CreatureSystem::update() {
         auto creature = (*it);
 
         creature->Update();
-        
-        auto island = terrain->getIslandFromPoint(creature->position.x, creature->position.y);
-        auto chunk = island->GetChunkFromPosition(creature->position.x, creature->position.y);
 
-        if (chunk->getElevation() < .2) {
+        if (creature->isHungry()) {
+            shared_ptr<Plant> p = plant->GetPlantFromPoint(creature->position.x, creature->position.y);
+            if (p != nullptr) {
+                creature->MoveTo(p->position.x, p->position.y);
+            }
+
+            if (creature->isEating()) {
+                creature->Eat(p->GetEaten(.7f));
+            }
+
+        }
+
+        float elevation = terrain->GetElevationAtPoint(creature->position.x, creature->position.y);
+
+        if (elevation < .2) {
             cout << "Creature stepped in water and died" << endl;
             KillCreature(creature);
         }
@@ -47,16 +59,28 @@ void CreatureSystem::update() {
 
     for (auto it = creaturesToRemove.begin(); it != creaturesToRemove.end(); ++it) { 
         auto creature = (*it);
-        creatures.erase(std::remove(creatures.begin(), creatures.end(), creature), creatures.end());
+        cout << "Removing creature" << endl;
+        auto index = std::find(creatures.begin(), creatures.end(), creature);
+
+        if (index != creatures.end()) {
+            creatures.erase(index);
+        }
     }
 
     creaturesToRemove.clear();
-
-    cout << creatures.size() << endl;
 }
 
 vector<shared_ptr<Creature>> CreatureSystem::GetCreaturesInRect(SDL_Rect* rect) {
-    return creatures;
+    vector<shared_ptr<Creature>> creaturesVisible;
+
+    for (auto it = creatures.begin(); it != creatures.end(); ++it) {
+        auto creature = (*it);
+        if (SDL_HasIntersection(rect, &creature->bodyBounds)) {
+            creaturesVisible.push_back(creature);
+        }
+    }
+
+    return creaturesVisible;
 }
 
 void CreatureSystem::CreateCreatureTemplate(SDL_Renderer* ren, int width, int height) {

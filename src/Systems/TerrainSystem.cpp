@@ -104,6 +104,13 @@ shared_ptr<Island> TerrainSystem::getIslandFromPoint(int x, int y) {
     return getIslandFromCoord(x / this->islandWidth, y / this->islandHeight);
 }
 
+float TerrainSystem::GetElevationAtPoint(int x, int y) {
+    auto island = getIslandFromPoint(x, y);
+    auto chunk = island->GetChunkFromPosition(x, y);
+
+    return chunk->getElevation();
+}
+
 
 void TerrainSystem::MakeIsland(int x, int y) {
     int seed = rand() * 1000;

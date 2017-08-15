@@ -99,4 +99,9 @@ struct Vector2 {
 
     }
 
+    float distance(const Vector2& a) const{
+        Vector2 diff = Vector2(x-a.x, y-a.y);
+        return diff.length();
+    }
+
 };

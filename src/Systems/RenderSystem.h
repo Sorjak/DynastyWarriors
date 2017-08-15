@@ -8,10 +8,12 @@
 #include "CameraSystem.h"
 #include "TerrainSystem.h"
 #include "CreatureSystem.h"
+#include "PlantSystem.h"
 
 class TerrainSystem;
 class CameraSystem;
 class CreatureSystem;
+class PlantSystem;
 
 #include "../Components/TextureComponent.h"
 // #include "../Components/DimensionComponent.h"
@@ -36,6 +38,7 @@ public:
 	shared_ptr<TerrainSystem> terrain;
 	shared_ptr<CameraSystem> cam;
 	shared_ptr<CreatureSystem> creature;
+	shared_ptr<PlantSystem> plant;
 
 private:
 	void displayFPSTexture();

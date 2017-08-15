@@ -43,4 +43,9 @@ public:
     void Update();
 
     void MoveTo(int x, int y);
+    void Eat(float amount);
+
+    bool isHungry() { return hungerValue > 50; };
+    bool isOld() { return ageValue >= 100; };
+    bool isEating() { return position.distance(target) < 2; }
 };

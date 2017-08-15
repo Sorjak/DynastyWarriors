@@ -77,6 +77,10 @@ void Engine::initSystems() {
 	shared_ptr<BaseSystem> Creature(new CreatureSystem());
 	systemList["creature"] = Creature;
 
+	shared_ptr<BaseSystem> Plant(new PlantSystem());
+	systemList["plant"] = Plant;
+
+
 	shared_ptr<BaseSystem> render(new RenderSystem(screenWidth, screenHeight, "Dynasty Warriors"));
 	systemList["render"] = render;
 
