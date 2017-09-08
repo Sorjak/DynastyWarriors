@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -34,5 +36,7 @@ public:
     float GetEaten(float amount);
 
 
+    float GetAge() { return ageValue; }
     bool isDead() { return ageValue <= 0; }
+
 };

@@ -1,8 +1,14 @@
 #include "CreatureSystem.h"
 
+// typedef tinyfsm::FsmList<Creature> fsm_list;
 
-CreatureSystem::CreatureSystem(){
-}
+// template<typename E>
+// void send_event(E const & event)
+// {
+//     fsm_list::template dispatch<E>(event);
+// }
+
+CreatureSystem::CreatureSystem(){}
 
 void CreatureSystem::init(Engine* e) {
     mEngine = e;
@@ -10,6 +16,7 @@ void CreatureSystem::init(Engine* e) {
     terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
     input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));
     plant = static_pointer_cast<PlantSystem>(mEngine->getSystem("plant"));
+
 }
 
 
@@ -26,26 +33,28 @@ void CreatureSystem::update() {
         
             shared_ptr<Creature> guy(new Creature(creatureTemplate, chunkPos.x, chunkPos.y));
 
+            guy->start();
+
             cout << "Created creature at: " << chunkPos.x << ", " << chunkPos.y << endl;
             creatures.push_back(guy);
+
         }
     }
 
     for (auto it = creatures.begin(); it != creatures.end(); ++it) {
         auto creature = (*it);
 
+        shared_ptr<Plant> p = plant->GetPlantFromPoint(creature->position.x, creature->position.y);
+
         creature->Update();
 
-        if (creature->isHungry()) {
-            shared_ptr<Plant> p = plant->GetPlantFromPoint(creature->position.x, creature->position.y);
-            if (p != nullptr) {
-                creature->MoveTo(p->position.x, p->position.y);
-            }
+        cout << creature->get_current_state()->name << endl;
 
-            if (creature->isEating()) {
-                creature->Eat(p->GetEaten(.7f));
-            }
-
+        if (creature->GetHunger() >= 50) {
+            cout << "Sending hunger event" << endl;
+            GotHungry gh;
+            gh.name = "GotHungry";
+            creature->dispatch(gh);
         }
 
         float elevation = terrain->GetElevationAtPoint(creature->position.x, creature->position.y);
@@ -99,5 +108,4 @@ void CreatureSystem::CreateCreatureTemplate(SDL_Renderer* ren, int width, int he
 void CreatureSystem::KillCreature(shared_ptr<Creature> creature) {
     creaturesToRemove.push_back(creature);
 }
-
 

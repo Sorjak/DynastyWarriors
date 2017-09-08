@@ -1,4 +1,5 @@
 #pragma once
+#define _USE_MATH_DEFINES
 
 #include <iostream>
 #include <iomanip>
@@ -38,35 +39,6 @@ int distanceSquared(int x1, int y1, int x2, int y2);
 float getRand01();
 float getRand(float maxNum);
 
-struct Circle {
-    int x, y;
-    int r;
-
-    bool CheckPoint(int x2, int y2) {
-        int distanceSqr = distanceSquared(x, y, x2, y2);
-        return distanceSqr < (r * r);
-    }
-
-    float DistanceFromCenter(int x2, int y2) {
-        return sqrt(distanceSquared(x, y, x2, y2));
-    }
-
-    void DrawCircle(SDL_Renderer* ren, SDL_Color color) {
-
-        int left = x - r;
-        int right = x + r;
-        int top = y - r;
-        int bottom = y + r;
-        SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
-
-        for (int i = left; i < right; i++) {
-            for (int j = top; j < bottom; j++) {
-                if (CheckPoint(i, j))
-                    SDL_RenderDrawPoint(ren, i, j);
-            }
-        }
-    }
-};
 
 struct Vector2 {
     float x, y;
@@ -104,4 +76,41 @@ struct Vector2 {
         return diff.length();
     }
 
+};
+
+struct Circle {
+    int x, y;
+    int r;
+
+    bool CheckPoint(int x2, int y2) {
+        int distanceSqr = distanceSquared(x, y, x2, y2);
+        return distanceSqr < (r * r);
+    }
+
+    float DistanceFromCenter(int x2, int y2) {
+        return sqrt(distanceSquared(x, y, x2, y2));
+    }
+
+    Vector2 GetRandomPoint() {
+        float t = 2 * M_PI * getRand(r);
+        float u = getRand(r) + getRand(r);
+        float rand_r = u > 1 ?  2-u : u;
+        return Vector2(x + rand_r*cos(t), y + rand_r*sin(t));
+    }
+
+    void DrawCircle(SDL_Renderer* ren, SDL_Color color) {
+
+        int left = x - r;
+        int right = x + r;
+        int top = y - r;
+        int bottom = y + r;
+        SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
+
+        for (int i = left; i < right; i++) {
+            for (int j = top; j < bottom; j++) {
+                if (CheckPoint(i, j))
+                    SDL_RenderDrawPoint(ren, i, j);
+            }
+        }
+    }
 };

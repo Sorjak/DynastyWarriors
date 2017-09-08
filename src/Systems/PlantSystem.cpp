@@ -52,7 +52,19 @@ void PlantSystem::update() {
 }
 
 vector<shared_ptr<Plant>> PlantSystem::GetPlantsInRect(SDL_Rect* rect) {
-    return plants;
+    vector<shared_ptr<Plant>> plantsVisible;
+
+    for (auto it = plants.begin(); it != plants.end(); ++it) {
+        auto plant = (*it);
+        float radius = plant->GetAge();
+        SDL_Rect plant_rect = {plant->position.x - radius, plant->position.y - radius, radius * 2, radius * 2};
+
+        if (SDL_HasIntersection(rect, &plant_rect)) {
+            plantsVisible.push_back(plant);
+        }
+    }
+
+    return plantsVisible;
 }
 
 shared_ptr<Plant> PlantSystem::GetPlantFromPoint(int x, int y) {
@@ -68,8 +80,6 @@ shared_ptr<Plant> PlantSystem::GetPlantFromPoint(int x, int y) {
             closest = plant;
         }
     }
-
-    cout << endl;
 
     return closest;
 }

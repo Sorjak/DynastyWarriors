@@ -3,6 +3,8 @@
 #include <string>
 #include <random>
 
+#include <tinyfsm.hpp>
+
 #include "basesystem.h"
 #include "TerrainSystem.h"
 #include "InputSystem.h"
@@ -42,7 +44,5 @@ private:
     const int creatureHeight = 512;
 
     SDL_Texture* creatureTemplate = nullptr;
-
-
 };
 

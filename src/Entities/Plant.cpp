@@ -16,13 +16,13 @@ void Plant::Render(SDL_Renderer* ren, SDL_Rect* drawRect) {
     if (hasTexture) {
         SDL_RenderCopy(ren, texture, NULL, &sprect);
     } else {
-        Circle c = {sprect.x, sprect.y, ageValue / 2};
+        Circle c = {sprect.x, sprect.y, ageValue / 5};
         SDL_Color color = {255, 0, 0, 255};
         c.DrawCircle(ren, color);
     }
 }
 void Plant::Update() {
-    ageValue = min(ageValue + .03f, 50.0f);
+    ageValue = min(ageValue + .03f, 100.0f);
 }
 
 float Plant::GetEaten(float amount) {

@@ -1,5 +1,6 @@
 #include "Creature.h"
 
+class Idle; // forward declaration
 
 Creature::Creature(SDL_Texture* tex, int x, int y) {
     SDL_QueryTexture(tex, NULL, NULL, &creatureWidth, &creatureHeight);
@@ -9,8 +10,10 @@ Creature::Creature(SDL_Texture* tex, int x, int y) {
     this->hasTexture        = true;
     this->position          = {x, y};
     this->target            = {x, y};
-}
 
+    this->speed             = max(getRand01(), .5f);
+
+}
 
 Creature::~Creature() {
     // cout << "Deleting creature" << endl;
@@ -30,26 +33,97 @@ void Creature::MoveTo(int x, int y) {
 }
 
 void Creature::Eat(float amount) {
-    hungerValue = max(hungerValue - amount, 0.0f);
+    hungerValue -= amount;
 }
+
+// void Creature::Wander() {
+//     Circle c = {(int)position.x, (int)position.y, 30};
+
+//     target = c.GetRandomPoint();
+//     cout << "Wander target: " << target.x << ", " << target.y << endl;
+// }
 
 void Creature::Update() {
     ageValue += .005;
     hungerValue += .1;
-
 
     Vector2 moveVector = target - position;
 
     if (moveVector.length() > 0) {
         Vector2 normalized = moveVector.normalize();
 
-        position.x += normalized.x;
-        position.y += normalized.y;
+        position.x += normalized.x * speed;
+        position.y += normalized.y * speed;
     }
 }
 
+/************************************ States */
 
-/* General creature static methods */
+void Creature::react(GotHungry const &) {
+    cout << "Got Hungry" << endl;
+}
+
+void Creature::react(BeginEating const &) {
+    cout << "Beginning to Eat" << endl;
+}
+
+void Creature::react(DoneEating const &) {
+    cout << "Done Eating" << endl;
+}
+
+/* Creature States */
+
+class Eating
+: public Creature
+{
+    string name = "Eating";
+
+    void entry() override {
+        cout << "Entering Eating" << endl;
+    }
+
+    void react(DoneEating const & e) override {
+        transit<Idle>();
+    };
+};
+
+
+class MovingToFood
+: public Creature
+{
+    string name = "MovingToFood";
+
+    void entry() override {
+        cout << "Entering MovingToFood" << endl;
+    }
+
+    void react(BeginEating const & e) override {
+        transit<Eating>();
+    }
+};
+
+
+
+class Idle
+: public Creature
+{
+    string name = "Idle";
+
+    void entry() override {
+        cout << "Entering Idle" << endl;
+    }
+
+    void react(GotHungry const & e) override {
+        cout << "Reacting to hunger event" << endl;
+        transit<MovingToFood>();
+    }
+};
+
+FSM_INITIAL_STATE(Creature, Idle);
+
+/* End States */
+
+/******************************************** Texture creation static methods */
 
 void GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* bounds) {
     float noiseScale = 300.0;
@@ -101,8 +175,8 @@ SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_
         SDL_TEXTUREACCESS_STATIC, bounds->w, bounds->h);
     SDL_SetTextureBlendMode(textureOutput, SDL_BLENDMODE_BLEND);
 
-    SDL_Color spriteColor = { (Uint8) getRand01() * 255, 
-        (Uint8) getRand01() * 255, (Uint8) getRand01() * 255, SDL_ALPHA_OPAQUE };
+    SDL_Color spriteColor = { getRand01() * 255, 
+         getRand01() * 255, getRand01() * 255, SDL_ALPHA_OPAQUE };
 
     unsigned char* pixels = new unsigned char[bounds->w * bounds->h * 4];
 
@@ -140,3 +214,5 @@ SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_
 
     return textureOutput;
 }
+
+
