@@ -2,6 +2,7 @@
 
 CameraSystem::CameraSystem(int screenWidth, int screenHeight) {
 	view = { 0, 0, screenWidth, screenHeight };
+    scale = 1;
 }
 
 CameraSystem::~CameraSystem() {}
@@ -33,6 +34,18 @@ void CameraSystem::update() {
 
     if (input->isDown("S")) {
         delta.y += moveAmount;
+    }
+
+
+    if (input->isScrolling()) {
+        if (input->mouseScroll > 0) {
+            cout << "Scroll up" << endl;
+            scale = min(scale + 1, 2);
+        }
+        if (input->mouseScroll < 0) {
+            cout << "Scroll down" << endl;
+            scale = max(scale - 1, 1);
+        }
     }
 
     moveView(delta);

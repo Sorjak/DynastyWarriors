@@ -61,4 +61,8 @@ class MapChunk {
 
         SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();
+
+        SDL_Rect getScaledLocalRect(int scale);
+        SDL_Rect getScaledWorldRect(int scale);
+
 };

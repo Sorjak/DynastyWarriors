@@ -7,6 +7,7 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     this->position  = {bounds.x * bounds.w, bounds.y * bounds.h};
     this->noise     = n;
 
+    black = {0, 0, 0};
 	deep_water = { 0,0,205 };
 	water = { 0,191,255 };
 	sand = { 245,222,179 };
@@ -34,8 +35,8 @@ Island::~Island() {
 
 }
 
-void Island::Update(SDL_Rect* view_rect) {
-    chunksVisible = GetChunksInRect(view_rect);
+void Island::Update(SDL_Rect* view_rect, int scale) {
+    chunksVisible = GetChunksInRect(view_rect, scale);
     
     if (chunksToLoad > 0) {
 
@@ -64,7 +65,7 @@ void Island::LoadChunk(shared_ptr<MapChunk> chunk) {
     chunksToLoad--;
 }
 
-void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
+void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect, int scale) {
 
 	if (!hasTexture) {
 		islandTex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888,
@@ -79,11 +80,13 @@ void Island::Render(SDL_Renderer* ren, SDL_Rect* view_rect) {
 		  UpdateTexture(chunk);
           chunk->dirty = false;
         }
-        //chunk->Render(ren, -view_rect->x, -view_rect->y);
-
     }
 
-	SDL_Rect renderRect = { position.x - view_rect->x, position.y - view_rect->y, width, height };
+	SDL_Rect renderRect = { 
+        (position.x - view_rect->x) * scale, 
+        (position.y - view_rect->y) * scale, 
+        width * scale, height * scale
+    };
 
 	if (hasTexture && chunksVisible.size() > 0)
 		SDL_RenderCopy(ren, islandTex, NULL, &renderRect);
@@ -118,16 +121,22 @@ shared_ptr<MapChunk> Island::GetChunkAtPoint(SDL_Point point) {
     return GetChunkFromPosition(islandX, islandY);
 }
 
-vector<shared_ptr<MapChunk>> Island::GetChunksInRect(SDL_Rect* area) {
+vector<shared_ptr<MapChunk>> Island::GetChunksInRect(SDL_Rect* area, int scale) {
     vector<shared_ptr<MapChunk>> output;
+    SDL_Rect scaledArea = {
+        area->x * scale, 
+        area->y * scale,
+        area->w * scale,
+        area->h * scale
+    };
 
     for (auto i = chunks.begin(); i != chunks.end(); ++i)
     {
         shared_ptr<MapChunk> chunk = i->second;
 
-        SDL_Rect chunkRect = chunk->getWorldRect(); 
+        SDL_Rect chunkRect = chunk->getScaledWorldRect(scale);
 
-        if (SDL_HasIntersection(area, &chunkRect) == SDL_TRUE)
+        if (SDL_HasIntersection(&scaledArea, &chunkRect) == SDL_TRUE)
             output.push_back(chunk);
     }
 
@@ -184,6 +193,9 @@ SDL_Rect Island::getWorldRect() {
     return out;
 }
 
+SDL_Rect Island::getScaledWorldRect(int scale) {
+    return {position.x * scale, position.y * scale, width * scale, height * scale};
+}
 
 void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
 	SDL_Rect area = chunk->getLocalRect();
@@ -192,21 +204,30 @@ void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
 
 	for (int y = 0; y < area.h; y++) {
 		for (int x = 0; x < area.w; x++) {
-			const unsigned int offset = (area.w * 4 * y) + x * 4;
-			double value = chunk->getHeightAt(x, y);
 
-			SDL_Color current = deep_water;
-			// if (value < .15) { current = deep_water; }
-			if (value >= .15 && value < .3) { current = water; }
-			if (value >= .3 && value < .4) { current = sand; }
-			if (value >= .4 && value < .7) { current = grass; }
-			if (value >= .7 && value < .9) { current = mountain; }
-			if (value > .9) { current = snow; }
+			const unsigned int offset = (area.w * 4 * y) + x * 4;
+			
+            SDL_Color current = deep_water;
+            auto alpha = SDL_ALPHA_OPAQUE;
+
+            if (chunk->selected  && (x == 0 || y == 0)) {
+                current = black;
+                // alpha = SDL_ALPHA_TRANSPARENT;
+            } else {
+                double value = chunk->getHeightAt(x, y);
+
+                // if (value < .15) { current = deep_water; }
+                if (value >= .15 && value < .3) { current = water; }
+                if (value >= .3 && value < .4) { current = sand; }
+                if (value >= .4 && value < .7) { current = grass; }
+                if (value >= .7 && value < .9) { current = mountain; }
+                if (value > .9) { current = snow; }
+            }
 
 			pixels[offset + 0] = current.b;        // b
 			pixels[offset + 1] = current.g;        // g
 			pixels[offset + 2] = current.r;        // r
-			pixels[offset + 3] = SDL_ALPHA_OPAQUE;  // a
+			pixels[offset + 3] = alpha;            // a
 		}
 	}
 
@@ -214,4 +235,3 @@ void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
 
 	delete pixels;
 }
-

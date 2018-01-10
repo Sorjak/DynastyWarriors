@@ -15,7 +15,7 @@ void CreatureSystem::init(Engine* e) {
 
     terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
     input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));
-    plant = static_pointer_cast<PlantSystem>(mEngine->getSystem("plant"));
+    plants = static_pointer_cast<PlantSystem>(mEngine->getSystem("plant"));
 
 }
 
@@ -33,8 +33,6 @@ void CreatureSystem::update() {
         
             shared_ptr<Creature> guy(new Creature(creatureTemplate, chunkPos.x, chunkPos.y));
 
-            guy->start();
-
             cout << "Created creature at: " << chunkPos.x << ", " << chunkPos.y << endl;
             creatures.push_back(guy);
 
@@ -44,17 +42,11 @@ void CreatureSystem::update() {
     for (auto it = creatures.begin(); it != creatures.end(); ++it) {
         auto creature = (*it);
 
-        shared_ptr<Plant> p = plant->GetPlantFromPoint(creature->position.x, creature->position.y);
-
         creature->Update();
 
-        cout << creature->get_current_state()->name << endl;
-
-        if (creature->GetHunger() >= 50) {
-            cout << "Sending hunger event" << endl;
-            GotHungry gh;
-            gh.name = "GotHungry";
-            creature->dispatch(gh);
+        if (creature->GetHunger() > 50) {
+            // shared_ptr<Plant> p = plants->GetPlantFromPoint(creature->position.x, creature->position.y);
+            // cout << "Creature is hungry" << endl;
         }
 
         float elevation = terrain->GetElevationAtPoint(creature->position.x, creature->position.y);

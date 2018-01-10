@@ -30,7 +30,7 @@ public:
     Plant(SDL_Texture* tex, int x, int y);
     ~Plant();
 
-    void Render(SDL_Renderer* ren, SDL_Rect* drawRect);
+    void Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale);
     void Update();
 
     float GetEaten(float amount);

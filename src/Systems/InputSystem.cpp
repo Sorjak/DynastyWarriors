@@ -9,8 +9,11 @@ void InputSystem::init(Engine* e) {
 }
 
 void InputSystem::update() {
+    mouseScroll = false;
+    // mousePosition = {0, 0};
 	//Event polling
 	while (SDL_PollEvent(&mEvent)){
+
 		//If user closes he window
 		if (mEvent.type == SDL_QUIT) {
 			mEngine->setRunning(false);
@@ -45,6 +48,10 @@ void InputSystem::update() {
             mousePosition.x = mEvent.motion.x;
             mousePosition.y = mEvent.motion.y;
         }
+
+        if (mEvent.type == SDL_MOUSEWHEEL) {
+            mouseScroll = mEvent.wheel.y;
+        }
 		
 	}
 }
@@ -57,4 +64,8 @@ bool InputSystem::isDown(const char* key) {
     SDL_Keycode kc = SDL_GetKeyFromName(key);
 
     return keysDown.count(kc) > 0;
+}
+
+bool InputSystem::isScrolling() {
+    return mouseScroll != 0;
 }

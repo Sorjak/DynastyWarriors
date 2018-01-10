@@ -10,8 +10,12 @@ Plant::~Plant() {
     // SDL_DestroyTexture(texture);
 }
 
-void Plant::Render(SDL_Renderer* ren, SDL_Rect* drawRect) {
-    SDL_Rect sprect = { position.x - drawRect->x, position.y - drawRect->y, drawRect->w, drawRect->h };
+void Plant::Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale) {
+    SDL_Rect sprect = { 
+        (position.x - drawRect->x) * scale, 
+        (position.y - drawRect->y) * scale, 
+        drawRect->w * scale, drawRect->h * scale
+    };
 
     if (hasTexture) {
         SDL_RenderCopy(ren, texture, NULL, &sprect);

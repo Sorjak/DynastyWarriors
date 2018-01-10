@@ -1,7 +1,7 @@
 #pragma once
+#include <cmath>
 
 #include "basesystem.h"
-
 #include "InputSystem.h"
 class InputSystem;
 
@@ -22,4 +22,5 @@ public:
     void moveView(SDL_Point delta);
 
 	SDL_Rect view;
+    int scale;
 };

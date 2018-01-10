@@ -49,21 +49,19 @@ void RenderSystem::update() {
 
 	// cout << "Rendering islands" << endl;
 	
-	auto islands = terrain->getIslandsInRect(&cam->view);
+	auto islands = terrain->getIslandsInRect(&cam->view, cam->scale);
 
     for (auto i = islands.begin(); i != islands.end(); ++i)
     {
-        (*i)->Render(mRenderer, &cam->view);
+        (*i)->Render(mRenderer, &cam->view, cam->scale);
     }
 
     auto plants = plant->GetPlantsInRect(&cam->view);
 
     for (auto i = plants.begin(); i != plants.end(); ++i)
     {
-        (*i)->Render(mRenderer, &cam->view);
+        (*i)->Render(mRenderer, &cam->view, cam->scale);
     }
-
-
 
 	// cout << "Rendering creatures" << endl;
     if (!creature->hasTemplate)
@@ -74,7 +72,7 @@ void RenderSystem::update() {
     for (auto i = creatures.begin(); i != creatures.end(); ++i)
     {
     	SDL_Rect drawRect = { cam->view.x, cam->view.y, 16, 16 };
-        (*i)->Render(mRenderer, &drawRect);
+        (*i)->Render(mRenderer, &drawRect, cam->scale);
     }
 
 

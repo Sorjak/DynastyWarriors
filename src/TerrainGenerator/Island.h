@@ -32,6 +32,7 @@ class Island {
 
 		SDL_Texture* islandTex;
 
+        SDL_Color black;
 		SDL_Color deep_water;
 		SDL_Color water;
 		SDL_Color sand;
@@ -46,14 +47,14 @@ class Island {
 		bool hasTexture = false;
 
         // void Render(SDL_Renderer* ren);
-        void Update(SDL_Rect* area);
-        void Render(SDL_Renderer* ren, SDL_Rect* area);
+        void Update(SDL_Rect* area, int scale);
+        void Render(SDL_Renderer* ren, SDL_Rect* area, int scale);
 
         void LoadChunk(shared_ptr<MapChunk> chunk);
 
         shared_ptr<MapChunk> FindChunk(float low, float high);
         shared_ptr<MapChunk> GetChunkAtPoint(SDL_Point point);
-        vector<shared_ptr<MapChunk>> GetChunksInRect(SDL_Rect* area);
+        vector<shared_ptr<MapChunk>> GetChunksInRect(SDL_Rect* area, int scale);
 
         int getWidth();
         int getHeight();
@@ -66,4 +67,5 @@ class Island {
 
         SDL_Rect getLocalRect();
         SDL_Rect getWorldRect();
+        SDL_Rect getScaledWorldRect(int scale);
 };

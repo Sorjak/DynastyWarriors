@@ -1,7 +1,5 @@
 #include "Creature.h"
 
-class Idle; // forward declaration
-
 Creature::Creature(SDL_Texture* tex, int x, int y) {
     SDL_QueryTexture(tex, NULL, NULL, &creatureWidth, &creatureHeight);
 
@@ -10,20 +8,19 @@ Creature::Creature(SDL_Texture* tex, int x, int y) {
     this->hasTexture        = true;
     this->position          = {x, y};
     this->target            = {x, y};
-
     this->speed             = max(getRand01(), .5f);
-
 }
 
-Creature::~Creature() {
-    // cout << "Deleting creature" << endl;
-    // SDL_DestroyTexture(texture);
-}
+Creature::~Creature() {}
 
-void Creature::Render(SDL_Renderer* ren, SDL_Rect* drawRect) {
+void Creature::Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale) {
     if (hasTexture) {
         bodyBounds.x = position.x; bodyBounds.y = position.y;
-        SDL_Rect sprect = { position.x - drawRect->x, position.y - drawRect->y, drawRect->w, drawRect->h };
+        SDL_Rect sprect = { 
+            (position.x - drawRect->x) * scale, 
+            (position.y - drawRect->y) * scale, 
+            drawRect->w * scale, drawRect->h * scale
+        };
         SDL_RenderCopy(ren, texture, NULL, &sprect);
     }
 }
@@ -56,72 +53,6 @@ void Creature::Update() {
         position.y += normalized.y * speed;
     }
 }
-
-/************************************ States */
-
-void Creature::react(GotHungry const &) {
-    cout << "Got Hungry" << endl;
-}
-
-void Creature::react(BeginEating const &) {
-    cout << "Beginning to Eat" << endl;
-}
-
-void Creature::react(DoneEating const &) {
-    cout << "Done Eating" << endl;
-}
-
-/* Creature States */
-
-class Eating
-: public Creature
-{
-    string name = "Eating";
-
-    void entry() override {
-        cout << "Entering Eating" << endl;
-    }
-
-    void react(DoneEating const & e) override {
-        transit<Idle>();
-    };
-};
-
-
-class MovingToFood
-: public Creature
-{
-    string name = "MovingToFood";
-
-    void entry() override {
-        cout << "Entering MovingToFood" << endl;
-    }
-
-    void react(BeginEating const & e) override {
-        transit<Eating>();
-    }
-};
-
-
-
-class Idle
-: public Creature
-{
-    string name = "Idle";
-
-    void entry() override {
-        cout << "Entering Idle" << endl;
-    }
-
-    void react(GotHungry const & e) override {
-        cout << "Reacting to hunger event" << endl;
-        transit<MovingToFood>();
-    }
-};
-
-FSM_INITIAL_STATE(Creature, Idle);
-
-/* End States */
 
 /******************************************** Texture creation static methods */
 
@@ -214,5 +145,3 @@ SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_
 
     return textureOutput;
 }
-
-

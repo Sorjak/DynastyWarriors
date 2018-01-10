@@ -21,13 +21,16 @@ class InputSystem :
     	vector<BaseSystem*> inputList;
 
         SDL_Point mousePosition;
-        bool mouseLeft = true;
 
+        bool mouseLeft = true;
         bool mouseIsDown = false;
+
+        int mouseScroll = 0;
 
         Uint32 lastPressedTime = 0;
 
         bool isClicked(const char* key);
         bool isDown(const char* key);
+        bool isScrolling();
 };
 

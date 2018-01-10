@@ -9,8 +9,6 @@ MapChunk::MapChunk(SDL_Rect rect, SDL_Rect islandBounds) {
         (islandBounds.x * islandBounds.w) + localPosition.x,
         (islandBounds.y * islandBounds.h) + localPosition.y
     };
-
-
 }
 
 MapChunk::~MapChunk() {
@@ -101,6 +99,16 @@ SDL_Rect MapChunk::getLocalRect() {
 
 SDL_Rect MapChunk::getWorldRect() {
     SDL_Rect out = {(int) worldPosition.x, (int) worldPosition.y, width, height};
+    return out;
+}
+
+SDL_Rect MapChunk::getScaledLocalRect(int scale) {
+    SDL_Rect out = {localPosition.x * scale, localPosition.y * scale, width, height};
+    return out;
+}
+
+SDL_Rect MapChunk::getScaledWorldRect(int scale) {
+    SDL_Rect out = {worldPosition.x * scale, worldPosition.y * scale, width, height};
     return out;
 }
 

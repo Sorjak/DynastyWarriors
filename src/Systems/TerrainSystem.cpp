@@ -2,8 +2,8 @@
 
 
 TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
-    this->islandWidth = screenWidth * islandSizeMod;
-    this->islandHeight = screenHeight * islandSizeMod;
+    this->islandWidth = 2400;//screenWidth * islandSizeMod;
+    this->islandHeight = 2400;//screenHeight * islandSizeMod;
 
 	landMorphBox = { 0, 0, 150, 150 };
 
@@ -43,44 +43,59 @@ void TerrainSystem::update() {
         }
     }
 
-    islandsInView = getIslandsInRect(&cam->view);
+    islandsInView = getIslandsInRect(&cam->view, cam->scale);
 
     for (auto i = islandsInView.begin(); i != islandsInView.end(); ++i)
     {
         shared_ptr<Island> island = (*i);
 
-        island->Update(&cam->view);
+        island->Update(&cam->view, cam->scale);
 
         if (input->mouseIsDown) {
-            SDL_Point worldMouse = {mousePos.x + cam->view.x, mousePos.y + cam->view.y};
-            SDL_Rect mouseBox = {
-                mousePos.x + cam->view.x - (landMorphBox.w / 2), 
-                mousePos.y + cam->view.y - (landMorphBox.h / 2),
-                landMorphBox.w,
-                landMorphBox.h
+            SDL_Point worldMouse = {
+                (mousePos.x + cam->view.x) / cam->scale, 
+                (mousePos.y + cam->view.y) / cam->scale
             };
+            cout << worldMouse.x << ", " << worldMouse.y << endl;
 
-            vector<shared_ptr<MapChunk>> chunks = island->GetChunksInRect(&mouseBox);
-            for (auto c = chunks.begin(); c != chunks.end(); ++c) {
-                (*c)->dirty = true;
-                MorphLand((*c), worldMouse, input->mouseLeft);
-            }
+            this->currentChunk = getChunkFromPoint(worldMouse.x, worldMouse.y);
+            this->currentChunk->Select(true);
+
+            // SDL_Rect mouseBox = {
+            //     worldMouse.x - (landMorphBox.w / 2), 
+            //     worldMouse.y - (landMorphBox.h / 2),
+            //     landMorphBox.w,
+            //     landMorphBox.h
+            // };
+
+            // vector<shared_ptr<MapChunk>> chunks = island->GetChunksInRect(&mouseBox, 1);
+            // for (auto c = chunks.begin(); c != chunks.end(); ++c) {
+            //     (*c)->dirty = true;
+            //     MorphLand((*c), worldMouse, input->mouseLeft);
+            // }
         }
         
     }
 }
 
-vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect) {
+vector<shared_ptr<Island>> TerrainSystem::getIslandsInRect(SDL_Rect* view_rect, int scale) {
     vector<shared_ptr<Island>> islands_in_rect;
+
+    SDL_Rect scaledViewRect = {
+        view_rect->x * scale, 
+        view_rect->y * scale,
+        view_rect->w * scale,
+        view_rect->h * scale
+    };
 
     for (auto i = islands.begin(); i != islands.end(); ++i)
     {
         shared_ptr<Island> island = i->second;
 
         if (island != NULL) {
-            SDL_Rect islandRect = island->getWorldRect();
+            SDL_Rect islandRect = island->getScaledWorldRect(scale);
 
-            if (SDL_HasIntersection(view_rect, &islandRect)) {
+            if (SDL_HasIntersection(&scaledViewRect, &islandRect)) {
                 islands_in_rect.push_back(island);
             }
         }
@@ -104,18 +119,29 @@ shared_ptr<Island> TerrainSystem::getIslandFromPoint(int x, int y) {
     return getIslandFromCoord(x / this->islandWidth, y / this->islandHeight);
 }
 
-float TerrainSystem::GetElevationAtPoint(int x, int y) {
+shared_ptr<MapChunk> TerrainSystem::getChunkFromPoint(int x, int y) {
     auto island = getIslandFromPoint(x, y);
-    auto chunk = island->GetChunkFromPosition(x, y);
+    return island->GetChunkFromPosition(x, y);
+}
+
+float TerrainSystem::GetElevationAtPoint(int x, int y) {
+    auto chunk = getChunkFromPoint(x, y);
 
     return chunk->getElevation();
 }
 
+shared_ptr<MapChunk> TerrainSystem::getCurrentChunk() {
+    return currentChunk;
+}
+
+string TerrainSystem::getCurrentChunkInfo() {
+    string chunkInfo = "Chunk Info: " + currentChunk.x
+}
 
 void TerrainSystem::MakeIsland(int x, int y) {
     int seed = rand() * 1000;
     shared_ptr<Noise> n(new Noise(seed, .5, 2.0, 300.0));
-    SDL_Rect islandBounds = {x, y, islandWidth, islandHeight};
+    SDL_Rect islandBounds = {x, y, this->islandWidth, this->islandHeight};
     pair<int, int> coord = make_pair(x, y);
 
     shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
@@ -125,8 +151,11 @@ void TerrainSystem::MakeIsland(int x, int y) {
 
 void TerrainSystem::MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise) {
     // shared_ptr<HeightMap> originalMap = chunk->getHeightMap();
-    SDL_Rect chunkRect = chunk->getWorldRect();
+    SDL_Rect chunkRect = chunk->getScaledWorldRect(cam->scale);
     Circle c = {point.x, point.y, landMorphBox.w / 2};
+
+    cout << "Chunk Rect: " << chunkRect.x << ", " << chunkRect.y << ", " << chunkRect.w << endl;
+    // cout << "Morph Circle: " << c.x << ", " << c.y << ", " << c.r << endl;
 
     if (chunk->hasHeightMap) {
         int width = chunk->getWidth(); // originalMap->getMapWidth();

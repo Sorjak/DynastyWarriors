@@ -18,18 +18,8 @@
 void GenerateBody(int width, int height, bool* bodyPoints, SDL_Rect* bounds);
 SDL_Texture* MakeSprite(SDL_Renderer* ren, int fullWidth, bool* bodyPoints, SDL_Rect* bounds);
 
-/* EVENTS */
 
-struct CreatureEvent : tinyfsm::Event {
-    string name;
-};
-
-struct GotHungry    : CreatureEvent { };
-struct DoneEating   : CreatureEvent { };
-struct BeginEating  : CreatureEvent { };
-
-
-class Creature : public tinyfsm::Fsm<Creature>{
+class Creature{
 
 private:
     bool hasTexture = false;
@@ -61,16 +51,7 @@ public:
     Creature(SDL_Texture* tex, int x, int y);
     ~Creature();
 
-    void react(tinyfsm::Event const &) { };
-
-    virtual void react(GotHungry    const &);
-    virtual void react(DoneEating   const &);
-    virtual void react(BeginEating  const &);
-
-    virtual void entry(void) { };  /* entry actions in some states */
-    void         exit(void)  { };  /* no exit actions at all */
-
-    void Render(SDL_Renderer* ren, SDL_Rect* drawRect);
+    void Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale);
     void Update();
 
     void MoveTo(int x, int y);

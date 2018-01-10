@@ -3,8 +3,6 @@
 #include <string>
 #include <random>
 
-#include <tinyfsm.hpp>
-
 #include "basesystem.h"
 #include "TerrainSystem.h"
 #include "InputSystem.h"
@@ -28,7 +26,7 @@ public:
 
     shared_ptr<TerrainSystem> terrain;
     shared_ptr<InputSystem> input;
-    shared_ptr<PlantSystem> plant;
+    shared_ptr<PlantSystem> plants;
 
     vector<shared_ptr<Creature>> GetCreaturesInRect(SDL_Rect* rect);
     void KillCreature(shared_ptr<Creature> creature);
