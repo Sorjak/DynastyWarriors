@@ -25,6 +25,11 @@ public:
     void update();
     void init(Engine*);
 
+    const int chunksPerIsland = 100 * 100;
+    const float islandSizeMod = 5;
+    const float morphPowerMod = .005;
+    const int maxThreads = 3;
+
     vector<shared_ptr<Island>> getIslandsInRect(SDL_Rect* view_rect, int scale);
     shared_ptr<Island> getIslandFromCoord(int x, int y);
     shared_ptr<Island> getIslandFromPoint(int x, int y);
@@ -35,24 +40,26 @@ public:
     string getCurrentChunkInfo();
 
     map<pair<int, int>, shared_ptr<Island>> islands;
+    vector<shared_ptr<Island>> islandsInView;
+
     shared_ptr<CameraSystem> cam;
     shared_ptr<InputSystem> input;
 
-    vector<shared_ptr<Island>> islandsInView;
-
 private:
-    void MakeIsland(int x, int y);
-    void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise);
-
-    const int chunksPerIsland = 100 * 100;
-    const float islandSizeMod = 5;
-    const float morphPowerMod = .005;
-
     int islandWidth;
     int islandHeight;
+    int currentThreads;
+
+    queue<pair<int, int>> islandsToGenerate;
+    set<pair<int, int>> islandsGenerating;
 
     SDL_Rect landMorphBox;
-
     shared_ptr<MapChunk> currentChunk;
+
+    void GenerateIsland(int x, int y);
+    void MakeIsland(pair<int, int> coord, SDL_Rect islandBounds);
+    void MorphLand(shared_ptr<MapChunk> chunk, SDL_Point point, bool raise);
+
+
 };
 

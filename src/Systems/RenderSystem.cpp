@@ -28,6 +28,7 @@ RenderSystem::RenderSystem(int width, int height, const char* title) //const cha
 }
 
 void RenderSystem::init(Engine* e) {
+	cout << "Initializing Render System" << endl;
 	mEngine = e;
 
 	terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));
@@ -46,8 +47,6 @@ RenderSystem::~RenderSystem()
 void RenderSystem::update() {
 	frameStartTime = SDL_GetTicks();
 	SDL_RenderClear(mRenderer);
-
-	// cout << "Rendering islands" << endl;
 	
 	auto islands = terrain->getIslandsInRect(&cam->view, cam->scale);
 
@@ -77,7 +76,6 @@ void RenderSystem::update() {
 
 
 	for (size_t i = 0; i < entityList.size(); i++) {
-		// DimensionComponent *dim = (DimensionComponent*) entityList[i]->getComponent("dimension");
 		SDL_Texture* renderTex;
 		SDL_Rect* sourceRect = NULL;
 		SDL_Rect* renderRect;
@@ -86,15 +84,6 @@ void RenderSystem::update() {
 		if ( entityList[i]->hasComponent("texture")  ) {
 			TextureComponent *tex = (TextureComponent*) entityList[i]->getComponent("texture");
 			renderTex = tex->getTexture(mRenderer);
-			// renderRect = dim->getRect();
-		//} else if ( entityList[i]->hasComponent("animation") ) {
-		//	AnimationComponent *ac = (AnimationComponent*) entityList[i]->getComponent("animation");
-		//	renderTex = ac->getCurrentTexture(mRenderer);
-		//	sourceRect = ac->getIndexRect();
-		//	renderRect = dim->getRect();
-		//	if (dim->getFacing() == 1) {
-		//		flip = SDL_FLIP_HORIZONTAL;
-		//	}
 		}
 		
 		SDL_RenderCopyEx(mRenderer, renderTex, sourceRect, renderRect, 0, NULL, flip);
@@ -110,6 +99,8 @@ void RenderSystem::update() {
 	}
 	
 	displayFPSTexture();
+	displayInfo();
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 205, SDL_ALPHA_OPAQUE);
 	SDL_RenderPresent(mRenderer);
 	frameEndTime = SDL_GetTicks();
 }
@@ -120,9 +111,20 @@ void RenderSystem::displayFPSTexture() {
 
 	fpsString += to_string((int) getCurrentFPS());
 
-	SDL_Rect rect = {5, 5, 52, 24};
+	SDL_Rect rect = {5, 5, 60, 24};
 
 	displayText(color, &rect, fpsString);
+}
+
+void RenderSystem::displayInfo() {
+	SDL_Color color; color.r = 255; color.b = 255; color.g = 255;
+	// string infoString = terrain->getCurrentChunkInfo();
+	string infoString = to_string(cam->view.x + (cam->view.w / 2));
+	infoString += ", " + to_string(cam->view.y + (cam->view.h / 2));
+
+	SDL_Rect rect = {65, 5, 52, 24};
+
+	displayText(color, &rect, infoString);	
 }
 
 void RenderSystem::displayText(SDL_Color color, SDL_Rect *rect, string text) {

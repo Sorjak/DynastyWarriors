@@ -5,6 +5,7 @@ PlantSystem::PlantSystem(){
 }
 
 void PlantSystem::init(Engine* e) {
+    cout << "Initializing Plant System" << endl;
     mEngine = e;
 
     terrain = static_pointer_cast<TerrainSystem>(mEngine->getSystem("terrain"));

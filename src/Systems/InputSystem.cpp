@@ -5,6 +5,7 @@ InputSystem::InputSystem() {}
 InputSystem::~InputSystem() {}
 
 void InputSystem::init(Engine* e) {
+    cout << "Initializing Input System" << endl;
     mEngine = e;
 }
 

@@ -2,19 +2,24 @@
 
 
 TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
-    this->islandWidth = 2400;//screenWidth * islandSizeMod;
-    this->islandHeight = 2400;//screenHeight * islandSizeMod;
+    this->islandWidth = 2400; //screenWidth * islandSizeMod;
+    this->islandHeight = 2400; //screenHeight * islandSizeMod;
 
 	landMorphBox = { 0, 0, 150, 150 };
-
-    MakeIsland(0, 0);
+    currentThreads = 0;
 }
 
 void TerrainSystem::init(Engine* e) {
+    cout << "Initializing Terrain System" << endl;
     mEngine = e;
 
     cam = static_pointer_cast<CameraSystem>(mEngine->getSystem("camera"));
     input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));
+
+    pair<int, int> originCoord = make_pair(0, 0);
+    SDL_Rect islandBounds = {0, 0, islandWidth, islandHeight};
+
+    MakeIsland(originCoord, islandBounds);
 }
 
 
@@ -23,25 +28,38 @@ TerrainSystem::~TerrainSystem(){}
 void TerrainSystem::update() {
     SDL_Point mousePos = input->mousePosition;
 
-    int leftEdge = cam->view.x  / mEngine->screenWidth;
-    int topEdge = cam->view.y / mEngine->screenHeight;
+    int leftEdge = (cam->view.x + (cam->view.w / 2)) / mEngine->screenWidth;
+    int topEdge = (cam->view.y + (cam->view.h / 2)) / mEngine->screenHeight;
 
+    // vector<thread> islandThreads;
     for (int x = leftEdge - 1 ; x < leftEdge + 2; ++x)
     {
         for (int y = topEdge - 1; y < topEdge + 2; ++y)
         {
             pair<int, int> current = make_pair(x, y);
-            if (islands.count(current) == 0) {
-                // float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                // cout << "Random: " << r << endl;
-                //if (r > .75) {
-                    MakeIsland(x, y);
-                //} else {
-                //    islands[current] = NULL;
-                //}
+            const bool islandGenerating = islandsGenerating.find(current) != islandsGenerating.end();
+            const bool islandExists = islands.find(current) != islands.end();
+
+            if (!islandExists && !islandGenerating) {
+                cout << "Need to generate island " << x << ", " << y << endl;
+                GenerateIsland(x, y);
             }
         }
     }
+
+    if (!islandsToGenerate.empty()) {
+        while (currentThreads < maxThreads) {
+            auto coord = islandsToGenerate.front();
+            SDL_Rect islandBounds = {coord.first, coord.second, islandWidth, islandHeight};
+
+            thread t1(&TerrainSystem::MakeIsland, this, coord, islandBounds);
+            t1.detach();
+
+            currentThreads++;
+            islandsToGenerate.pop();
+        }
+    }
+
 
     islandsInView = getIslandsInRect(&cam->view, cam->scale);
 
@@ -56,10 +74,11 @@ void TerrainSystem::update() {
                 (mousePos.x + cam->view.x) / cam->scale, 
                 (mousePos.y + cam->view.y) / cam->scale
             };
-            cout << worldMouse.x << ", " << worldMouse.y << endl;
 
-            this->currentChunk = getChunkFromPoint(worldMouse.x, worldMouse.y);
-            this->currentChunk->Select(true);
+            auto chunk = getChunkFromPoint(worldMouse.x, worldMouse.y);
+            // currentChunk = chunk;
+
+            cout << chunk->getName() << endl;
 
             // SDL_Rect mouseBox = {
             //     worldMouse.x - (landMorphBox.w / 2), 
@@ -135,17 +154,35 @@ shared_ptr<MapChunk> TerrainSystem::getCurrentChunk() {
 }
 
 string TerrainSystem::getCurrentChunkInfo() {
-    string chunkInfo = "Chunk Info: " + currentChunk.x
+    string chunkInfo = "Chunk Info: " + currentChunk->getName();
+
+    return chunkInfo;
 }
 
-void TerrainSystem::MakeIsland(int x, int y) {
+void TerrainSystem::GenerateIsland(int x, int y) {
+    // thread t1(&TerrainSystem::MakeIsland, this, x, y);
+    // t1.detach();
+
+    pair<int, int> coord = make_pair(x, y);
+    islandsToGenerate.push(coord);
+
+    islandsGenerating.insert(coord);
+}
+
+void TerrainSystem::MakeIsland(pair<int, int> coord, SDL_Rect islandBounds) {
     int seed = rand() * 1000;
     shared_ptr<Noise> n(new Noise(seed, .5, 2.0, 300.0));
-    SDL_Rect islandBounds = {x, y, this->islandWidth, this->islandHeight};
-    pair<int, int> coord = make_pair(x, y);
 
+    cout << "Making Island (" << coord.first << ", " << coord.second << ")" << endl; 
     shared_ptr<Island> island(new Island(islandBounds, n, chunksPerIsland));
+    cout << "Created Island (" << coord.first << ", " << coord.second << ")" << endl;
+
     islands[coord] = island;
+    if (islandsGenerating.find(coord) != islandsGenerating.end()) {
+        islandsGenerating.erase(coord);
+    }
+
+    currentThreads = max(0, currentThreads - 1);
 }
 
 

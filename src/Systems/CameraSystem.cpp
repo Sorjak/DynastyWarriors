@@ -8,6 +8,7 @@ CameraSystem::CameraSystem(int screenWidth, int screenHeight) {
 CameraSystem::~CameraSystem() {}
 
 void CameraSystem::init(Engine* e) {
+    cout << "Initializing Camera System" << endl;
     mEngine = e;
 
     input = static_pointer_cast<InputSystem>(mEngine->getSystem("input"));

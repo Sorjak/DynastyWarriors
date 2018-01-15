@@ -18,13 +18,16 @@ Island::Island(SDL_Rect bounds, shared_ptr<Noise> n, int totalChunks) {
     chunksPerLine = (int) sqrt(totalChunks);
     int chunkWidth  = this->width / this->chunksPerLine;
     int chunkHeight = this->height / this->chunksPerLine;
+    
 
     for (int x = 0; x < chunksPerLine; ++x)
     {
         for (int y = 0; y < chunksPerLine; ++y)
         {
             SDL_Rect chunkRect = {x, y, chunkWidth, chunkHeight};
-            AddChunk(chunkRect);
+            shared_ptr<MapChunk> chunk = AddChunk(chunkRect);
+            thread t1(&Island::LoadChunk, this, chunk);
+            t1.detach();
         }
     }
 
@@ -38,22 +41,22 @@ Island::~Island() {
 void Island::Update(SDL_Rect* view_rect, int scale) {
     chunksVisible = GetChunksInRect(view_rect, scale);
     
-    if (chunksToLoad > 0) {
+    // if (chunksToLoad > 0) {
 
-        vector<thread> chunksLoading;
-        for (auto i = chunksVisible.begin(); i != chunksVisible.end(); ++i) {
-            shared_ptr<MapChunk> chunk = (*i);
-            if (!chunk->hasHeightMap){
-                thread t1(&Island::LoadChunk, this, chunk);
-                chunksLoading.push_back(move(t1));
-                // LoadChunk(chunk);
-            }
-        }
+    //     vector<thread> chunksLoading;
+    //     for (auto i = chunksVisible.begin(); i != chunksVisible.end(); ++i) {
+    //         shared_ptr<MapChunk> chunk = (*i);
+    //         if (!chunk->hasHeightMap){
+    //             thread t1(&Island::LoadChunk, this, chunk);
+    //             chunksLoading.push_back(move(t1));
+    //             // LoadChunk(chunk);
+    //         }
+    //     }
 
-        for (auto i = chunksLoading.begin(); i != chunksLoading.end(); ++i) {
-            i->join();
-        }
-    }
+    //     for (auto i = chunksLoading.begin(); i != chunksLoading.end(); ++i) {
+    //         i->join();
+    //     }
+    // }
 }
 
 void Island::LoadChunk(shared_ptr<MapChunk> chunk) {
@@ -151,7 +154,7 @@ int Island::getHeight() {
     return this->height;
 }
 
-void Island::AddChunk(SDL_Rect chunkRect) {
+shared_ptr<MapChunk> Island::AddChunk(SDL_Rect chunkRect) {
     auto chunkCoord = make_pair(chunkRect.x, chunkRect.y);
 
     SDL_Rect islandBounds = getLocalRect();
@@ -159,6 +162,8 @@ void Island::AddChunk(SDL_Rect chunkRect) {
 
     chunks[chunkCoord] = chunk;
     chunksToLoad++;
+
+    return chunk;
 }
 
 
@@ -210,13 +215,12 @@ void Island::UpdateTexture(shared_ptr<MapChunk> chunk) {
             SDL_Color current = deep_water;
             auto alpha = SDL_ALPHA_OPAQUE;
 
-            if (chunk->selected  && (x == 0 || y == 0)) {
+            if ((x == 0 || y == 0)) {
                 current = black;
                 // alpha = SDL_ALPHA_TRANSPARENT;
             } else {
                 double value = chunk->getHeightAt(x, y);
 
-                // if (value < .15) { current = deep_water; }
                 if (value >= .15 && value < .3) { current = water; }
                 if (value >= .3 && value < .4) { current = sand; }
                 if (value >= .4 && value < .7) { current = grass; }

@@ -20,7 +20,7 @@ void Plant::Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale) {
     if (hasTexture) {
         SDL_RenderCopy(ren, texture, NULL, &sprect);
     } else {
-        Circle c = {sprect.x, sprect.y, ageValue / 5};
+        Circle c = {sprect.x, sprect.y, (ageValue / 5) * scale};
         SDL_Color color = {255, 0, 0, 255};
         c.DrawCircle(ren, color);
     }

@@ -47,6 +47,7 @@ class Island {
 		bool hasTexture = false;
 
         // void Render(SDL_Renderer* ren);
+        void Init();
         void Update(SDL_Rect* area, int scale);
         void Render(SDL_Renderer* ren, SDL_Rect* area, int scale);
 
@@ -59,7 +60,7 @@ class Island {
         int getWidth();
         int getHeight();
 
-        void AddChunk(SDL_Rect chunkRect);
+        shared_ptr<MapChunk> AddChunk(SDL_Rect chunkRect);
         shared_ptr<MapChunk> GetChunkFromCoord(int x, int y);
         shared_ptr<MapChunk> GetChunkFromPosition(int x, int y);
 

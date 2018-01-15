@@ -42,6 +42,7 @@ public:
 
 private:
 	void displayFPSTexture();
+	void displayInfo();
 	void displayText(SDL_Color, SDL_Rect*, string);
 	float currentFPS;
 	int frameStartTime;
