@@ -1,6 +1,6 @@
 #include "Plant.h"
 
-Plant::Plant(SDL_Texture* tex, int x, int y) {
+Plant::Plant(SDL_Texture* tex, float x, float y) {
     this->texture       = tex;
     this->position      = {x, y};
     this->hasTexture    = false;

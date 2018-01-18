@@ -25,9 +25,9 @@ public:
 
     vector<shared_ptr<Plant>> GetPlantsInRect(SDL_Rect* rect);
     void KillPlant(shared_ptr<Plant> plant);
-    void CreatePlantTemplate(SDL_Renderer* ren, int width, int height);
+    //void CreatePlantTemplate(SDL_Renderer* ren, int width, int height);
 
-    shared_ptr<Plant> GetPlantFromPoint(int x, int y);
+    shared_ptr<Plant> GetPlantFromPoint(float x, float y);
 
     bool hasTemplate = false;
 

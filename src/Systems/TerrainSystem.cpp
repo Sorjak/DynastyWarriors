@@ -2,8 +2,8 @@
 
 
 TerrainSystem::TerrainSystem(int screenWidth, int screenHeight){
-    this->islandWidth = 2400; //screenWidth * islandSizeMod;
-    this->islandHeight = 2400; //screenHeight * islandSizeMod;
+    this->islandWidth = 1200; //screenWidth * islandSizeMod;
+    this->islandHeight = 1200; //screenHeight * islandSizeMod;
 
 	landMorphBox = { 0, 0, 150, 150 };
     currentThreads = 0;

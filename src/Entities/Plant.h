@@ -27,7 +27,7 @@ public:
 
     SDL_Texture* texture = nullptr;
 
-    Plant(SDL_Texture* tex, int x, int y);
+    Plant(SDL_Texture* tex, float x, float y);
     ~Plant();
 
     void Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale);

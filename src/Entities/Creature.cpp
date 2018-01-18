@@ -1,6 +1,6 @@
 #include "Creature.h"
 
-Creature::Creature(SDL_Texture* tex, int x, int y) {
+Creature::Creature(SDL_Texture* tex, float x, float y) {
     SDL_QueryTexture(tex, NULL, NULL, &creatureWidth, &creatureHeight);
 
     this->texture           = tex;
@@ -25,7 +25,7 @@ void Creature::Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale) {
     }
 }
 
-void Creature::MoveTo(int x, int y) {
+void Creature::MoveTo(float x, float y){
     target = {x, y};
 }
 

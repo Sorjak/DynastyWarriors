@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <random>
+#include <queue>
 
 #include "basesystem.h"
 #include "CameraSystem.h"
@@ -28,7 +29,7 @@ public:
     const int chunksPerIsland = 100 * 100;
     const float islandSizeMod = 5;
     const float morphPowerMod = .005;
-    const int maxThreads = 3;
+    const int maxThreads = 1;
 
     vector<shared_ptr<Island>> getIslandsInRect(SDL_Rect* view_rect, int scale);
     shared_ptr<Island> getIslandFromCoord(int x, int y);

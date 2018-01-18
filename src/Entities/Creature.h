@@ -48,13 +48,13 @@ public:
 
     Creature() {};
 
-    Creature(SDL_Texture* tex, int x, int y);
+    Creature(SDL_Texture* tex, float x, float y);
     ~Creature();
 
     void Render(SDL_Renderer* ren, SDL_Rect* drawRect, int scale);
+	void MoveTo(float x, float y);
     void Update();
 
-    void MoveTo(int x, int y);
     void Eat(float amount);
     // void Wander();
 

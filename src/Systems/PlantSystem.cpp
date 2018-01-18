@@ -68,7 +68,7 @@ vector<shared_ptr<Plant>> PlantSystem::GetPlantsInRect(SDL_Rect* rect) {
     return plantsVisible;
 }
 
-shared_ptr<Plant> PlantSystem::GetPlantFromPoint(int x, int y) {
+shared_ptr<Plant> PlantSystem::GetPlantFromPoint(float x, float y) {
     Vector2 origin = {x, y};
     float min_distance = 100000;
     shared_ptr<Plant> closest = nullptr;
